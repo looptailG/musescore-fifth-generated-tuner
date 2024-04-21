@@ -12,10 +12,15 @@ MuseScore
 	
 	pluginType: "dialog";
 	width: 800;
-	height: 500;
+	height: 800;
+	
+	property int buttonWidth: 100;
+	property int buttonHeight: 40;
 	
 	// Size in cents of a justly tuned perfect fifth.
 	property var justFifth: 1200.0 * Math.log2(3 / 2);
+	// Size in cents of a 12EDO perfect fifth.
+	property var defaultFifth: 700.0;
 	// Size in cents of the syntonic comma.
 	property var syntonicComma: 1200.0 * Math.log2(81 / 80);
 	property var fifthSize: 700.0;
@@ -81,12 +86,100 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "5";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 5 * 3;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "7";
 					onClicked:
 					{
 						sizeField.text = 1200.0 / 7 * 4;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "12";
+					onClicked:
+					{
+						sizeField.text = defaultFifth;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "17";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 17 * 10;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "19";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 19 * 11;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "26";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 26 * 15;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "29";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 29 * 17;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "31";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 31 * 18;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "43";
+					onClicked:
+					{
+						sizeField.text = 1200.0 / 43 * 25;
 					}
 				}
 			}
@@ -104,8 +197,8 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "1/3 Comma";
 					onClicked:
 					{
@@ -115,8 +208,19 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "2/7 Comma";
+					onClicked:
+					{
+						sizeField.text = justFifth - syntonicComma * 2 / 7;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "1/4 Comma";
 					onClicked:
 					{
@@ -126,8 +230,8 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "1/5 Comma";
 					onClicked:
 					{
@@ -137,12 +241,34 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
-					text: "1/6 comma";
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "1/6 Comma";
 					onClicked:
 					{
 						sizeField.text = justFifth - syntonicComma / 6;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Golden Meantone";
+					onClicked:
+					{
+						sizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Tungsten Meantone";
+					onClicked:
+					{
+						sizeField.text = 600.0 * (Math.sqrt(10) - 2);
 					}
 				}
 			}
@@ -160,8 +286,8 @@ MuseScore
 				
 				Button
 				{
-					width: 35;
-					height: 20;
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "Pythagorean";
 					onClicked:
 					{
