@@ -427,7 +427,7 @@ MuseScore
 					{
 						if (cursor.element.type == Element.CHORD)
 						{
-							var graceChords = cursor.element.graceChords;
+							var graceChords = cursor.element.graceNotes;
 							for (var i = 0; i < graceChords.length; i++)
 							{
 								var notes = graceChords[i].notes;
