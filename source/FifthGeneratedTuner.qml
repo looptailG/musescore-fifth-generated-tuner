@@ -417,7 +417,7 @@ MuseScore
 			}
 			else
 			{
-				endTick = curScore.tick;
+				endTick = cursor.tick;
 			}
 		}
 		
