@@ -9,7 +9,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.1.0";
+	version: "0.2.0";
 	
 	pluginType: "dialog";
 	width: 800;
@@ -123,13 +123,22 @@ MuseScore
 				text: "Tune";
 				onClicked:
 				{
-					// Read the input fifth size.
-					fifthSize = parseFloat(fifthSizeField.text);
-					fifthDeviation = defaultFifth - fifthSize;
-					
-					tuneNotes();
-					
-					quit();
+					try
+					{
+						// Read the input fifth size.
+						fifthSize = parseFloat(fifthSizeField.text);
+						fifthDeviation = defaultFifth - fifthSize;
+						
+						tuneNotes();
+					}
+					catch (error)
+					{
+						console.error(error);
+					}
+					finally
+					{
+						quit();
+					}
 				}
 			}
 		}
