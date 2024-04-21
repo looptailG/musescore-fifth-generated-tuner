@@ -26,7 +26,7 @@ MuseScore
 	// Size in cents of the syntonic comma.
 	property var syntonicComma: 1200.0 * Math.log2(81 / 80);
 	// Size in cents of the fifth selected by the user.
-	property var fifthSize;
+	property var fifthSize: defaultFifth;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
@@ -123,10 +123,11 @@ MuseScore
 				text: "Tune";
 				onClicked:
 				{
+					// Read the input fifth size.
 					fifthSize = parseFloat(fifthSizeField.text);
 					fifthDeviation = defaultFifth - fifthSize;
 					
-					
+					tuneNotes();
 					
 					quit();
 				}
@@ -366,6 +367,221 @@ MuseScore
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Tune the notes in the selection, or the entire score if nothing is
+	 * selected, according to the selected fifth size.
+	 */
+	function tuneNotes()
+	{
+		curScore.startCmd();
+	
+		// Calculate the portion of the score to tune.
+		var cursor = curScore.newCursor();
+		var startStaff;
+		var endStaff;
+		var startTick;
+		var endTick;
+		cursor.rewind(Cursor.SELECTION_START);
+		if (!cursor.segment)
+		{
+			// Tune the entire score.
+			startStaff = 0;
+			endStaff = curScore.nstaves - 1;
+			startTick = 0;
+			endTick = curScore.lastSegment.tick + 1;
+		}
+		else
+		{
+			// Tune only the selection.
+			startStaff = cursor.staffIdx;
+			startTick = cursor.tick;
+			cursor.rewind(Cursor.SELECTION_END);
+			endStaff = cursor.staffIdx;
+			if (cursor.tick == 0)
+			{
+				// If the selection includes the last measure of the score,
+				// .rewind() overflows and goes back to tick 0.
+				endTick = curScore.lastSegment.tick + 1;
+			}
+			else
+			{
+				endTick = curScore.tick;
+			}
+		}
+		
+		// Loop on the portion of the score to tune.
+		for (var staff = startStaff; staff <= endStaff; staff++)
+		{
+			for (var voice = 0; voice < 4; voice++)
+			{
+				cursor.voice = voice;
+				cursor.staffIdx = staff;
+				cursor.rewindToTick(startTick);
+				
+				while (cursor.segment && (cursor.tick < endTick))
+				{
+					if (cursor.element)
+					{
+						if (cursor.element.type == Element.CHORD)
+						{
+							var graceChords = cursor.element.graceChords;
+							for (var i = 0; i < graceChords.length; i++)
+							{
+								var notes = graceChords[i].notes;
+								for (var j = 0; j < notes.length; j++)
+								{
+									try
+									{
+										notes[j].tuning = calculateTuningOffset(notes[j]);
+									}
+									catch (error)
+									{
+										console.error(error);
+									}
+								}
+							}
+							
+							var notes = cursor.element.notes;
+							for (var i = 0; i < notes.length; i++)
+							{
+								try
+								{
+									notes[i].tuning = calculateTuningOffset(notes[i]);
+								}
+								catch (error)
+								{
+									console.error(error);
+								}
+							}
+						}
+					}
+					
+					cursor.next();
+				}
+			}
+		}
+		
+		curScore.endCmd();
+	}
+	
+	/**
+	 * Return the amount of cents necessary to tune the input note according to
+	 * the input fifth size.
+	 */
+	function calculateTuningOffset(note)
+	{
+		switch (note.tpc)
+		{
+			case -1:
+				return centOffsets["F"]["bb"];
+
+			case 0:
+				return centOffsets["C"]["bb"];
+
+			case 1:
+				return centOffsets["G"]["bb"];
+
+			case 2:
+				return centOffsets["D"]["bb"];
+
+			case 3:
+				return centOffsets["A"]["bb"];
+
+			case 4:
+				return centOffsets["E"]["bb"];
+
+			case 5:
+				return centOffsets["B"]["bb"];
+
+			case 6:
+				return centOffsets["F"]["b"];
+
+			case 7:
+				return centOffsets["C"]["b"];
+
+			case 8:
+				return centOffsets["G"]["b"];
+
+			case 9:
+				return centOffsets["D"]["b"];
+
+			case 10:
+				return centOffsets["A"]["b"];
+
+			case 11:
+				return centOffsets["E"]["b"];
+
+			case 12:
+				return centOffsets["B"]["b"];
+
+			case 13:
+				return centOffsets["F"]["h"];
+
+			case 14:
+				return centOffsets["C"]["h"];
+
+			case 15:
+				return centOffsets["G"]["h"];
+
+			case 16:
+				return centOffsets["D"]["h"];
+
+			case 17:
+				return centOffsets["A"]["h"];
+
+			case 18:
+				return centOffsets["E"]["h"];
+
+			case 19:
+				return centOffsets["B"]["h"];
+
+			case 20:
+				return centOffsets["F"]["#"];
+
+			case 21:
+				return centOffsets["C"]["#"];
+
+			case 22:
+				return centOffsets["G"]["#"];
+
+			case 23:
+				return centOffsets["D"]["#"];
+
+			case 24:
+				return centOffsets["A"]["#"];
+
+			case 25:
+				return centOffsets["E"]["#"];
+
+			case 26:
+				return centOffsets["B"]["#"];
+
+			case 27:
+				return centOffsets["F"]["x"];
+
+			case 28:
+				return centOffsets["C"]["x"];
+
+			case 29:
+				return centOffsets["G"]["x"];
+
+			case 30:
+				return centOffsets["D"]["x"];
+
+			case 31:
+				return centOffsets["A"]["x"];
+
+			case 32:
+				return centOffsets["E"]["x"];
+
+			case 33:
+				return centOffsets["B"]["x"];
+			
+			default:
+				throw "Could not resolve the tpc: " + note.tpc;
 		}
 	}
 	
