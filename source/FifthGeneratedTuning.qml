@@ -6,6 +6,7 @@ import MuseScore 3.0
 MuseScore
 {
 	title: qsTr("Fifth Generated Tuner");
+	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
 	version: "0.1.0";
