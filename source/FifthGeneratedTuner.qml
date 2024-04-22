@@ -9,7 +9,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.2.0";
+	version: "0.3.0";
 	
 	pluginType: "dialog";
 	width: 800;
@@ -25,6 +25,17 @@ MuseScore
 	property var defaultFifth: 700.0;
 	// Size in cents of the syntonic comma.
 	property var syntonicComma: 1200.0 * Math.log2(81 / 80);
+	
+	// Size in cents of the smallest fifth after which the standard notation
+	// cease to make sense.  It's the same fifth as 7EDO.
+	property var smallestFifth: 1200.0 / 7 * 4;
+	// Size in censt of the largest fifth after which the standard notation
+	// cease to make sense.  It's the same fifth as 5EDO.
+	property var largestFifth: 1200.0 / 5 * 3;
+	// String variables containing the sizes of the smallest and largest fifths,
+	// rounded to 1 digit after the decimal point.
+	property var smallestFifthString: "" + (Math.round(smallestFifth * 10) / 10);
+	property var largestFifthString: "" + (Math.round(largestFifth * 10) / 10);
 	// Size in cents of the fifth selected by the user.
 	property var fifthSize: defaultFifth;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
@@ -110,7 +121,7 @@ MuseScore
 			
 			TextField
 			{
-				placeholderText: qsTr("685.7 - 720.0");
+				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
 				id: fifthSizeField;
 				width: 180;
 				height: 30;
@@ -591,6 +602,20 @@ MuseScore
 			
 			default:
 				throw "Could not resolve the tpc: " + note.tpc;
+		}
+	}
+	
+	Component.onCompleted:
+	{
+		// Format the smallest and largest fifths so that they have a digit
+		// after the decimal point, even if they are integer numbers.
+		if (Number.isInteger(smallestFifth))
+		{
+			smallestFifthString += ".0";
+		}
+		if (Number.isInteger(largestFifth))
+		{
+			largestFifthString += ".0";
 		}
 	}
 	
