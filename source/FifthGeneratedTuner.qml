@@ -9,7 +9,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.3.0";
+	version: "0.4.0";
 	
 	pluginType: "dialog";
 	width: 800;
@@ -134,13 +134,33 @@ MuseScore
 				text: "Tune";
 				onClicked:
 				{
+					// Only quit the plugin if a correctly formatted fifth was
+					// provided as input.
+					var correctlyFormattedFifth = true;
+				
 					try
 					{
 						// Read the input fifth size.
 						fifthSize = parseFloat(fifthSizeField.text);
-						fifthDeviation = defaultFifth - fifthSize;
+						if (isNaN(fifthSize))
+						{
+							correctlyFormattedFifth = false;
+							throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
+						}
+						else
+						{
+							if (fifthSize < smallestFifth)
+							{
+								console.log("WARNING: The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.");
+							}
+							else if (fifthSize > largestFifth)
+							{
+								console.log("WARNING: The input fifth is larger than " + largestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.");
+							}
 						
-						tuneNotes();
+							fifthDeviation = defaultFifth - fifthSize;
+							tuneNotes();
+						}
 					}
 					catch (error)
 					{
@@ -148,7 +168,10 @@ MuseScore
 					}
 					finally
 					{
-						quit();
+						if (correctlyFormattedFifth)
+						{
+							quit();
+						}
 					}
 				}
 			}
