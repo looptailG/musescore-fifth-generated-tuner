@@ -9,7 +9,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.5.0";
+	version: "0.6.0";
 	
 	pluginType: "dialog";
 	width: 800;
@@ -145,7 +145,14 @@ MuseScore
 						if (isNaN(fifthSize))
 						{
 							correctlyFormattedFifth = false;
-							throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
+							if (fifthSizeField.text == "")
+							{
+								throw "Empty input field.";
+							}
+							else
+							{
+								throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
+							}
 						}
 						else
 						{
