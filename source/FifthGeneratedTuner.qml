@@ -43,7 +43,7 @@ MuseScore
 	property var smallestFifthString: "" + (Math.round(smallestFifth * 10) / 10);
 	property var largestFifthString: "" + (Math.round(largestFifth * 10) / 10);
 	// Size in cents of the fifth selected by the user.
-	property var fifthSize: defaultFifth;
+	property var fifthSize;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
