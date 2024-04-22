@@ -15,6 +15,12 @@ MuseScore
 	width: 800;
 	height: 800;
 	
+	// List containing some commonly installed monospaced fonts.
+	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
+	// Variable containing the name of an installed monospaced font from the
+	// previous list.
+	property var monospacedFont: null;
+	
 	// Size of the buttons of the pre-set tuning systems.
 	property int buttonWidth: 100;
 	property int buttonHeight: 40;
@@ -122,6 +128,7 @@ MuseScore
 			TextField
 			{
 				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
+				font.family: monospacedFont;
 				id: fifthSizeField;
 				width: 180;
 				height: 30;
@@ -424,16 +431,11 @@ MuseScore
 			y: 700;
 			spacing: 10;
 			
-			Text
-			{
-				text: "Output message:";
-				font.pixelSize: 30;
-			}
-			
 			TextArea
 			{
 				id: outputMessageArea;
 				text: "";
+				font.family: monospacedFont;
 				readOnly: true;
 				width: 400;
 				height: 30;
@@ -667,6 +669,16 @@ MuseScore
 		if (Number.isInteger(largestFifth))
 		{
 			largestFifthString += ".0";
+		}
+		
+		// Initialise monospaced font.
+		for (var i = 0; i < preferredFonts.length; i++)
+		{
+			if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
+			{
+				monospacedFont = preferredFonts[i];
+				break;
+			}
 		}
 		
 		// Initialise output message area.
