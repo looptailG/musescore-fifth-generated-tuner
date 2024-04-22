@@ -9,7 +9,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.4.0";
+	version: "0.5.0";
 	
 	pluginType: "dialog";
 	width: 800;
@@ -164,7 +164,7 @@ MuseScore
 					}
 					catch (error)
 					{
-						console.error(error);
+						outputMessageArea.text = error;
 					}
 					finally
 					{
@@ -369,7 +369,7 @@ MuseScore
 				{
 					width: buttonWidth;
 					height: buttonHeight;
-					text: "Golden Meantone";
+					text: "Golden";
 					onClicked:
 					{
 						fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
@@ -380,7 +380,7 @@ MuseScore
 				{
 					width: buttonWidth;
 					height: buttonHeight;
-					text: "Tungsten Meantone";
+					text: "Tungsten";
 					onClicked:
 					{
 						fifthSizeField.text = 600.0 * (Math.sqrt(10) - 2);
@@ -409,6 +409,27 @@ MuseScore
 						fifthSizeField.text = justFifth;
 					}
 				}
+			}
+		}
+		
+		Row
+		{
+			y: 700;
+			spacing: 10;
+			
+			Text
+			{
+				text: "Output message:";
+				font.pixelSize: 30;
+			}
+			
+			TextArea
+			{
+				id: outputMessageArea;
+				text: "";
+				readOnly: true;
+				width: 400;
+				height: 30;
 			}
 		}
 	}
@@ -640,6 +661,9 @@ MuseScore
 		{
 			largestFifthString += ".0";
 		}
+		
+		// Initialise output message area.
+		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
 	}
 	
 	onRun:
