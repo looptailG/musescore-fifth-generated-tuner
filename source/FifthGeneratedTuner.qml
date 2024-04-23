@@ -9,11 +9,11 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
-	version: "0.6.0";
+	version: "0.7.0";
 	
 	pluginType: "dialog";
-	width: 800;
-	height: 800;
+	width: 520;
+	height: 660;
 	
 	// List containing some commonly installed monospaced fonts.
 	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
@@ -116,13 +116,14 @@ MuseScore
 		
 		Row
 		{
+			x:10;
 			y: 10;
 			spacing: 10;
 			
 			Text
 			{
 				text: "Size of the fifth in cents:";
-				font.pixelSize: 30;
+				font.pixelSize: 20;
 			}
 			
 			TextField
@@ -130,14 +131,14 @@ MuseScore
 				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
 				font.family: monospacedFont;
 				id: fifthSizeField;
-				width: 180;
+				width: 150;
 				height: 30;
 			}
 			
 			Button
 			{
-				width: 140;
-				height: 25;
+				width: 100;
+				height: 30;
 				text: "Tune";
 				onClicked:
 				{
@@ -193,19 +194,13 @@ MuseScore
 		
 		Row
 		{
-			y: 75;
-			spacing: 5;
-			
-			Text
-			{
-				text: "Tunings";
-				font.pixelSize: 15;
-			}
+			x:10;
+			y: 100;
+			spacing: 50;
 			
 			Column
 			{
-				y: 75;
-				spacing: 15;
+				spacing: 10;
 				
 				Text
 				{
@@ -315,8 +310,7 @@ MuseScore
 			
 			Column
 			{
-				y: 75;
-				spacing: 15;
+				spacing: 10;
 				
 				Text
 				{
@@ -404,8 +398,7 @@ MuseScore
 			
 			Column
 			{
-				y: 75;
-				spacing: 15;
+				spacing: 10;
 				
 				Text
 				{
@@ -428,7 +421,8 @@ MuseScore
 		
 		Row
 		{
-			y: 700;
+			x:10;
+			y: 600;
 			spacing: 10;
 			
 			TextArea
@@ -437,8 +431,8 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
-				width: 400;
-				height: 30;
+				width: 500;
+				height: 50;
 			}
 		}
 	}
