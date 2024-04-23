@@ -9,6 +9,9 @@ This plugin can be used to tune the whole score, or only a portion of it, to a l
 The plugin provides the fifth sizes of some commonly used tuning system, but you can input whatever size you prefer.
 
 ## Usage
-
+- If you want to tune only a portion of the score, select it before running the plugin. If nothing is selected, the entire score will be tuned.
+- Launch the plugin: `Plugins` → `Playback` → `Fifth Generated Tuner`.
+- Select one of the preset fifth sizes, or enter your own value.
+- Click `Tune`.
 
 ## Installing
