@@ -15,3 +15,5 @@ The plugin provides the fifth sizes of some commonly used tuning system, but you
 - Click `Tune`.
 
 ## Installing
+- Download the file <code>fifth_generated_tuner_x.y.z.zip</code>, where <code>x.y.z</code> is the version of the plugin.
+- Follow the steps listed [here](https://musescore.org/en/handbook/4/plugins) to move the plugin to the Musescore plugin folder and to enable the plugin.
