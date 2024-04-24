@@ -30,8 +30,8 @@ MuseScore
 	version: "0.8.0";
 	
 	pluginType: "dialog";
-	width: 520;
-	height: 660;
+	width: 470;
+	height: 635;
 	
 	// List containing some commonly installed monospaced fonts.
 	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
@@ -213,7 +213,7 @@ MuseScore
 		Row
 		{
 			x:10;
-			y: 100;
+			y: 75;
 			spacing: 50;
 			
 			Column
@@ -440,7 +440,7 @@ MuseScore
 		Row
 		{
 			x:10;
-			y: 600;
+			y: 575;
 			spacing: 10;
 			
 			TextArea
@@ -449,7 +449,7 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
-				width: 500;
+				width: 450;
 				height: 50;
 			}
 		}
