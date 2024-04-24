@@ -1,5 +1,5 @@
 /*
-	A Musescore plugin for tuning a score based on the specified fifth size
+	A Musescore plugin for tuning a score based on the specified fifth size.
 	Copyright (C) 2024 Alessandro Culatti
 
 	This program is free software: you can redistribute it and/or modify
@@ -188,7 +188,7 @@ MuseScore
 							}
 							else if (fifthSize > largestFifth)
 							{
-								console.log("WARNING: The input fifth is larger than " + largestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.");
+								console.log("WARNING: The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.");
 							}
 						
 							fifthDeviation = defaultFifth - fifthSize;
