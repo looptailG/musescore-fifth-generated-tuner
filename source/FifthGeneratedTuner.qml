@@ -27,7 +27,7 @@ MuseScore
 	title: qsTr("Fifth Generated Tuner");
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
-	description: "Retune the selection, or the whole score if nothing is selected, using the specified size for the fifth.";
+	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	version: "0.7.0";
 	
 	pluginType: "dialog";
@@ -141,7 +141,7 @@ MuseScore
 			
 			Text
 			{
-				text: "Size of the fifth in cents:";
+				text: "Fifth size in cents:";
 				font.pixelSize: 20;
 			}
 			
