@@ -15,6 +15,6 @@ The plugin provides the fifth sizes of some commonly used tuning system, but you
 - Click `Tune`.
 
 ## Installing
-- Download the file `fifth_generated_tuner_x.y.z.zip`, where <code>x.y.z</code> is the version of the plugin.
+- Download the file `fifth_generated_tuner_x.y.z.zip`, where <code>x.y.z</code> is the version of the plugin.  You can find the latest version [here](https://github.com/looptailG/musescore-fifth-generated-tuner/releases/latest).
 - Extract the folder `fifth_generated_tuner`, and move it to Musescore's plugin folder.
 - Follow the steps listed [here](https://musescore.org/en/handbook/4/plugins#enable-disable) to enable the plugin.
