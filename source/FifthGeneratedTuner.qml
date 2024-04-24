@@ -27,7 +27,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "0.7.0";
+	version: "0.8.0";
 	
 	pluginType: "dialog";
 	width: 520;
@@ -558,7 +558,7 @@ MuseScore
 	 */
 	function calculateTuningOffset(note)
 	{
-		switch (note.tpc)
+		switch (note.tpc1)
 		{
 			case -1:
 				return centOffsets["F"]["bb"];
