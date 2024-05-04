@@ -68,64 +68,15 @@ MuseScore
 	
 	// Offset in cents between the notes in 12EDO and their counterpart in other
 	// tuning systems.
-	property variant centOffsets:
+	property variant baseNotesOffset:
 	{
-		"C":
-		{
-			"bb": 2 * fifthDeviation + 14 * fifthDeviation,
-			"b": 2 * fifthDeviation + 7 * fifthDeviation,
-			"h": 2 * fifthDeviation,
-			"#": 2 * fifthDeviation - 7 * fifthDeviation,
-			"x": 2 * fifthDeviation - 14 * fifthDeviation
-		},
-		"D":
-		{
-			"bb": 14 * fifthDeviation,
-			"b": 7 * fifthDeviation,
-			"h": 0,
-			"#": -7 * fifthDeviation,
-			"x": -14 * fifthDeviation
-		},
-		"E":
-		{
-			"bb": -2 * fifthDeviation + 14 * fifthDeviation,
-			"b": -2 * fifthDeviation + 7 * fifthDeviation,
-			"h": -2 * fifthDeviation,
-			"#": -2 * fifthDeviation - 7 * fifthDeviation,
-			"x": -2 * fifthDeviation - 14 * fifthDeviation
-		},
-		"F":
-		{
-			"bb": 3 * fifthDeviation + 14 * fifthDeviation,
-			"b": 3 * fifthDeviation + 7 * fifthDeviation,
-			"h": 3 * fifthDeviation,
-			"#": 3 * fifthDeviation - 7 * fifthDeviation,
-			"x": 3 * fifthDeviation - 14 * fifthDeviation
-		},
-		"G":
-		{
-			"bb": 1 * fifthDeviation + 14 * fifthDeviation,
-			"b": 1 * fifthDeviation + 7 * fifthDeviation,
-			"h": 1 * fifthDeviation,
-			"#": 1 * fifthDeviation - 7 * fifthDeviation,
-			"x": 1 * fifthDeviation - 14 * fifthDeviation
-		},
-		"A":
-		{
-			"bb": -1 * fifthDeviation + 14 * fifthDeviation,
-			"b": -1 * fifthDeviation + 7 * fifthDeviation,
-			"h": -1 * fifthDeviation,
-			"#": -1 * fifthDeviation - 7 * fifthDeviation,
-			"x": -1 * fifthDeviation - 14 * fifthDeviation
-		},
-		"B":
-		{
-			"bb": -3 * fifthDeviation + 14 * fifthDeviation,
-			"b": -3 * fifthDeviation + 7 * fifthDeviation,
-			"h": -3 * fifthDeviation,
-			"#": -3 * fifthDeviation - 7 * fifthDeviation,
-			"x": -3 * fifthDeviation - 14 * fifthDeviation
-		},
+		"C": 2 * fifthDeviation,
+		"D": 0,
+		"E": -2 * fifthDeviation,
+		"F": 3 * fifthDeviation,
+		"G": 1 * fifthDeviation,
+		"A": -1 * fifthDeviation,
+		"B": -3 * fifthDeviation,
 	}
 	
 	Rectangle
@@ -559,116 +510,52 @@ MuseScore
 	 */
 	function calculateTuningOffset(note)
 	{
-		switch (note.tpc1)
+		// Get the tuning offset for the input note with respect to 12EDO, based
+		// on its tonal pitch class.
+		var noteLetter = "";
+		switch (note.tpc1 % 7)
 		{
-			case -1:
-				return centOffsets["F"]["bb"];
-
 			case 0:
-				return centOffsets["C"]["bb"];
-
-			case 1:
-				return centOffsets["G"]["bb"];
-
-			case 2:
-				return centOffsets["D"]["bb"];
-
-			case 3:
-				return centOffsets["A"]["bb"];
-
-			case 4:
-				return centOffsets["E"]["bb"];
-
-			case 5:
-				return centOffsets["B"]["bb"];
-
-			case 6:
-				return centOffsets["F"]["b"];
-
-			case 7:
-				return centOffsets["C"]["b"];
-
-			case 8:
-				return centOffsets["G"]["b"];
-
-			case 9:
-				return centOffsets["D"]["b"];
-
-			case 10:
-				return centOffsets["A"]["b"];
-
-			case 11:
-				return centOffsets["E"]["b"];
-
-			case 12:
-				return centOffsets["B"]["b"];
-
-			case 13:
-				return centOffsets["F"]["h"];
-
-			case 14:
-				return centOffsets["C"]["h"];
-
-			case 15:
-				return centOffsets["G"]["h"];
-
-			case 16:
-				return centOffsets["D"]["h"];
-
-			case 17:
-				return centOffsets["A"]["h"];
-
-			case 18:
-				return centOffsets["E"]["h"];
-
-			case 19:
-				return centOffsets["B"]["h"];
-
-			case 20:
-				return centOffsets["F"]["#"];
-
-			case 21:
-				return centOffsets["C"]["#"];
-
-			case 22:
-				return centOffsets["G"]["#"];
-
-			case 23:
-				return centOffsets["D"]["#"];
-
-			case 24:
-				return centOffsets["A"]["#"];
-
-			case 25:
-				return centOffsets["E"]["#"];
-
-			case 26:
-				return centOffsets["B"]["#"];
-
-			case 27:
-				return centOffsets["F"]["x"];
-
-			case 28:
-				return centOffsets["C"]["x"];
-
-			case 29:
-				return centOffsets["G"]["x"];
-
-			case 30:
-				return centOffsets["D"]["x"];
-
-			case 31:
-				return centOffsets["A"]["x"];
-
-			case 32:
-				return centOffsets["E"]["x"];
-
-			case 33:
-				return centOffsets["B"]["x"];
+				noteLetter = "C";
+				break;
 			
-			default:
-				throw "Could not resolve the tpc: " + note.tpc;
+			case 2:
+			case -5:
+				noteLetter = "D";
+				break;
+			
+			case 4:
+			case -3:
+				noteLetter = "E";
+				break;
+			
+			case 6:
+			case -1:
+				noteLetter = "F";
+				break;
+			
+			case 1:
+			case -6:
+				noteLetter = "G";
+				break;
+			
+			case 3:
+			case -4:
+				noteLetter = "A";
+				break;
+			
+			case 5:
+			case -2:
+				noteLetter = "B";
+				break;
 		}
+		var tuningOffset = baseNotesOffset[noteLetter];
+		// Add the tuning offset due to the accidental.  Each semitone adds 7
+		// fifth deviations to the note's tuning, because we have to move 7
+		// steps in the circle of fifths to get to the altered note.
+		var tpcAccidental = Math.floor((note.tpc1 + 1) / 7) - 2;
+		tuningOffset -= tpcAccidental * 7 * fifthDeviation;
+		return tuningOffset;
 	}
 	
 	Component.onCompleted:
