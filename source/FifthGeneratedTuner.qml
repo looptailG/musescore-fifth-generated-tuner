@@ -51,10 +51,10 @@ MuseScore
 	property var syntonicComma: 1200.0 * Math.log2(81 / 80);
 	
 	// Size in cents of the smallest fifth after which the standard notation
-	// cease to make sense.  It's the same fifth as 7EDO.
+	// cease to make sense.  It's equal to the 7EDO fifth.
 	property var smallestFifth: 1200.0 / 7 * 4;
 	// Size in censt of the largest fifth after which the standard notation
-	// cease to make sense.  It's the same fifth as 5EDO.
+	// cease to make sense.  It's equal to the 5EDO fifth.
 	property var largestFifth: 1200.0 / 5 * 3;
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
