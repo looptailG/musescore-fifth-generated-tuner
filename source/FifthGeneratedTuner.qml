@@ -114,6 +114,9 @@ MuseScore
 					// Only quit the plugin if a correctly formatted fifth was
 					// provided as input.
 					var correctlyFormattedFifth = true;
+					// Only quit the plugin if there were no exceptions while
+					// tuning the notes.
+					var noExceptions = true;
 				
 					try
 					{
@@ -148,11 +151,12 @@ MuseScore
 					}
 					catch (error)
 					{
+						noExceptions = false;
 						outputMessageArea.text = error;
 					}
 					finally
 					{
-						if (correctlyFormattedFifth)
+						if (correctlyFormattedFifth && noExceptions)
 						{
 							quit();
 						}
@@ -514,28 +518,14 @@ MuseScore
 								var notes = graceChords[i].notes;
 								for (var j = 0; j < notes.length; j++)
 								{
-									try
-									{
-										notes[j].tuning = calculateTuningOffset(notes[j]);
-									}
-									catch (error)
-									{
-										console.error(error);
-									}
+									notes[j].tuning = calculateTuningOffset(notes[j]);
 								}
 							}
 							
 							var notes = cursor.element.notes;
 							for (var i = 0; i < notes.length; i++)
 							{
-								try
-								{
-									notes[i].tuning = calculateTuningOffset(notes[i]);
-								}
-								catch (error)
-								{
-									console.error(error);
-								}
+								notes[i].tuning = calculateTuningOffset(notes[i]);
 							}
 						}
 					}
