@@ -269,6 +269,17 @@ MuseScore
 				{
 					width: buttonWidth;
 					height: buttonHeight;
+					text: "41";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 41 * 24;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "43";
 					onClicked:
 					{
