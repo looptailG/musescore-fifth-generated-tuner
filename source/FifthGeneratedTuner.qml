@@ -27,7 +27,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.0.2";
+	version: "1.0.3-alpha";
 	
 	pluginType: "dialog";
 	width: 470;
@@ -317,6 +317,17 @@ MuseScore
 					onClicked:
 					{
 						fifthSizeField.text = justFifth - syntonicComma / 4;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "2/9 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = justFifth - syntonicComma * 2 / 9;
 					}
 				}
 				
