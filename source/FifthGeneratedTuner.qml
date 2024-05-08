@@ -313,6 +313,17 @@ MuseScore
 				{
 					width: buttonWidth;
 					height: buttonHeight;
+					text: "7/26 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = justFifth - syntonicComma * 7 / 26;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
 					text: "1/4 Comma";
 					onClicked:
 					{
