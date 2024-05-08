@@ -275,6 +275,17 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 43 * 25;
 					}
 				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "50";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 50 * 29;
+					}
+				}
 			}
 			
 			Column
