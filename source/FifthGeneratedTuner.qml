@@ -19,6 +19,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.3
+import QtQuick.Dialogs 1.1
 import MuseScore 3.0
 
 MuseScore
@@ -79,6 +80,30 @@ MuseScore
 		"B": -3 * fifthDeviation,
 	}
 	
+	MessageDialog
+	{
+		id: fifthSizeDialog;
+		title: "WARNING - Fifth Size";
+		text: "";
+		standardButtons: StandardButton.Yes | StandardButton.No;
+		
+		onYes:
+		{
+			try
+			{
+				tuneNotes();
+				quit();
+			}
+			catch (error)
+			{
+				outputMessageArea.text = error;
+			}
+		}
+		
+		onNo:
+		{}
+	}
+	
 	Rectangle
 	{
 		anchors.fill: parent;
@@ -111,20 +136,12 @@ MuseScore
 				text: "Tune";
 				onClicked:
 				{
-					// Only quit the plugin if a correctly formatted fifth was
-					// provided as input.
-					var correctlyFormattedFifth = true;
-					// Only quit the plugin if there were no exceptions while
-					// tuning the notes.
-					var noExceptions = true;
-				
 					try
 					{
 						// Read the input fifth size.
 						fifthSize = parseFloat(fifthSizeField.text);
 						if (isNaN(fifthSize))
 						{
-							correctlyFormattedFifth = false;
 							if (fifthSizeField.text == "")
 							{
 								throw "Empty input field.";
@@ -136,30 +153,28 @@ MuseScore
 						}
 						else
 						{
+							fifthDeviation = defaultFifth - fifthSize;
+							
 							if (fifthSize < smallestFifth)
 							{
-								console.log("WARNING: The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.");
+								fifthSizeDialog.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
 							}
 							else if (fifthSize > largestFifth)
 							{
-								console.log("WARNING: The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.");
+								fifthSizeDialog.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
 							}
-						
-							fifthDeviation = defaultFifth - fifthSize;
-							tuneNotes();
+							else
+							{
+								tuneNotes();
+								quit();
+							}
 						}
 					}
 					catch (error)
 					{
-						noExceptions = false;
 						outputMessageArea.text = error;
-					}
-					finally
-					{
-						if (correctlyFormattedFifth && noExceptions)
-						{
-							quit();
-						}
 					}
 				}
 			}
