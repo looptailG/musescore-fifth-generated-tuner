@@ -92,7 +92,6 @@ MuseScore
 			try
 			{
 				tuneNotes();
-				quit();
 			}
 			catch (error)
 			{
@@ -168,7 +167,6 @@ MuseScore
 							else
 							{
 								tuneNotes();
-								quit();
 							}
 						}
 					}
@@ -551,6 +549,8 @@ MuseScore
 		}
 		
 		curScore.endCmd();
+		
+		quit();
 	}
 	
 	/**
