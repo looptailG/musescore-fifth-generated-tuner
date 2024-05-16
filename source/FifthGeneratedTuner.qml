@@ -28,7 +28,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.0.3";
+	version: "1.0.4-alpha";
 	
 	pluginType: "dialog";
 	width: 470;
@@ -59,8 +59,8 @@ MuseScore
 	property var largestFifth: 1200.0 / 5 * 3;
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
-	property var smallestFifthString: "" + (Math.round(smallestFifth * 10) / 10);
-	property var largestFifthString: "" + (Math.round(largestFifth * 10) / 10);
+	property var smallestFifthString: roundToOneDecimalDigit(smallestFifth);
+	property var largestFifthString: roundToOneDecimalDigit(largestFifth);
 	// Size in cents of the fifth selected by the user.
 	property var fifthSize;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
@@ -609,17 +609,6 @@ MuseScore
 	
 	Component.onCompleted:
 	{
-		// Format the smallest and largest fifths so that they have a digit
-		// after the decimal point, even if they are integer numbers.
-		if (Number.isInteger(smallestFifth))
-		{
-			smallestFifthString += ".0";
-		}
-		if (Number.isInteger(largestFifth))
-		{
-			largestFifthString += ".0";
-		}
-		
 		// Initialise monospaced font.
 		for (var i = 0; i < preferredFonts.length; i++)
 		{
@@ -640,5 +629,15 @@ MuseScore
 		{
 			quit();
 		}
+	}
+	
+	function roundToOneDecimalDigit(n)
+	{
+		var roundedNumber = "" + (Math.round(n * 10) / 10);
+		if (Number.isInteger(n))
+		{
+			roundedNumber += ".0";
+		}
+		return roundedNumber;
 	}
 }
