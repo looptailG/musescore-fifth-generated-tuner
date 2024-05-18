@@ -631,13 +631,28 @@ MuseScore
 		}
 	}
 	
+	/**
+	 * Round the input number to one digit after the decimal point.
+	 */
 	function roundToOneDecimalDigit(n)
 	{
-		var roundedNumber = "" + (Math.round(n * 10) / 10);
-		if (Number.isInteger(n))
+		try
 		{
-			roundedNumber += ".0";
+			if (isNaN(n))
+			{
+				throw "The input is not numeric: " + n;
+			}
+			var roundedNumber = "" + (Math.round(n * 10) / 10);
+			if (Number.isInteger(n))
+			{
+				roundedNumber += ".0";
+			}
+			return roundedNumber;
 		}
-		return roundedNumber;
+		catch (error)
+		{
+			console.error(error);
+			return "???";
+		}
 	}
 }
