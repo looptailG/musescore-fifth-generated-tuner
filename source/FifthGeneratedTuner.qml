@@ -20,6 +20,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Dialogs 1.1
+import FileIO 3.0
 import MuseScore 3.0
 
 MuseScore
@@ -101,6 +102,17 @@ MuseScore
 		
 		onNo:
 		{}
+	}
+	
+	FileIO
+	{
+		id: "customTuningsIO";
+		source: Qt.resolvedUrl(".").substring(8) + "CustomTunings.tsv";
+		
+		onError:
+		{
+			outputMessageArea.text = msg;
+		}
 	}
 	
 	Rectangle
@@ -452,12 +464,68 @@ MuseScore
 					width: buttonWidth;
 					height: buttonHeight;
 					text: "";
-					property var customFifthSize;
+					property var customFifthSize0;
+					id: "custom0";
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize0;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize1;
 					id: "custom1";
 					visible: false;
 					onClicked:
 					{
-						
+						fifthSizeField.text = customFifthSize1;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize2;
+					id: "custom2";
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize2;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize3;
+					id: "custom3";
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize3;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize4;
+					id: "custom4";
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize4;
 					}
 				}
 				
@@ -467,7 +535,7 @@ MuseScore
 					height: buttonHeight;
 					text: "Add Custom";
 					id: "addCustom";
-					visible: false;
+					visible: true;
 					onClicked:
 					{
 					
@@ -648,6 +716,8 @@ MuseScore
 		
 		// Initialise output message area.
 		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
+		
+		loadCustomTunings();
 	}
 	
 	onRun:
@@ -681,5 +751,81 @@ MuseScore
 			console.error(error);
 			return "???";
 		}
+	}
+	
+	function loadCustomTunings()
+	{
+		try
+		{
+			var customTuningCounter = 0;
+			var fileContent = customTuningsIO.read();
+			fileContent = fileContent.split("\n");
+			for (var i = 0; i < fileContent.length; i++)
+			{
+				if (fileContent[i].trim() != "")
+				{
+					var rowData = parseTsvRow(fileContent[i]);
+					switch (customTuningCounter)
+					{
+						case 0:
+							custom0.text = rowData[0];
+							custom0.customFifthSize0 = rowData[1];
+							custom0.visible = true;
+							break;
+						
+						case 1:
+							custom1.text = rowData[0];
+							custom1.customFifthSize1 = rowData[1];
+							custom1.visible = true;
+							break;
+						
+						case 2:
+							custom2.text = rowData[0];
+							custom2.customFifthSize2 = rowData[1];
+							custom2.visible = true;
+							break;
+						
+						case 3:
+							custom3.text = rowData[0];
+							custom3.customFifthSize3 = rowData[1];
+							custom3.visible = true;
+							break;
+						
+						case 4:
+							custom4.text = rowData[0];
+							custom4.customFifthSize4 = rowData[1];
+							custom4.visible = true;
+							break;
+					}
+					
+					customTuningCounter++;
+					if (customTuningCounter >= 5)
+					{
+						break;
+					}
+				}
+			}
+			if (customTuningCounter >= 5)
+			{
+				addCustom.visible = false;
+			}
+		}
+		catch (error)
+		{
+			outputMessageArea.text = error;
+		}
+	}
+	
+	function parseTsvRow(s)
+	{
+		s = s.split("\t");
+		for (var i = 0; i < s.length; i++)
+		{
+			s[i] = s[i].replace(/\\t/g, "\t");
+			s[i] = s[i].replace(/\\\\/g, "\\");
+			s[i] = s[i].replace(/\\n/g, "\n");
+			s[i] = s[i].replace(/\\r/g, "\r");
+		}
+		return s;
 	}
 }
