@@ -446,6 +446,33 @@ MuseScore
 						fifthSizeField.text = justFifth;
 					}
 				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize;
+					id: "custom1";
+					visible: false;
+					onClicked:
+					{
+						
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Add Custom";
+					id: "addCustom";
+					visible: false;
+					onClicked:
+					{
+					
+					}
+				}
 			}
 		}
 		
