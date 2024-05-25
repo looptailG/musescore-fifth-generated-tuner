@@ -538,7 +538,14 @@ MuseScore
 					visible: true;
 					onClicked:
 					{
-					
+						try
+						{
+							
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error;
+						}
 					}
 				}
 			}
@@ -816,6 +823,20 @@ MuseScore
 		}
 	}
 	
+	function newCustomTuning(tuningName, customFifthSize)
+	{
+		tuningName = formatForTsv(tuningName.trim());
+		customFifthSize = ("" + customFifthSize).trim();
+		if ((customFifthSize == "") || isNaN(customFifthSize))
+		{
+			throw "Invalid custom fifth size: " + customFifthSize;
+		}
+		
+		var fileContent = customTuningsIO.read();
+		fileContent += "\n" + tuningName + "\t" + customFifthSize;
+		customTuningsIO.write(fileContent);
+	}
+	
 	function parseTsvRow(s)
 	{
 		s = s.split("\t");
@@ -826,6 +847,15 @@ MuseScore
 			s[i] = s[i].replace(/\\n/g, "\n");
 			s[i] = s[i].replace(/\\r/g, "\r");
 		}
+		return s;
+	}
+	
+	function formatForTsv(s)
+	{
+		s = s.replace(/\t/g, "\\t");
+		s = s.replace(/\\/g, "\\\\");
+		s = s.replace(/\n/g, "\\n");
+		s = s.replace(/\r/g, "\\r");
 		return s;
 	}
 }
