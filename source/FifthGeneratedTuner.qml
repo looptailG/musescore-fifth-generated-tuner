@@ -130,8 +130,15 @@ MuseScore
 		
 		onAccepted:
 		{
-			newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
-			loadCustomTunings();
+			try
+			{
+				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
+				loadCustomTunings();
+			}
+			catch (error)
+			{
+				outputMessageArea.text = error;
+			}
 		}
 	}
 	
@@ -496,7 +503,7 @@ MuseScore
 					height: buttonHeight;
 					text: "";
 					property var customFifthSize0;
-					id: "custom0";
+					id: custom0;
 					visible: false;
 					onClicked:
 					{
@@ -510,7 +517,7 @@ MuseScore
 					height: buttonHeight;
 					text: "";
 					property var customFifthSize1;
-					id: "custom1";
+					id: custom1;
 					visible: false;
 					onClicked:
 					{
@@ -524,7 +531,7 @@ MuseScore
 					height: buttonHeight;
 					text: "";
 					property var customFifthSize2;
-					id: "custom2";
+					id: custom2;
 					visible: false;
 					onClicked:
 					{
@@ -538,7 +545,7 @@ MuseScore
 					height: buttonHeight;
 					text: "";
 					property var customFifthSize3;
-					id: "custom3";
+					id: custom3;
 					visible: false;
 					onClicked:
 					{
@@ -552,7 +559,7 @@ MuseScore
 					height: buttonHeight;
 					text: "";
 					property var customFifthSize4;
-					id: "custom4";
+					id: custom4;
 					visible: false;
 					onClicked:
 					{
@@ -864,7 +871,7 @@ MuseScore
 		}
 		
 		var fileContent = customTuningsIO.read();
-		fileContent += "\n" + tuningName + "\t" + customFifthSize;
+		fileContent += tuningName + "\t" + customFifthSize;
 		customTuningsIO.write(fileContent);
 	}
 	
