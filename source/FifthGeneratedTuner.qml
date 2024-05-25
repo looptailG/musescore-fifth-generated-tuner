@@ -79,6 +79,11 @@ MuseScore
 		"G": 1 * fifthDeviation,
 		"A": -1 * fifthDeviation,
 		"B": -3 * fifthDeviation,
+	};
+	
+	ListModel
+	{
+		id: customTuningChoices;
 	}
 	
 	MessageDialog
@@ -139,6 +144,36 @@ MuseScore
 			{
 				outputMessageArea.text = error;
 			}
+		}
+	}
+	
+	Dialog
+	{
+		id: deleteCustomDialog;
+		title: "Delete Custom Tunings";
+		standardButtons: Dialog.Ok | Dialog.Cancel;
+		
+		contentItem: Column
+		{
+			spacing: 10;
+			padding: 10;
+		
+			Repeater
+			{
+				model: customTuningChoices;
+				
+				CheckBox
+				{
+					text: model.text;
+					checked: model.checked;
+					onCheckedChanged: model.checked = checked;
+				}
+			}
+		}
+		
+		onAccepted:
+		{
+			
 		}
 	}
 	
@@ -578,7 +613,7 @@ MuseScore
 					{
 						try
 						{
-							newCustomTuningDialog.open()
+							newCustomTuningDialog.open();
 						}
 						catch (error)
 						{
@@ -598,11 +633,22 @@ MuseScore
 					{
 						try
 						{
-						
+							customTuningChoices.clear();
+							var fileContent = customTuningsIO.read();
+							fileContent = fileContent.split("\n");
+							for (var i = 0; i < fileContent.length; i++)
+							{
+								if (fileContent[i].trim() != "")
+								{
+									var rowData = parseTsvRow(fileContent[i]);
+									customTuningChoices.append({ text: rowData[0], checked: false });
+								}
+							}
+							deleteCustomDialog.open();
 						}
 						catch (error)
 						{
-							outputMessageArea.text = error;
+							outputMessageArea.text = error.toString();
 						}
 					}
 				}
@@ -879,9 +925,17 @@ MuseScore
 		{
 			addCustom.visible = false;
 		}
+		else
+		{
+			addCustom.visible = true;
+		}
 		if (customTuningCounter >= 1)
 		{
 			deleteCustom.visible = true;
+		}
+		else
+		{
+			deleteCustom.visible = false;
 		}
 	}
 	
