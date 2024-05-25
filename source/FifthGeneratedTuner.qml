@@ -173,7 +173,24 @@ MuseScore
 		
 		onAccepted:
 		{
-			
+			try
+			{
+				var selectedCustomTunings = [];
+				for (var i = 0; i < customTuningChoices.count; i++)
+				{
+					var currentTuning = customTuningChoices.get(i);
+					if (currentTuning.checked)
+					{
+						selectedCustomTunings.push(currentTuning.text);
+					}
+				}
+				deleteCustomTunings(selectedCustomTunings);
+				loadCustomTunings();
+			}
+			catch (error)
+			{
+				outputMessageArea.text = error.toString();
+			}
 		}
 	}
 	
@@ -873,6 +890,12 @@ MuseScore
 	
 	function loadCustomTunings()
 	{
+		custom0.visible = false;
+		custom1.visible = false;
+		custom2.visible = false;
+		custom3.visible = false;
+		custom4.visible = false;
+	
 		var customTuningCounter = 0;
 		var fileContent = customTuningsIO.read();
 		fileContent = fileContent.split("\n");
@@ -951,6 +974,25 @@ MuseScore
 		var fileContent = customTuningsIO.read();
 		fileContent += tuningName + "\t" + customFifthSize;
 		customTuningsIO.write(fileContent);
+	}
+	
+	function deleteCustomTunings(tuningsToDelete)
+	{
+		var fileContent = customTuningsIO.read();
+		fileContent = fileContent.split("\n");
+		for (var i = 0; i < tuningsToDelete.length; i++)
+		{
+			var tuningToDelete = tuningsToDelete[i];
+			for (var j = fileContent.length - 1; j >= 0; j--)
+			{
+				var currentTuningName = parseTsvRow(fileContent[j])[0];
+				if (currentTuningName == tuningToDelete)
+				{
+					fileContent.splice(j, 1);
+				}
+			}
+		}
+		customTuningsIO.write(fileContent.join("\n"));
 	}
 	
 	function parseTsvRow(s)
