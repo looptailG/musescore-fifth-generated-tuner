@@ -99,9 +99,6 @@ MuseScore
 				outputMessageArea.text = error;
 			}
 		}
-		
-		onNo:
-		{}
 	}
 	
 	Dialog
@@ -134,6 +131,7 @@ MuseScore
 		onAccepted:
 		{
 			newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
+			loadCustomTunings();
 		}
 	}
 	
@@ -757,7 +755,14 @@ MuseScore
 		// Initialise output message area.
 		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
 		
-		loadCustomTunings();
+		try
+		{
+			loadCustomTunings();
+		}
+		catch (error)
+		{
+			outputMessageArea.error;
+		}
 	}
 	
 	onRun:
@@ -795,64 +800,57 @@ MuseScore
 	
 	function loadCustomTunings()
 	{
-		try
+		var customTuningCounter = 0;
+		var fileContent = customTuningsIO.read();
+		fileContent = fileContent.split("\n");
+		for (var i = 0; i < fileContent.length; i++)
 		{
-			var customTuningCounter = 0;
-			var fileContent = customTuningsIO.read();
-			fileContent = fileContent.split("\n");
-			for (var i = 0; i < fileContent.length; i++)
+			if (fileContent[i].trim() != "")
 			{
-				if (fileContent[i].trim() != "")
+				var rowData = parseTsvRow(fileContent[i]);
+				switch (customTuningCounter)
 				{
-					var rowData = parseTsvRow(fileContent[i]);
-					switch (customTuningCounter)
-					{
-						case 0:
-							custom0.text = rowData[0];
-							custom0.customFifthSize0 = rowData[1];
-							custom0.visible = true;
-							break;
-						
-						case 1:
-							custom1.text = rowData[0];
-							custom1.customFifthSize1 = rowData[1];
-							custom1.visible = true;
-							break;
-						
-						case 2:
-							custom2.text = rowData[0];
-							custom2.customFifthSize2 = rowData[1];
-							custom2.visible = true;
-							break;
-						
-						case 3:
-							custom3.text = rowData[0];
-							custom3.customFifthSize3 = rowData[1];
-							custom3.visible = true;
-							break;
-						
-						case 4:
-							custom4.text = rowData[0];
-							custom4.customFifthSize4 = rowData[1];
-							custom4.visible = true;
-							break;
-					}
-					
-					customTuningCounter++;
-					if (customTuningCounter >= 5)
-					{
+					case 0:
+						custom0.text = rowData[0];
+						custom0.customFifthSize0 = rowData[1];
+						custom0.visible = true;
 						break;
-					}
+					
+					case 1:
+						custom1.text = rowData[0];
+						custom1.customFifthSize1 = rowData[1];
+						custom1.visible = true;
+						break;
+					
+					case 2:
+						custom2.text = rowData[0];
+						custom2.customFifthSize2 = rowData[1];
+						custom2.visible = true;
+						break;
+					
+					case 3:
+						custom3.text = rowData[0];
+						custom3.customFifthSize3 = rowData[1];
+						custom3.visible = true;
+						break;
+					
+					case 4:
+						custom4.text = rowData[0];
+						custom4.customFifthSize4 = rowData[1];
+						custom4.visible = true;
+						break;
+				}
+				
+				customTuningCounter++;
+				if (customTuningCounter >= 5)
+				{
+					break;
 				}
 			}
-			if (customTuningCounter >= 5)
-			{
-				addCustom.visible = false;
-			}
 		}
-		catch (error)
+		if (customTuningCounter >= 5)
 		{
-			outputMessageArea.text = error;
+			addCustom.visible = false;
 		}
 	}
 	
