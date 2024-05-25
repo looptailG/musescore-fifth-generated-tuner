@@ -572,13 +572,33 @@ MuseScore
 					width: buttonWidth;
 					height: buttonHeight;
 					text: "Add Custom";
-					id: "addCustom";
+					id: addCustom;
 					visible: true;
 					onClicked:
 					{
 						try
 						{
 							newCustomTuningDialog.open()
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error;
+						}
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Delete Custom";
+					id: deleteCustom;
+					visible: false;
+					onClicked:
+					{
+						try
+						{
+						
 						}
 						catch (error)
 						{
@@ -858,6 +878,10 @@ MuseScore
 		if (customTuningCounter >= 5)
 		{
 			addCustom.visible = false;
+		}
+		if (customTuningCounter >= 1)
+		{
+			deleteCustom.visible = true;
 		}
 	}
 	
