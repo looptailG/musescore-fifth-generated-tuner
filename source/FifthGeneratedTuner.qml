@@ -16,8 +16,8 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
-import QtQuick.Controls 1.3
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Dialogs 1.1
 import FileIO 3.0
@@ -102,6 +102,39 @@ MuseScore
 		
 		onNo:
 		{}
+	}
+	
+	Dialog
+	{
+		id: newCustomTuningDialog;
+		title: "New Custom Tuning";
+		standardButtons: Dialog.Ok | Dialog.Cancel;
+		
+		contentItem: Column
+		{
+			Label
+			{
+				text: "Custom Tuning Name";
+			}
+			TextField
+			{
+				id: customTuningNameField;
+			}
+			
+			Label
+			{
+				text: "Fifth Size";
+			}
+			TextField
+			{
+				id: customTuningFifthSizeField;
+			}
+		}
+		
+		onAccepted:
+		{
+			newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
+		}
 	}
 	
 	FileIO
@@ -540,7 +573,7 @@ MuseScore
 					{
 						try
 						{
-							
+							newCustomTuningDialog.open()
 						}
 						catch (error)
 						{
