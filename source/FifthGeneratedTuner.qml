@@ -139,7 +139,7 @@ MuseScore
 		{
 			try
 			{
-				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
+				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text.replace(",", "."));
 				loadCustomTunings();
 			}
 			catch (error)
