@@ -965,8 +965,8 @@ MuseScore
 		}
 		
 		var fileContent = customTuningsIO.read();
-		fileContent += tuningName + "\t" + customFifthSize;
-		customTuningsIO.write(fileContent);
+		fileContent += "\n" + tuningName + "\t" + customFifthSize;
+		customTuningsIO.write(removeEmptyRows(fileContent));
 	}
 	
 	/**
@@ -988,7 +988,7 @@ MuseScore
 				}
 			}
 		}
-		customTuningsIO.write(fileContent.join("\n"));
+		customTuningsIO.write(removeEmptyRows(fileContent.join("\n")));
 	}
 	
 	/**
@@ -1018,6 +1018,23 @@ MuseScore
 		s = s.replace(/\n/g, "\\n");
 		s = s.replace(/\r/g, "\\r");
 		return s;
+	}
+	
+	/**
+	 * Remove the empty rows from the input string.  The resulting string will
+	 * have a new line character at the end.
+	 */
+	function removeEmptyRows(s)
+	{
+		s = s.split("\n");
+		for (var i = s.length - 1; i >= 0; i--)
+		{
+			if (s[i].trim() == "")
+			{
+				s.splice(i, 1);
+			}
+		}
+		return s.join("\n") + "\n";
 	}
 	
 	/**
