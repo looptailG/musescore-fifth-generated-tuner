@@ -132,6 +132,7 @@ MuseScore
 			TextField
 			{
 				id: customTuningFifthSizeField;
+				font.family: monospacedFont;
 			}
 		}
 		
