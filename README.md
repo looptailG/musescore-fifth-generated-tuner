@@ -14,7 +14,7 @@ For fifths outside this range the plugin will work anyway, but it could produce 
 ## Usage
 - If you want to tune only a portion of the score, select it before running the plugin. If nothing is selected, the entire score will be tuned.
 - Launch the plugin: `Plugins` → `Playback` → `Fifth Generated Tuner`.
-- Choose one of the preset fifth sizes, or enter your own value.
+- Choose one of the preset fifth sizes, or enter your own value.  You can also use the `Add Custom` button to save a new custom tuning among the tuning presets.
 - Click `Tune`.
 
 ## Installing
