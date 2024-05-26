@@ -81,6 +81,9 @@ MuseScore
 		"B": -3 * fifthDeviation,
 	};
 	
+	// Maximum number of custom tuning systems.
+	property var maxCustomTunings: 5;
+	
 	// List contaning every custom tuning, for generating the checkbox in the
 	// delete custom tuning dialog.
 	ListModel
@@ -784,7 +787,7 @@ MuseScore
 	
 	/**
 	 * Return the amount of cents necessary to tune the input note according to
-	 * the input fifth size.
+	 * the selected fifth size.
 	 */
 	function calculateTuningOffset(note)
 	{
@@ -924,14 +927,14 @@ MuseScore
 				}
 				
 				customTuningCounter++;
-				if (customTuningCounter >= 5)
+				if (customTuningCounter >= maxCustomTunings)
 				{
 					break;
 				}
 			}
 		}
 		
-		if (customTuningCounter >= 5)
+		if (customTuningCounter >= maxCustomTunings)
 		{
 			addCustom.visible = false;
 		}
