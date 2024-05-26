@@ -81,6 +81,8 @@ MuseScore
 		"B": -3 * fifthDeviation,
 	};
 	
+	// List contaning every custom tuning, for generating the checkbox in the
+	// delete custom tuning dialog.
 	ListModel
 	{
 		id: customTuningChoices;
@@ -116,7 +118,7 @@ MuseScore
 		{
 			Label
 			{
-				text: "Custom Tuning Name";
+				text: "Tuning Name";
 			}
 			TextField
 			{
@@ -624,6 +626,7 @@ MuseScore
 					width: buttonWidth;
 					height: buttonHeight;
 					text: "Add Custom";
+					font.italic: true;
 					id: addCustom;
 					visible: true;
 					onClicked:
@@ -644,12 +647,14 @@ MuseScore
 					width: buttonWidth;
 					height: buttonHeight;
 					text: "Delete Custom";
+					font.italic: true;
 					id: deleteCustom;
 					visible: false;
 					onClicked:
 					{
 						try
 						{
+							// Populate the checkbox with every custom tuning.
 							customTuningChoices.clear();
 							var fileContent = customTuningsIO.read();
 							fileContent = fileContent.split("\n");
@@ -845,6 +850,7 @@ MuseScore
 		// Initialise output message area.
 		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
 		
+		// Initialise custom tunings buttons.
 		try
 		{
 			loadCustomTunings();
@@ -864,30 +870,9 @@ MuseScore
 	}
 	
 	/**
-	 * Round the input number to one digit after the decimal point.
+	 * Load the custom tunings from the cunfiguration file, and set the
+	 * properties of the custom tunings buttons.
 	 */
-	function roundToOneDecimalDigit(n)
-	{
-		try
-		{
-			if (isNaN(n))
-			{
-				throw "The input is not numeric: " + n;
-			}
-			var roundedNumber = "" + (Math.round(n * 10) / 10);
-			if (Number.isInteger(n))
-			{
-				roundedNumber += ".0";
-			}
-			return roundedNumber;
-		}
-		catch (error)
-		{
-			console.error(error);
-			return "???";
-		}
-	}
-	
 	function loadCustomTunings()
 	{
 		custom0.visible = false;
@@ -944,6 +929,7 @@ MuseScore
 				}
 			}
 		}
+		
 		if (customTuningCounter >= 5)
 		{
 			addCustom.visible = false;
@@ -962,6 +948,9 @@ MuseScore
 		}
 	}
 	
+	/**
+	 * Add the input custom tuning to the configuration file.
+	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
 		tuningName = formatForTsv(tuningName.trim());
@@ -976,6 +965,9 @@ MuseScore
 		customTuningsIO.write(fileContent);
 	}
 	
+	/**
+	 * Delete the tunings with the input name from the configuration file.
+	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
 		var fileContent = customTuningsIO.read();
@@ -995,6 +987,10 @@ MuseScore
 		customTuningsIO.write(fileContent.join("\n"));
 	}
 	
+	/**
+	 * Split the input string using the tab character, and replace the escaped
+	 * characters.
+	 */
 	function parseTsvRow(s)
 	{
 		s = s.split("\t");
@@ -1008,6 +1004,9 @@ MuseScore
 		return s;
 	}
 	
+	/**
+	 * Escape the necessary for a TSV file in the input string.
+	 */
 	function formatForTsv(s)
 	{
 		s = s.replace(/\t/g, "\\t");
@@ -1015,5 +1014,30 @@ MuseScore
 		s = s.replace(/\n/g, "\\n");
 		s = s.replace(/\r/g, "\\r");
 		return s;
+	}
+	
+	/**
+	 * Round the input number to one digit after the decimal point.
+	 */
+	function roundToOneDecimalDigit(n)
+	{
+		try
+		{
+			if (isNaN(n))
+			{
+				throw "The input is not numeric: " + n;
+			}
+			var roundedNumber = "" + (Math.round(n * 10) / 10);
+			if (Number.isInteger(n))
+			{
+				roundedNumber += ".0";
+			}
+			return roundedNumber;
+		}
+		catch (error)
+		{
+			console.error(error);
+			return "???";
+		}
 	}
 }
