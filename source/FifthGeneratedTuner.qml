@@ -22,6 +22,7 @@ import QtQuick.Dialogs 1.1
 import FileIO 3.0
 import MuseScore 3.0
 import "libs/StringUtils.js" as StringUtils
+import "libs/TuningUtils.js" as TuningUtils
 
 MuseScore
 {
@@ -45,41 +46,15 @@ MuseScore
 	property int buttonWidth: 100;
 	property int buttonHeight: 40;
 	
-	// Size in cents of a justly tuned perfect fifth.
-	property var justFifth: 1200.0 * Math.log2(3 / 2);
-	// Size in cents of a 12EDO perfect fifth.
-	property var defaultFifth: 700.0;
-	// Size in cents of the syntonic comma.
-	property var syntonicComma: 1200.0 * Math.log2(81 / 80);
-	
-	// Size in cents of the smallest fifth after which the standard notation
-	// cease to make sense.  It's equal to the 7EDO fifth.
-	property var smallestFifth: 1200.0 / 7 * 4;
-	// Size in censt of the largest fifth after which the standard notation
-	// cease to make sense.  It's equal to the 5EDO fifth.
-	property var largestFifth: 1200.0 / 5 * 3;
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
-	property var smallestFifthString: StringUtils.roundToOneDecimalDigit(smallestFifth);
-	property var largestFifthString: StringUtils.roundToOneDecimalDigit(largestFifth);
+	property var smallestFifthString: StringUtils.roundToOneDecimalDigit(TuningUtils.SMALLEST_DIATONIC_FIFTH);
+	property var largestFifthString: StringUtils.roundToOneDecimalDigit(TuningUtils.LARGEST_DIATONIC_FIFTH);
 	// Size in cents of the fifth selected by the user.
 	property var fifthSize;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
-	
-	// Offset in cents between the notes in 12EDO and their counterpart in other
-	// tuning systems.
-	property variant baseNotesOffset:
-	{
-		"C": 2 * fifthDeviation,
-		"D": 0,
-		"E": -2 * fifthDeviation,
-		"F": 3 * fifthDeviation,
-		"G": 1 * fifthDeviation,
-		"A": -1 * fifthDeviation,
-		"B": -3 * fifthDeviation,
-	};
 	
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
@@ -260,14 +235,14 @@ MuseScore
 						}
 						else
 						{
-							fifthDeviation = defaultFifth - fifthSize;
+							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
 							
-							if (fifthSize < smallestFifth)
+							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
 								fifthSizeDialog.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
-							else if (fifthSize > largestFifth)
+							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
 								fifthSizeDialog.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
@@ -331,7 +306,7 @@ MuseScore
 					text: "12";
 					onClicked:
 					{
-						fifthSizeField.text = defaultFifth;
+						fifthSizeField.text = TuningUtils.DEFAULT_FIFTH;
 					}
 				}
 				
@@ -441,7 +416,7 @@ MuseScore
 					text: "1/3 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma / 3;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
 					}
 				}
 				
@@ -452,7 +427,7 @@ MuseScore
 					text: "2/7 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma * 2 / 7;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
 					}
 				}
 				
@@ -463,7 +438,7 @@ MuseScore
 					text: "7/26 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma * 7 / 26;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
 					}
 				}
 				
@@ -474,7 +449,7 @@ MuseScore
 					text: "1/4 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma / 4;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
 					}
 				}
 				
@@ -485,7 +460,7 @@ MuseScore
 					text: "2/9 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma * 2 / 9;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
 					}
 				}
 				
@@ -496,7 +471,7 @@ MuseScore
 					text: "1/5 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma / 5;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
 					}
 				}
 				
@@ -507,7 +482,7 @@ MuseScore
 					text: "1/6 Comma";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth - syntonicComma / 6;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
 					}
 				}
 				
@@ -551,7 +526,7 @@ MuseScore
 					text: "Pythagorean";
 					onClicked:
 					{
-						fifthSizeField.text = justFifth;
+						fifthSizeField.text = TuningUtils.JUST_FIFTH;
 					}
 				}
 				
@@ -761,14 +736,14 @@ MuseScore
 								var notes = graceChords[i].notes;
 								for (var j = 0; j < notes.length; j++)
 								{
-									notes[j].tuning = calculateTuningOffset(notes[j]);
+									notes[j].tuning = TuningUtils.circleOfFifthsTuningOffset(notes[j], fifthDeviation);
 								}
 							}
 							
 							var notes = cursor.element.notes;
 							for (var i = 0; i < notes.length; i++)
 							{
-								notes[i].tuning = calculateTuningOffset(notes[i]);
+								notes[i].tuning = TuningUtils.circleOfFifthsTuningOffset(notes[i], fifthDeviation);
 							}
 						}
 					}
@@ -781,60 +756,6 @@ MuseScore
 		curScore.endCmd();
 		
 		quit();
-	}
-	
-	/**
-	 * Return the amount of cents necessary to tune the input note according to
-	 * the selected fifth size.
-	 */
-	function calculateTuningOffset(note)
-	{
-		// Get the tuning offset for the input note with respect to 12EDO, based
-		// on its tonal pitch class.
-		var noteLetter = "";
-		switch (note.tpc1 % 7)
-		{
-			case 0:
-				noteLetter = "C";
-				break;
-			
-			case 2:
-			case -5:
-				noteLetter = "D";
-				break;
-			
-			case 4:
-			case -3:
-				noteLetter = "E";
-				break;
-			
-			case 6:
-			case -1:
-				noteLetter = "F";
-				break;
-			
-			case 1:
-			case -6:
-				noteLetter = "G";
-				break;
-			
-			case 3:
-			case -4:
-				noteLetter = "A";
-				break;
-			
-			case 5:
-			case -2:
-				noteLetter = "B";
-				break;
-		}
-		var tuningOffset = baseNotesOffset[noteLetter];
-		// Add the tuning offset due to the accidental.  Each semitone adds 7
-		// fifth deviations to the note's tuning, because we have to move 7
-		// steps in the circle of fifths to get to the altered note.
-		var tpcAccidental = Math.floor((note.tpc1 + 1) / 7) - 2;
-		tuningOffset -= tpcAccidental * 7 * fifthDeviation;
-		return tuningOffset;
 	}
 	
 	Component.onCompleted:
