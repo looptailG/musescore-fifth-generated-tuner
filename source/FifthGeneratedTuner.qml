@@ -970,7 +970,7 @@ MuseScore
 	}
 	
 	/**
-	 * Delete the tunings with the input name from the configuration file.
+	 * Delete the tunings with the input names from the configuration file.
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
