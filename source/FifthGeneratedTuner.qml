@@ -50,8 +50,6 @@ MuseScore
 	// rounded to 1 digit after the decimal point.
 	property var smallestFifthString: StringUtils.roundToOneDecimalDigit(TuningUtils.SMALLEST_DIATONIC_FIFTH);
 	property var largestFifthString: StringUtils.roundToOneDecimalDigit(TuningUtils.LARGEST_DIATONIC_FIFTH);
-	// Size in cents of the fifth selected by the user.
-	property var fifthSize;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
@@ -221,7 +219,7 @@ MuseScore
 					try
 					{
 						// Read the input fifth size.
-						fifthSize = parseFloat(fifthSizeField.text);
+						var fifthSize = parseFloat(fifthSizeField.text);
 						if (isNaN(fifthSize))
 						{
 							if (fifthSizeField.text == "")
