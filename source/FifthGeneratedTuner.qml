@@ -29,7 +29,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.1.0";
+	version: "1.1.1-alpha";
 	
 	pluginType: "dialog";
 	width: 470;
