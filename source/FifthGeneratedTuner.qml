@@ -1009,7 +1009,7 @@ MuseScore
 	}
 	
 	/**
-	 * Escape the necessary for a TSV file in the input string.
+	 * Escape the necessary characters for a TSV file in the input string.
 	 */
 	function formatForTsv(s)
 	{
