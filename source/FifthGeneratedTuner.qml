@@ -632,7 +632,6 @@ MuseScore
 					text: "Add Custom";
 					font.italic: true;
 					id: addCustom;
-					visible: true;
 					onClicked:
 					{
 						try
@@ -653,7 +652,6 @@ MuseScore
 					text: "Delete Custom";
 					font.italic: true;
 					id: deleteCustom;
-					visible: false;
 					onClicked:
 					{
 						try
@@ -936,19 +934,19 @@ MuseScore
 		
 		if (customTuningCounter >= maxCustomTunings)
 		{
-			addCustom.visible = false;
+			addCustom.enabled = false;
 		}
 		else
 		{
-			addCustom.visible = true;
+			addCustom.enabled = true;
 		}
 		if (customTuningCounter >= 1)
 		{
-			deleteCustom.visible = true;
+			deleteCustom.enabled = true;
 		}
 		else
 		{
-			deleteCustom.visible = false;
+			deleteCustom.enabled = false;
 		}
 	}
 	
