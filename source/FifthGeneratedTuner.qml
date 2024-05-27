@@ -22,6 +22,7 @@ import QtQuick.Controls.Styles 1.3
 import QtQuick.Dialogs 1.1
 import FileIO 3.0
 import MuseScore 3.0
+import "libs/StringUtils.js" as StringUtils
 
 MuseScore
 {
@@ -60,8 +61,8 @@ MuseScore
 	property var largestFifth: 1200.0 / 5 * 3;
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
-	property var smallestFifthString: roundToOneDecimalDigit(smallestFifth);
-	property var largestFifthString: roundToOneDecimalDigit(largestFifth);
+	property var smallestFifthString: StringUtils.roundToOneDecimalDigit(smallestFifth);
+	property var largestFifthString: StringUtils.roundToOneDecimalDigit(largestFifth);
 	// Size in cents of the fifth selected by the user.
 	property var fifthSize;
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
@@ -664,7 +665,7 @@ MuseScore
 							{
 								if (fileContent[i].trim() != "")
 								{
-									var rowData = parseTsvRow(fileContent[i]);
+									var rowData = StringUtils.parseTsvRow(fileContent[i]);
 									customTuningChoices.append({ text: rowData[0], checked: false });
 								}
 							}
@@ -890,7 +891,7 @@ MuseScore
 		{
 			if (fileContent[i].trim() != "")
 			{
-				var rowData = parseTsvRow(fileContent[i]);
+				var rowData = StringUtils.parseTsvRow(fileContent[i]);
 				switch (customTuningCounter)
 				{
 					case 0:
@@ -955,7 +956,7 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
-		tuningName = formatForTsv(tuningName.trim());
+		tuningName = StringUtils.formatForTsv(tuningName.trim());
 		customFifthSize = ("" + customFifthSize).trim();
 		if ((customFifthSize == "") || isNaN(customFifthSize))
 		{
@@ -964,7 +965,7 @@ MuseScore
 		
 		var fileContent = customTuningsIO.read();
 		fileContent += "\n" + tuningName + "\t" + customFifthSize;
-		customTuningsIO.write(removeEmptyRows(fileContent));
+		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
 	}
 	
 	/**
@@ -979,84 +980,13 @@ MuseScore
 			var tuningToDelete = tuningsToDelete[i];
 			for (var j = fileContent.length - 1; j >= 0; j--)
 			{
-				var currentTuningName = parseTsvRow(fileContent[j])[0];
+				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
 				if (currentTuningName == tuningToDelete)
 				{
 					fileContent.splice(j, 1);
 				}
 			}
 		}
-		customTuningsIO.write(removeEmptyRows(fileContent.join("\n")));
-	}
-	
-	/**
-	 * Split the input string using the tab character, and replace the escaped
-	 * characters.
-	 */
-	function parseTsvRow(s)
-	{
-		s = s.split("\t");
-		for (var i = 0; i < s.length; i++)
-		{
-			s[i] = s[i].replace(/\\t/g, "\t");
-			s[i] = s[i].replace(/\\\\/g, "\\");
-			s[i] = s[i].replace(/\\n/g, "\n");
-			s[i] = s[i].replace(/\\r/g, "\r");
-		}
-		return s;
-	}
-	
-	/**
-	 * Escape the necessary characters for a TSV file in the input string.
-	 */
-	function formatForTsv(s)
-	{
-		s = s.replace(/\t/g, "\\t");
-		s = s.replace(/\\/g, "\\\\");
-		s = s.replace(/\n/g, "\\n");
-		s = s.replace(/\r/g, "\\r");
-		return s;
-	}
-	
-	/**
-	 * Remove the empty rows from the input string.  The resulting string will
-	 * have a new line character at the end.
-	 */
-	function removeEmptyRows(s)
-	{
-		s = s.split("\n");
-		for (var i = s.length - 1; i >= 0; i--)
-		{
-			if (s[i].trim() == "")
-			{
-				s.splice(i, 1);
-			}
-		}
-		return s.join("\n") + "\n";
-	}
-	
-	/**
-	 * Round the input number to one digit after the decimal point.
-	 */
-	function roundToOneDecimalDigit(n)
-	{
-		try
-		{
-			if (isNaN(n))
-			{
-				throw "The input is not numeric: " + n;
-			}
-			var roundedNumber = "" + (Math.round(n * 10) / 10);
-			if (Number.isInteger(n))
-			{
-				roundedNumber += ".0";
-			}
-			return roundedNumber;
-		}
-		catch (error)
-		{
-			console.error(error);
-			return "???";
-		}
+		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
 	}
 }
