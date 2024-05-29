@@ -734,14 +734,14 @@ MuseScore
 								var notes = graceChords[i].notes;
 								for (var j = 0; j < notes.length; j++)
 								{
-									notes[j].tuning = TuningUtils.circleOfFifthsTuningOffset(notes[j], fifthDeviation);
+									notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], "A") * fifthDeviation;
 								}
 							}
 							
 							var notes = cursor.element.notes;
 							for (var i = 0; i < notes.length; i++)
 							{
-								notes[i].tuning = TuningUtils.circleOfFifthsTuningOffset(notes[i], fifthDeviation);
+								notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], "A") * fifthDeviation;
 							}
 						}
 					}

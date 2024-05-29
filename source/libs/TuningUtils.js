@@ -1,5 +1,5 @@
 /*
-	A collection of functions for manipulating strings.
+	A collection of functions and constants about tuning.
 	Copyright (C) 2024 Alessandro Culatti
 
 	This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "1.0.0";
+const VERSION = "1.1.0";
 
 // Size in cents of a justly tuned perfect fifth.
 const JUST_FIFTH = 1200.0 * Math.log2(3 / 2);
@@ -34,75 +34,81 @@ const SYNTONIC_COMMA = 1200.0 * Math.log2(81 / 80);
 
 // Note distance in the circle of fifths, from the note C.
 const CIRCLE_OF_FIFTHS_DISTANCE = {
-	"C": 0,
-	"D": 2,
-	"E": 4,
-	"F": -1,
-	"G": 1,
-	"A": 3,
-	"B": 5,
+	"Fbbb": -22, "Cbbb": -21, "Gbbb": -20, "Dbbb": -19, "Abbb": -18, "Ebbb": -17, "Bbbb": -16,
+	"Fbb": -15,  "Cbb": -14,  "Gbb": -13,  "Dbb": -12,  "Abb": -11,  "Ebb": -10,  "Bbb": -9,
+	"Fb": -8,    "Cb": -7,    "Gb": -6,    "Db": -5,    "Ab": -4,    "Eb": -3,    "Bb": -2,
+	"F": -1,     "C": 0,      "G": 1,      "D": 2,      "A": 3,      "E": 4,      "B": 5,
+	"F#": 6,     "C#": 7,     "G#": 8,     "D#": 9,     "A#": 10,    "E#": 11,    "B#": 12,
+	"Fx": 13,    "Cx": 14,    "Gx": 15,    "Dx": 16,    "Ax": 17,    "Ex": 18,    "Bx": 19,
+	"F#x": 20,   "C#x": 21,   "G#x": 22,   "D#x": 23,   "A#x": 24,   "E#x": 25,   "B#x": 26,
 };
-
-/**
- * Return the amount of cents necessary to tune the input note according to the
- * input fifth deviation from 12EDO.
- */
-function circleOfFifthsTuningOffset(note, fifthDeviation, referenceNote = "A")
-{
-	// Get the tuning offset for the input note with respect to 12EDO, based on
-	// its tonal pitch class.
-	var noteLetter = "";
-	switch (note.tpc1 % 7)
-	{
-		case 0:
-			noteLetter = "C";
-			break;
-		
-		case 2:
-		case -5:
-			noteLetter = "D";
-			break;
-		
-		case 4:
-		case -3:
-			noteLetter = "E";
-			break;
-		
-		case 6:
-		case -1:
-			noteLetter = "F";
-			break;
-		
-		case 1:
-		case -6:
-			noteLetter = "G";
-			break;
-		
-		case 3:
-		case -4:
-			noteLetter = "A";
-			break;
-		
-		case 5:
-		case -2:
-			noteLetter = "B";
-			break;
-	}
-	var tuningOffset = -TuningUtils.circleOfFifthsDistance(noteLetter, referenceNote) * fifthDeviation;
-	
-	// Add the tuning offset due to the accidental.  Each semitone adds 7 fifth
-	// deviations to the note's tuning, because we have to move 7 steps in the
-	// circle of fifths to get to the altered note.
-	var tpcAccidental = Math.floor((note.tpc1 + 1) / 7) - 2;
-	tuningOffset -= tpcAccidental * 7 * fifthDeviation;
-	
-	return tuningOffset;
-}
 
 /**
  * Distance between two notes according to the circle of fifths.
  */
-function circleOfFifthsDistance(n1, n2)
+function circleOfFifthsDistance(n1, n2, tpcMode = "tpc1")
 {
-	return CIRCLE_OF_FIFTHS_DISTANCE[n1] - CIRCLE_OF_FIFTHS_DISTANCE[n2];
+	var n1Tpc;
+	switch (typeof n1)
+	{
+		case "object":
+			switch (tpcMode)
+			{
+				case "tpc":
+					n1Tpc = n1.tpc - 14;
+					break;
+				
+				case "tpc1":
+					n1Tpc = n1.tpc1 - 14;
+					break;
+				
+				case "tpc2":
+					n1Tpc = n1.tpc2 - 14;
+					break;
+				
+				default:
+					throw "Unsupported value for tpcMode: " + tpcMode;
+			}
+			break;
+		
+		case "string":
+			n1Tpc = CIRCLE_OF_FIFTHS_DISTANCE[n1];
+			break;
+		
+		default:
+			throw "Unsupported n1 type: " + (typeof n1);
+	}
+	
+	var n2Tpc;
+	switch (typeof n2)
+	{
+		case "object":
+			switch (tpcMode)
+			{
+				case "tpc":
+					n2Tpc = n2.tpc - 14;
+					break;
+				
+				case "tpc1":
+					n2Tpc = n2.tpc1 - 14;
+					break;
+				
+				case "tpc2":
+					n2Tpc = n2.tpc2 - 14;
+					break;
+				
+				default:
+					throw "Unsupported value for tpcMode: " + tpcMode;
+			}
+			break;
+		
+		case "string":
+			n2Tpc = CIRCLE_OF_FIFTHS_DISTANCE[n2];
+			break;
+		
+		default:
+			throw "Unsupported n2 type: " + (typeof n2);
+	}
+	
+	return n1Tpc - n2Tpc;
 }
