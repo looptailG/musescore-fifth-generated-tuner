@@ -9,6 +9,8 @@ The plugin provides the fifth sizes of some commonly used tuning system, but you
 
 You can also save up to 5 custom tunings among the tuning presets.  This way, if you use those tunings often, you don't have to write the fifth size every time.
 
+You can choose a reference note, which will have a tuning offset of `0 ¢`.  The tuning offset of every other note will be calculated with respect to this reference note.
+
 Only sizes between `685.7 ¢` and `720.0 ¢` produce results that [make sense](https://en.xen.wiki/w/Diatonic_range) according to standard notation.
 For fifths outside this range the plugin works anyway, but it could produce some counterintuitive results.
 
@@ -16,6 +18,7 @@ For fifths outside this range the plugin works anyway, but it could produce some
 - If you want to tune only a portion of the score, select it before running the plugin. If nothing is selected, the entire score will be tuned.
 - Launch the plugin: `Plugins` → `Playback` → `Fifth Generated Tuner`.
 - Choose one of the preset fifth sizes, or enter your own value.  You can also use the `Add Custom` button to save a new custom tuning among the tuning presets.
+- Choose a reference note from the drop down menu.
 - Click `Tune`.
 
 ## Installing
