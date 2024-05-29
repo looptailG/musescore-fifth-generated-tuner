@@ -30,11 +30,11 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.1.1-alpha";
+	version: "1.2.0";
 	
 	pluginType: "dialog";
 	width: 470;
-	height: 735;
+	height: 760;
 	
 	// List containing some commonly installed monospaced fonts.
 	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
@@ -53,6 +53,11 @@ MuseScore
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
+	
+	// Reference note, which has a tuning offset of zero.
+	property var referenceNoteName;
+	property var referenceNoteAccidental;
+	property var referenceNote;
 	
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
@@ -262,7 +267,45 @@ MuseScore
 		Row
 		{
 			x: 10;
-			y: 75;
+			y: 50;
+			spacing: 10;
+			
+			Text
+			{
+				text: "Reference note:";
+				font.pixelSize: 15;
+			}
+			
+			ComboBox
+			{
+				id: referenceNoteNameComboBox;
+				model: ["A", "B", "C", "D", "E", "F", "G"];
+				width: 50;
+				onActivated:
+				{
+					referenceNoteName = referenceNoteNameComboBox.currentText;
+					referenceNote = referenceNoteName + referenceNoteAccidental;
+				}
+			}
+			
+			ComboBox
+			{
+				id: referenceNoteAccidentalComboBox;
+				model: ["bbb", "bb", "b", "", "#", "x", "#x"];
+				currentIndex: 3;
+				width: 50;
+				onActivated:
+				{
+					referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+					referenceNote = referenceNoteName + referenceNoteAccidental;
+				}
+			}
+		}
+		
+		Row
+		{
+			x: 10;
+			y: 100;
 			spacing: 50;
 			
 			Column
@@ -655,7 +698,7 @@ MuseScore
 		Row
 		{
 			x: 10;
-			y: 675;
+			y: 700;
 			spacing: 10;
 			
 			TextArea
@@ -734,14 +777,14 @@ MuseScore
 								var notes = graceChords[i].notes;
 								for (var j = 0; j < notes.length; j++)
 								{
-									notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], "A") * fifthDeviation;
+									notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], referenceNote) * fifthDeviation;
 								}
 							}
 							
 							var notes = cursor.element.notes;
 							for (var i = 0; i < notes.length; i++)
 							{
-								notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], "A") * fifthDeviation;
+								notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], referenceNote) * fifthDeviation;
 							}
 						}
 					}
@@ -767,6 +810,11 @@ MuseScore
 				break;
 			}
 		}
+		
+		// Initialise reference note.
+		referenceNoteName = referenceNoteNameComboBox.currentText;
+		referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+		referenceNote = referenceNoteName + referenceNoteAccidental;
 		
 		// Initialise output message area.
 		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
