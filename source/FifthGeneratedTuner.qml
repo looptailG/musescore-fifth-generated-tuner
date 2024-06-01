@@ -296,10 +296,17 @@ MuseScore
 				width: 50;
 				onActivated:
 				{
-					settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
-					writeSettings();
-					referenceNoteName = referenceNoteNameComboBox.currentText;
-					referenceNote = referenceNoteName + referenceNoteAccidental;
+					try
+					{
+						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
+						writeSettings();
+						referenceNoteName = referenceNoteNameComboBox.currentText;
+						referenceNote = referenceNoteName + referenceNoteAccidental;
+					}
+					catch (error)
+					{
+						outputMessageArea.text = error.toString();
+					}
 				}
 			}
 			
@@ -310,10 +317,17 @@ MuseScore
 				width: 50;
 				onActivated:
 				{
-					settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
-					writeSettings();
-					referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-					referenceNote = referenceNoteName + referenceNoteAccidental;
+					try
+					{
+						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
+						writeSettings();
+						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+						referenceNote = referenceNoteName + referenceNoteAccidental;
+					}
+					catch (error)
+					{
+						outputMessageArea.text = error.toString();
+					}
 				}
 			}
 		}
@@ -882,8 +896,8 @@ MuseScore
 		var fileContent = "";
 		for (var i = 0; i < Object.keys(settings).length; i++)
 		{
-			var key = Object.keys(settings)[i];
-			var value = settings[key];
+			var key = Object.keys(settings)[i].toString();
+			var value = settings[key].toString();
 			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
 		}
 		settingsIO.write(fileContent);
