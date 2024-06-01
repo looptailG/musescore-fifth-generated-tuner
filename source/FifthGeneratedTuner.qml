@@ -871,6 +871,21 @@ MuseScore
 	}
 	
 	/**
+	 * Write the contents of settings to the settings file.
+	 */
+	function writeSettings()
+	{
+		var fileContent = "";
+		for (var i = 0; i < Object.keys(settings); i++)
+		{
+			var key = Object.keys(settings)[i];
+			var value = settings[key];
+			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
+		}
+		settingsIO.write(fileContent);
+	}
+	
+	/**
 	 * Load the custom tunings from the cunfiguration file, and set the
 	 * properties of the custom tunings buttons.
 	 */
