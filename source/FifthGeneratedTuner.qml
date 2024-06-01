@@ -305,7 +305,6 @@ MuseScore
 			{
 				id: referenceNoteAccidentalComboBox;
 				model: ["bbb", "bb", "b", "", "#", "x", "#x"];
-				currentIndex: 3;
 				width: 50;
 				onActivated:
 				{
@@ -843,7 +842,9 @@ MuseScore
 		}
 		
 		// Initialise reference note.
+		referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
 		referenceNoteName = referenceNoteNameComboBox.currentText;
+		referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
 		referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 		referenceNote = referenceNoteName + referenceNoteAccidental;
 		
