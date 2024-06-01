@@ -36,6 +36,8 @@ MuseScore
 	width: 470;
 	height: 760;
 	
+	property variant settings: {};
+	
 	// List containing some commonly installed monospaced fonts.
 	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
 	// Variable containing the name of an installed monospaced font from the
@@ -685,8 +687,7 @@ MuseScore
 						{
 							// Populate the checkbox with every custom tuning.
 							customTuningChoices.clear();
-							var fileContent = customTuningsIO.read();
-							fileContent = fileContent.split("\n");
+							var fileContent = customTuningsIO.read().split("\n");
 							for (var i = 0; i < fileContent.length; i++)
 							{
 								if (fileContent[i].trim() != "")
@@ -812,6 +813,25 @@ MuseScore
 	
 	Component.onCompleted:
 	{
+		// Read settings file.
+		settings = {};
+		try
+		{
+			var settingsFileContents = settingsIO.read().split("\n");
+			for (var i = 0; i < settingsFileContents.length; i++)
+			{
+				if (settingsFileContents[i].trim() != "")
+				{
+					var rowData = StringUtils.parseTsvRow(settingsFileContents[i]);
+					settings[rowData[0]] = rowData[1];
+				}
+			}
+		}
+		catch (error)
+		{
+			outputMessageArea.text = error.toString();
+		}
+		
 		// Initialise monospaced font.
 		for (var i = 0; i < preferredFonts.length; i++)
 		{
@@ -862,8 +882,7 @@ MuseScore
 		custom4.visible = false;
 	
 		var customTuningCounter = 0;
-		var fileContent = customTuningsIO.read();
-		fileContent = fileContent.split("\n");
+		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < fileContent.length; i++)
 		{
 			if (fileContent[i].trim() != "")
@@ -950,8 +969,7 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
-		var fileContent = customTuningsIO.read();
-		fileContent = fileContent.split("\n");
+		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < tuningsToDelete.length; i++)
 		{
 			var tuningToDelete = tuningsToDelete[i];
