@@ -30,7 +30,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	categoryCode: "playback";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.2.0";
+	version: "1.2.1-alpha";
 	
 	pluginType: "dialog";
 	width: 470;
@@ -182,6 +182,17 @@ MuseScore
 	{
 		id: "customTuningsIO";
 		source: Qt.resolvedUrl(".").substring(8) + "CustomTunings.tsv";
+		
+		onError:
+		{
+			outputMessageArea.text = msg;
+		}
+	}
+	
+	FileIO
+	{
+		id: "settingsIO";
+		source: Qt.resolvedUrl(".").substring(8) + "Settings.tsv";
 		
 		onError:
 		{
