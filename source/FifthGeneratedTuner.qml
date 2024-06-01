@@ -296,6 +296,8 @@ MuseScore
 				width: 50;
 				onActivated:
 				{
+					settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
+					writeSettings();
 					referenceNoteName = referenceNoteNameComboBox.currentText;
 					referenceNote = referenceNoteName + referenceNoteAccidental;
 				}
@@ -308,6 +310,8 @@ MuseScore
 				width: 50;
 				onActivated:
 				{
+					settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
+					writeSettings();
 					referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 					referenceNote = referenceNoteName + referenceNoteAccidental;
 				}
