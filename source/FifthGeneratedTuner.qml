@@ -880,7 +880,7 @@ MuseScore
 	function writeSettings()
 	{
 		var fileContent = "";
-		for (var i = 0; i < Object.keys(settings); i++)
+		for (var i = 0; i < Object.keys(settings).length; i++)
 		{
 			var key = Object.keys(settings)[i];
 			var value = settings[key];
