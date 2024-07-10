@@ -16,9 +16,8 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.15
+import QtQuick 2.2
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.1
 import FileIO 3.0
 import MuseScore 3.0
 import "libs/StringUtils.js" as StringUtils
@@ -26,11 +25,11 @@ import "libs/TuningUtils.js" as TuningUtils
 
 MuseScore
 {
-	title: qsTr("Fifth Generated Tuner");
-	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	categoryCode: "playback";
+	title: "Fifth Generated Tuner";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.2.1";
+	categoryCode: "playback";
+	thumbnailName: "FifthGeneratedTunerThumbnail.png";
+	version: "1.3.0-alpha";
 	
 	pluginType: "dialog";
 	width: 470;
