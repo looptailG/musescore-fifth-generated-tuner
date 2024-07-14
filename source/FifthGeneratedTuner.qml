@@ -939,6 +939,9 @@ MuseScore
 		{
 			outputMessageArea.text = error.toString();
 		}
+		logger.currentLogLevel = parseInt(settings["LogLevel"]);
+		
+		logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
 		
 		// Initialise monospaced font.
 		for (var i = 0; i < preferredFonts.length; i++)
@@ -969,6 +972,8 @@ MuseScore
 		{
 			outputMessageArea.error;
 		}
+		
+		logger.writeLogMessages();
 	}
 	
 	onRun:
