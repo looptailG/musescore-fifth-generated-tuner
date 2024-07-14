@@ -414,7 +414,7 @@ MuseScore
 			ComboBox
 			{
 				id: referenceNoteAccidentalComboBox;
-				model: ["bbb", "bb", "b", "", "#", "x", "#x"];
+				model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
 				width: 50;
 				onActivated:
 				{
