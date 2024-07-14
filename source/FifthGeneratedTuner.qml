@@ -71,6 +71,11 @@ MuseScore
 		id: customTuningChoices;
 	}
 	
+	// Amount of notes which were tuned successfully.
+	property var tunedNotes: 0;
+	// Total amount of notes encountered in the portion of the score to tune.
+	property var totalNotes: 0;
+	
 	MessageDialog
 	{
 		id: fifthSizeDialog;
