@@ -274,7 +274,7 @@ MuseScore
 	FileIO
 	{
 		id: customTuningsIO;
-		source: Qt.resolvedUrl(".").substring(8) + "CustomTunings.tsv";
+		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
 		
 		onError:
 		{
@@ -285,7 +285,7 @@ MuseScore
 	FileIO
 	{
 		id: settingsIO;
-		source: Qt.resolvedUrl(".").substring(8) + "Settings.tsv";
+		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
 		
 		onError:
 		{
@@ -1000,11 +1000,17 @@ MuseScore
 	 */
 	function loadCustomTunings()
 	{
-		custom0.visible = false;
+/*		custom0.visible = false;
 		custom1.visible = false;
 		custom2.visible = false;
 		custom3.visible = false;
-		custom4.visible = false;
+		custom4.visible = false;*/
+		
+		deleteCustomCheckbox0.visible = false;
+		deleteCustomCheckbox1.visible = false;
+		deleteCustomCheckbox2.visible = false;
+		deleteCustomCheckbox3.visible = false;
+		deleteCustomCheckbox4.visible = false;
 	
 		var customTuningCounter = 0;
 		var fileContent = customTuningsIO.read().split("\n");
@@ -1019,30 +1025,40 @@ MuseScore
 						custom0.text = rowData[0];
 						custom0.customFifthSize0 = rowData[1];
 						custom0.visible = true;
+						deleteCustomCheckbox0.text = rowData[0];
+						deleteCustomCheckbox0.visible = true;
 						break;
 					
 					case 1:
 						custom1.text = rowData[0];
 						custom1.customFifthSize1 = rowData[1];
 						custom1.visible = true;
+						deleteCustomCheckbox1.text = rowData[0];
+						deleteCustomCheckbox1.visible = true;
 						break;
 					
 					case 2:
 						custom2.text = rowData[0];
 						custom2.customFifthSize2 = rowData[1];
 						custom2.visible = true;
+						deleteCustomCheckbox2.text = rowData[0];
+						deleteCustomCheckbox2.visible = true;
 						break;
 					
 					case 3:
 						custom3.text = rowData[0];
 						custom3.customFifthSize3 = rowData[1];
 						custom3.visible = true;
+						deleteCustomCheckbox3.text = rowData[0];
+						deleteCustomCheckbox3.visible = true;
 						break;
 					
 					case 4:
 						custom4.text = rowData[0];
 						custom4.customFifthSize4 = rowData[1];
 						custom4.visible = true;
+						deleteCustomCheckbox4.text = rowData[0];
+						deleteCustomCheckbox4.visible = true;
 						break;
 				}
 				
