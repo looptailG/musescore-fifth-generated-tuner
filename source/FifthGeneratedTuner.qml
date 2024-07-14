@@ -153,28 +153,24 @@ MuseScore
 				text: "";
 				visible: false;
 			}
-			
 			CheckBox
 			{
 				id: deleteCustomCheckbox1;
 				text: "";
 				visible: false;
 			}
-			
 			CheckBox
 			{
 				id: deleteCustomCheckbox2;
 				text: "";
 				visible: false;
 			}
-			
 			CheckBox
 			{
 				id: deleteCustomCheckbox3;
 				text: "";
 				visible: false;
 			}
-			
 			CheckBox
 			{
 				id: deleteCustomCheckbox4;
@@ -188,13 +184,25 @@ MuseScore
 			try
 			{
 				var selectedCustomTunings = [];
-				for (var i = 0; i < customTuningChoices.count; i++)
+				if (deleteCustomCheckbox0.checked)
 				{
-					var currentTuning = customTuningChoices.get(i);
-					if (currentTuning.checked)
-					{
-						selectedCustomTunings.push(currentTuning.text);
-					}
+					selectedCustomTunings.push(deleteCustomCheckbox0.text);
+				}
+				if (deleteCustomCheckbox1.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox1.text);
+				}
+				if (deleteCustomCheckbox2.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox2.text);
+				}
+				if (deleteCustomCheckbox3.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox3.text);
+				}
+				if (deleteCustomCheckbox4.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox4.text);
 				}
 				deleteCustomTunings(selectedCustomTunings);
 				loadCustomTunings();
