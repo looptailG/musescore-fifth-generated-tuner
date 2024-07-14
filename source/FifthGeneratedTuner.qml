@@ -921,10 +921,10 @@ MuseScore
 	
 	Component.onCompleted:
 	{
-		// Read settings file.
-		settings = {};
 		try
 		{
+			// Read settings file.
+			settings = {};
 			var settingsFileContents = settingsIO.read().split("\n");
 			for (var i = 0; i < settingsFileContents.length; i++)
 			{
@@ -934,46 +934,44 @@ MuseScore
 					settings[rowData[0]] = rowData[1];
 				}
 			}
-		}
-		catch (error)
-		{
-			outputMessageArea.text = error.toString();
-		}
-		logger.currentLogLevel = parseInt(settings["LogLevel"]);
-		
-		logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
-		
-		// Initialise monospaced font.
-		for (var i = 0; i < preferredFonts.length; i++)
-		{
-			if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
+			logger.currentLogLevel = parseInt(settings["LogLevel"]);
+			
+			logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
+			logger.log("Log level set to: " + logger.currentLogLevel);
+			
+			// Initialise monospaced font.
+			for (var i = 0; i < preferredFonts.length; i++)
 			{
-				monospacedFont = preferredFonts[i];
-				break;
+				if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
+				{
+					monospacedFont = preferredFonts[i];
+					logger.log("Monospaced font set to: " + monospacedFont);
+					break;
+				}
 			}
-		}
+			
+			// Initialise reference note.
+			referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
+			referenceNoteName = referenceNoteNameComboBox.currentText;
+			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
+			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+			referenceNote = referenceNoteName + referenceNoteAccidental;
+			logger.log("Reference note set to: " + referenceNote);
+			
+			// Initialise output message area.
+			outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
 		
-		// Initialise reference note.
-		referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
-		referenceNoteName = referenceNoteNameComboBox.currentText;
-		referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
-		referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-		referenceNote = referenceNoteName + referenceNoteAccidental;
-		
-		// Initialise output message area.
-		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
-		
-		// Initialise custom tunings buttons.
-		try
-		{
+			// Initialise custom tunings buttons.
 			loadCustomTunings();
 		}
 		catch (error)
 		{
-			outputMessageArea.error;
+			logger.fatal(error.toString());
 		}
-		
-		logger.writeLogMessages();
+		finally
+		{
+			logger.writeLogMessages();
+		}
 	}
 	
 	onRun:
