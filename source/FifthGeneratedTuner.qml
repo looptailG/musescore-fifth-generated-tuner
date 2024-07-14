@@ -20,6 +20,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 import FileIO 3.0
 import MuseScore 3.0
+import "libs/DateUtils.js" as DateUtils
 import "libs/StringUtils.js" as StringUtils
 import "libs/TuningUtils.js" as TuningUtils
 
