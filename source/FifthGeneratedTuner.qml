@@ -187,6 +187,63 @@ MuseScore
 	
 	FileIO
 	{
+		id: logger;
+		source: Qt.resolvedUrl(".").toString().substring(8) + "logs/" + DateUtils.getFileDateTime() + "_log.txt";
+		property var logMessages: "";
+		property var currentLogLevel: 2;
+		property variant logLevels:
+		{
+			0: " | TRACE   | ",
+			1: " | INFO    | ",
+			2: " | WARNING | ",
+			3: " | ERROR   | ",
+			4: " | FATAL   | ",
+		}
+		
+		function log(message, logLevel)
+		{
+			if (logLevel === undefined)
+			{
+				logLevel = 1;
+			}
+			
+			if (logLevel >= currentLogLevel)
+			{
+				logMessages += DateUtils.getRFC3339DateTime() + logLevels[logLevel] + message + "\n";
+			}
+		}
+		
+		function trace(message)
+		{
+			log(message, 0);
+		}
+		
+		function warning(message)
+		{
+			log(message, 2);
+		}
+		
+		function error(message)
+		{
+			log(message, 3);
+		}
+		
+		function fatal(message)
+		{
+			log(message, 4);
+		}
+		
+		function writeLogMessages()
+		{
+			if (logMessages != "")
+			{
+				write(logMessages);
+			}
+		}
+	}
+	
+	FileIO
+	{
 		id: customTuningsIO;
 		source: Qt.resolvedUrl(".").substring(8) + "CustomTunings.tsv";
 		
@@ -976,6 +1033,7 @@ MuseScore
 		{
 			addCustom.enabled = true;
 		}
+		
 		if (customTuningCounter >= 1)
 		{
 			deleteCustom.enabled = true;
