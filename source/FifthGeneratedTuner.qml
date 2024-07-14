@@ -793,17 +793,6 @@ MuseScore
 					{
 						try
 						{
-							// Populate the checkbox with every custom tuning.
-							customTuningChoices.clear();
-							var fileContent = customTuningsIO.read().split("\n");
-							for (var i = 0; i < fileContent.length; i++)
-							{
-								if (fileContent[i].trim() != "")
-								{
-									var rowData = StringUtils.parseTsvRow(fileContent[i]);
-									customTuningChoices.append({ text: rowData[0], checked: false });
-								}
-							}
 							deleteCustomDialog.open();
 						}
 						catch (error)
@@ -1131,10 +1120,13 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
+		logger.log("Deleting selected custom tunings.");
+		
 		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < tuningsToDelete.length; i++)
 		{
 			var tuningToDelete = tuningsToDelete[i];
+			logger.trace("Deleting tuning: " + tuningToDelete);
 			for (var j = fileContent.length - 1; j >= 0; j--)
 			{
 				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
@@ -1145,5 +1137,8 @@ MuseScore
 			}
 		}
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
+		
+		logger.log("Tuning deleted successfully.");
+		logger.writeLogMessages();
 	}
 }
