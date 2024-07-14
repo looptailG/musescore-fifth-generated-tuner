@@ -297,7 +297,7 @@ MuseScore
 	{
 		anchors.fill: parent;
 		
-/*		Row
+		Row
 		{
 			x: 10;
 			y: 10;
@@ -830,14 +830,14 @@ MuseScore
 				width: 450;
 				height: 50;
 			}
-		}*/
+		}
 	}
 	
 	/**
 	 * Tune the notes in the selection, or the entire score if nothing is
 	 * selected, according to the selected fifth size.
 	 */
-/*	function tuneNotes()
+	function tuneNotes()
 	{
 		curScore.startCmd();
 	
@@ -917,11 +917,11 @@ MuseScore
 		curScore.endCmd();
 		
 		quit();
-	}*/
+	}
 	
 	Component.onCompleted:
 	{
-/*		// Read settings file.
+		// Read settings file.
 		settings = {};
 		try
 		{
@@ -968,15 +968,15 @@ MuseScore
 		catch (error)
 		{
 			outputMessageArea.error;
-		}*/
+		}
 	}
 	
 	onRun:
 	{
-/*		if (typeof curScore === "undefined")
+		if (typeof curScore === "undefined")
 		{
 			quit();
-		}*/
+		}
 	}
 	
 	/**
@@ -1000,11 +1000,11 @@ MuseScore
 	 */
 	function loadCustomTunings()
 	{
-/*		custom0.visible = false;
+		custom0.visible = false;
 		custom1.visible = false;
 		custom2.visible = false;
 		custom3.visible = false;
-		custom4.visible = false;*/
+		custom4.visible = false;
 		
 		deleteCustomCheckbox0.visible = false;
 		deleteCustomCheckbox1.visible = false;
