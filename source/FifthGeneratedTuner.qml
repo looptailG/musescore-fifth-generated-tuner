@@ -66,22 +66,30 @@ MuseScore
 	
 	// List contaning every custom tuning, for generating the checkbox in the
 	// delete custom tuning dialog.
-	ListModel
+/*	ListModel
 	{
 		id: customTuningChoices;
-	}
+	}*/
 	
 	// Amount of notes which were tuned successfully.
 	property var tunedNotes: 0;
 	// Total amount of notes encountered in the portion of the score to tune.
 	property var totalNotes: 0;
 	
-	MessageDialog
+/*	Dialog
 	{
 		id: fifthSizeDialog;
 		title: "WARNING - Fifth Size";
-		text: "";
-		standardButtons: StandardButton.Yes | StandardButton.No;
+		standardButtons: Dialog.Yes | Dialog.No;
+		
+		contentItem: Column
+		{
+			Label
+			{
+				id: fifthSizeDialogText;
+				text: "";
+			}
+		}
 		
 		onYes:
 		{
@@ -94,7 +102,7 @@ MuseScore
 				outputMessageArea.text = error;
 			}
 		}
-	}
+	}*/
 	
 	Dialog
 	{
@@ -138,7 +146,7 @@ MuseScore
 		}
 	}
 	
-	Dialog
+/*	Dialog
 	{
 		id: deleteCustomDialog;
 		title: "Delete Custom Tunings";
@@ -183,7 +191,7 @@ MuseScore
 				outputMessageArea.text = error.toString();
 			}
 		}
-	}
+	}*/
 	
 	FileIO
 	{
@@ -268,7 +276,7 @@ MuseScore
 	{
 		anchors.fill: parent;
 		
-		Row
+/*		Row
 		{
 			x: 10;
 			y: 10;
@@ -801,14 +809,14 @@ MuseScore
 				width: 450;
 				height: 50;
 			}
-		}
+		}*/
 	}
 	
 	/**
 	 * Tune the notes in the selection, or the entire score if nothing is
 	 * selected, according to the selected fifth size.
 	 */
-	function tuneNotes()
+/*	function tuneNotes()
 	{
 		curScore.startCmd();
 	
@@ -888,11 +896,11 @@ MuseScore
 		curScore.endCmd();
 		
 		quit();
-	}
+	}*/
 	
 	Component.onCompleted:
 	{
-		// Read settings file.
+/*		// Read settings file.
 		settings = {};
 		try
 		{
@@ -939,15 +947,15 @@ MuseScore
 		catch (error)
 		{
 			outputMessageArea.error;
-		}
+		}*/
 	}
 	
 	onRun:
 	{
-		if (typeof curScore === "undefined")
+/*		if (typeof curScore === "undefined")
 		{
 			quit();
-		}
+		}*/
 	}
 	
 	/**
