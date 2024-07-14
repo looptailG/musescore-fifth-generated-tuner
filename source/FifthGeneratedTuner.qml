@@ -1003,6 +1003,8 @@ MuseScore
 	 */
 	function loadCustomTunings()
 	{
+		logger.log("Loading custom tunings.");
+	
 		custom0.visible = false;
 		custom1.visible = false;
 		custom2.visible = false;
@@ -1022,6 +1024,7 @@ MuseScore
 			if (fileContent[i].trim() != "")
 			{
 				var rowData = StringUtils.parseTsvRow(fileContent[i]);
+				logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
 				switch (customTuningCounter)
 				{
 					case 0:
@@ -1090,6 +1093,8 @@ MuseScore
 		{
 			deleteCustom.enabled = false;
 		}
+		
+		logger.log("Custom tunings loaded successfully.");
 	}
 	
 	/**
