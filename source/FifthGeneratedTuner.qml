@@ -987,6 +987,8 @@ MuseScore
 	 */
 	function writeSettings()
 	{
+		logger.log("Updating settings file.");
+	
 		var fileContent = "";
 		for (var i = 0; i < Object.keys(settings).length; i++)
 		{
@@ -995,6 +997,9 @@ MuseScore
 			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
 		}
 		settingsIO.write(fileContent);
+		
+		logger.log("Settings file updated successfully.");
+		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1095,6 +1100,7 @@ MuseScore
 		}
 		
 		logger.log("Custom tunings loaded successfully.");
+		logger.writeLogMessages();
 	}
 	
 	/**
