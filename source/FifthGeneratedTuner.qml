@@ -93,6 +93,8 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error;
+				logger.error(error.toString());
+				logger.writeLogMessages();
 			}
 		}
 	}
@@ -134,7 +136,9 @@ MuseScore
 			}
 			catch (error)
 			{
-				outputMessageArea.text = error;
+				outputMessageArea.text = error.toString();
+				logger.error(error.toString());
+				logger.writeLogMessages();
 			}
 		}
 	}
@@ -210,6 +214,8 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error.toString();
+				logger.error(error.toString());
+				logger.writeLogMessages();
 			}
 		}
 	}
@@ -279,6 +285,8 @@ MuseScore
 		onError:
 		{
 			outputMessageArea.text = msg;
+			logger.error(msg);
+			logger.writeLogMessages();
 		}
 	}
 	
@@ -290,6 +298,8 @@ MuseScore
 		onError:
 		{
 			outputMessageArea.text = msg;
+			logger.error(msg);
+			logger.writeLogMessages();
 		}
 	}
 	
