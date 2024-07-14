@@ -76,7 +76,7 @@ MuseScore
 	// Total amount of notes encountered in the portion of the score to tune.
 	property var totalNotes: 0;
 	
-/*	Dialog
+	Dialog
 	{
 		id: fifthSizeDialog;
 		title: "WARNING - Fifth Size";
@@ -91,7 +91,7 @@ MuseScore
 			}
 		}
 		
-		onYes:
+		onAccepted:
 		{
 			try
 			{
@@ -102,7 +102,7 @@ MuseScore
 				outputMessageArea.text = error;
 			}
 		}
-	}*/
+	}
 	
 	Dialog
 	{
