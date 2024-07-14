@@ -64,13 +64,6 @@ MuseScore
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
 	
-	// List contaning every custom tuning, for generating the checkbox in the
-	// delete custom tuning dialog.
-/*	ListModel
-	{
-		id: customTuningChoices;
-	}*/
-	
 	// Amount of notes which were tuned successfully.
 	property var tunedNotes: 0;
 	// Total amount of notes encountered in the portion of the score to tune.
@@ -146,7 +139,7 @@ MuseScore
 		}
 	}
 	
-/*	Dialog
+	Dialog
 	{
 		id: deleteCustomDialog;
 		title: "Delete Custom Tunings";
@@ -154,19 +147,39 @@ MuseScore
 		
 		contentItem: Column
 		{
-			spacing: 10;
-			padding: 10;
-		
-			Repeater
+			CheckBox
 			{
-				model: customTuningChoices;
-				
-				CheckBox
-				{
-					text: model.text;
-					checked: model.checked;
-					onCheckedChanged: model.checked = checked;
-				}
+				id: deleteCustomCheckbox0;
+				text: "";
+				visible: false;
+			}
+			
+			CheckBox
+			{
+				id: deleteCustomCheckbox1;
+				text: "";
+				visible: false;
+			}
+			
+			CheckBox
+			{
+				id: deleteCustomCheckbox2;
+				text: "";
+				visible: false;
+			}
+			
+			CheckBox
+			{
+				id: deleteCustomCheckbox3;
+				text: "";
+				visible: false;
+			}
+			
+			CheckBox
+			{
+				id: deleteCustomCheckbox4;
+				text: "";
+				visible: false;
 			}
 		}
 		
@@ -191,7 +204,7 @@ MuseScore
 				outputMessageArea.text = error.toString();
 			}
 		}
-	}*/
+	}
 	
 	FileIO
 	{
