@@ -83,6 +83,8 @@ MuseScore
 			{
 				id: fifthSizeDialogText;
 				text: "";
+				width: 460;
+				wrapMode: Text.Wrap;
 			}
 		}
 		
