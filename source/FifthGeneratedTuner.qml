@@ -64,11 +64,6 @@ MuseScore
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
 	
-	// Amount of notes which were tuned successfully.
-	property var tunedNotes: 0;
-	// Total amount of notes encountered in the portion of the score to tune.
-	property var totalNotes: 0;
-	
 	Dialog
 	{
 		id: fifthSizeDialog;
@@ -838,84 +833,123 @@ MuseScore
 	 */
 	function tuneNotes()
 	{
-		curScore.startCmd();
-	
-		// Calculate the portion of the score to tune.
-		var cursor = curScore.newCursor();
-		var startStaff;
-		var endStaff;
-		var startTick;
-		var endTick;
-		cursor.rewind(Cursor.SELECTION_START);
-		if (!cursor.segment)
+		try
 		{
-			// Tune the entire score.
-			startStaff = 0;
-			endStaff = curScore.nstaves - 1;
-			startTick = 0;
-			endTick = curScore.lastSegment.tick + 1;
-		}
-		else
-		{
-			// Tune only the selection.
-			startStaff = cursor.staffIdx;
-			startTick = cursor.tick;
-			cursor.rewind(Cursor.SELECTION_END);
-			endStaff = cursor.staffIdx;
-			if (cursor.tick == 0)
+			logger.log("Tuning notes.");
+			
+			curScore.startCmd();
+		
+			// Calculate the portion of the score to tune.
+			var cursor = curScore.newCursor();
+			var startStaff;
+			var endStaff;
+			var startTick;
+			var endTick;
+			cursor.rewind(Cursor.SELECTION_START);
+			if (!cursor.segment)
 			{
-				// If the selection includes the last measure of the score,
-				// .rewind() overflows and goes back to tick 0.
+				logger.log("Tuning the entire score.");
+				startStaff = 0;
+				endStaff = curScore.nstaves - 1;
+				startTick = 0;
 				endTick = curScore.lastSegment.tick + 1;
 			}
 			else
 			{
-				endTick = cursor.tick;
-			}
-		}
-		
-		// Loop on the portion of the score to tune.
-		for (var staff = startStaff; staff <= endStaff; staff++)
-		{
-			for (var voice = 0; voice < 4; voice++)
-			{
-				cursor.voice = voice;
-				cursor.staffIdx = staff;
-				cursor.rewindToTick(startTick);
-				
-				while (cursor.segment && (cursor.tick < endTick))
+				logger.log("Tuning only the current selection.");
+				startStaff = cursor.staffIdx;
+				startTick = cursor.tick;
+				cursor.rewind(Cursor.SELECTION_END);
+				endStaff = cursor.staffIdx;
+				if (cursor.tick == 0)
 				{
-					// Tune notes.
-					if (cursor.element)
+					// If the selection includes the last measure of the score,
+					// .rewind() overflows and goes back to tick 0.
+					endTick = curScore.lastSegment.tick + 1;
+				}
+				else
+				{
+					endTick = cursor.tick;
+				}
+				logger.trace("Tuning only ticks: " + startTick + " - " + endTick);
+				logger.trace("Tuning only staffs: " + startStaff + " - " + endStaff);
+			}
+			
+			var tunedNotes = 0;
+			var totalNotes = 0;
+			// Loop on the portion of the score to tune.
+			for (var staff = startStaff; staff <= endStaff; staff++)
+			{
+				for (var voice = 0; voice < 4; voice++)
+				{
+					logger.log("Tuning Staff: " + staff + "; Voice: " + voice);
+					
+					cursor.voice = voice;
+					cursor.staffIdx = staff;
+					cursor.rewindToTick(startTick);
+					
+					while (cursor.segment && (cursor.tick < endTick))
 					{
-						if (cursor.element.type == Element.CHORD)
+						// Tune notes.
+						if (cursor.element)
 						{
-							var graceChords = cursor.element.graceNotes;
-							for (var i = 0; i < graceChords.length; i++)
+							if (cursor.element.type == Element.CHORD)
 							{
-								var notes = graceChords[i].notes;
-								for (var j = 0; j < notes.length; j++)
+								var graceChords = cursor.element.graceNotes;
+								for (var i = 0; i < graceChords.length; i++)
 								{
-									notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], referenceNote) * fifthDeviation;
+									var notes = graceChords[i].notes;
+									for (var j = 0; j < notes.length; j++)
+									{
+										totalNotes += 1;
+										try
+										{
+											notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], referenceNote) * fifthDeviation;
+											tunedNotes += 1;
+										}
+										catch (error)
+										{
+											logger.error(error);
+										}
+									}
+								}
+								
+								var notes = cursor.element.notes;
+								for (var i = 0; i < notes.length; i++)
+								{
+									totalNotes += 1;
+									try
+									{
+										notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], referenceNote) * fifthDeviation;
+										tunedNotes += 1;
+									}
+									catch (error)
+									{
+										logger.error(error);
+									}
 								}
 							}
-							
-							var notes = cursor.element.notes;
-							for (var i = 0; i < notes.length; i++)
-							{
-								notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], referenceNote) * fifthDeviation;
-							}
 						}
+						
+						cursor.next();
 					}
-					
-					cursor.next();
 				}
 			}
+			
+			logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+			
+			curScore.endCmd();
 		}
+		catch (error)
+		{
+			logger.fatal(error);
+		}
+		finally
+		{
+			logger.writeLogMessages();
 		
-		curScore.endCmd();
-		
-		quit();
+			quit();
+		}
 	}
 	
 	Component.onCompleted:
