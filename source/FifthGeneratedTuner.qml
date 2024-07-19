@@ -413,11 +413,17 @@ MuseScore
 						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
 						writeSettings();
 						referenceNoteName = referenceNoteNameComboBox.currentText;
-						referenceNote = referenceNoteName + referenceNoteAccidental;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -434,11 +440,17 @@ MuseScore
 						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
 						writeSettings();
 						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-						referenceNote = referenceNoteName + referenceNoteAccidental;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -1022,7 +1034,7 @@ MuseScore
 			referenceNoteName = referenceNoteNameComboBox.currentText;
 			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
 			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-			referenceNote = referenceNoteName + referenceNoteAccidental;
+			referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
 			logger.log("Reference note set to: " + referenceNote);
 			
 			// Initialise output message area.
