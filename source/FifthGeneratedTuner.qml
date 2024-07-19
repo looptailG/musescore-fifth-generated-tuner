@@ -20,7 +20,9 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 import FileIO 3.0
 import MuseScore 3.0
+import "libs/AccidentalUtils.js" as AccidentalUtils
 import "libs/DateUtils.js" as DateUtils
+import "libs/NoteUtils.js" as NoteUtils
 import "libs/StringUtils.js" as StringUtils
 import "libs/TuningUtils.js" as TuningUtils
 
@@ -60,6 +62,11 @@ MuseScore
 	property var referenceNoteName;
 	property var referenceNoteAccidental;
 	property var referenceNote;
+	
+	// Amount of notes which were tuned successfully.
+	property var tunedNotes: 0;
+	// Total amount of notes encountered in the portion of the score to tune.
+	property var totalNotes: 0;
 	
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
@@ -347,15 +354,19 @@ MuseScore
 						}
 						else
 						{
+							logger.log("Fifth size: " + fifthSize);
 							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
+							logger.log("Fifth deviation: " + fifthDeviation);
 							
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
+								logger.warning("Fifth smaller than the smallest diatonic fifth.");
 								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialogText.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
+								logger.warning("Fifth larger than the largest diatonic fifth");
 								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialogText.open();
 							}
@@ -368,6 +379,11 @@ MuseScore
 					catch (error)
 					{
 						outputMessageArea.text = error;
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -875,8 +891,6 @@ MuseScore
 				logger.trace("Tuning only staffs: " + startStaff + " - " + endStaff);
 			}
 			
-			var tunedNotes = 0;
-			var totalNotes = 0;
 			// Loop on the portion of the score to tune.
 			for (var staff = startStaff; staff <= endStaff; staff++)
 			{
@@ -901,11 +915,9 @@ MuseScore
 									var notes = graceChords[i].notes;
 									for (var j = 0; j < notes.length; j++)
 									{
-										totalNotes += 1;
 										try
 										{
-											notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], referenceNote) * fifthDeviation;
-											tunedNotes += 1;
+											notes[j].tuning = calculateTuningOffset(notes[j]);
 										}
 										catch (error)
 										{
@@ -917,11 +929,9 @@ MuseScore
 								var notes = cursor.element.notes;
 								for (var i = 0; i < notes.length; i++)
 								{
-									totalNotes += 1;
 									try
 									{
-										notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], referenceNote) * fifthDeviation;
-										tunedNotes += 1;
+										notes[i].tuning = calculateTuningOffset(notes[i]);
 									}
 									catch (error)
 									{
@@ -949,6 +959,30 @@ MuseScore
 			logger.writeLogMessages();
 		
 			quit();
+		}
+	}
+	
+	/**
+	 * Returns the amount of cents necessary to tune the input note to 31EDO.
+	 */
+	function calculateTuningOffset(note)
+	{
+		totalNotes += 1;
+		
+		logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
+		
+		try
+		{
+			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
+			tunedNotes += 1;
+			logger.trace("Tuning offset: " + tuningOffset);
+			return tuningOffset;
+		}
+		catch (error)
+		{
+			logger.error(error);
+			// Leave the tuning of the input note unchanged.
+			return note.tuning;
 		}
 	}
 	
