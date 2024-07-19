@@ -16,21 +16,23 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.15
+import QtQuick 2.2
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.1
 import FileIO 3.0
 import MuseScore 3.0
+import "libs/AccidentalUtils.js" as AccidentalUtils
+import "libs/DateUtils.js" as DateUtils
+import "libs/NoteUtils.js" as NoteUtils
 import "libs/StringUtils.js" as StringUtils
 import "libs/TuningUtils.js" as TuningUtils
 
 MuseScore
 {
-	title: qsTr("Fifth Generated Tuner");
-	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	categoryCode: "playback";
+	title: "Fifth Generated Tuner";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
-	version: "1.2.1";
+	categoryCode: "playback";
+	thumbnailName: "FifthGeneratedTunerThumbnail.png";
+	version: "1.3.0";
 	
 	pluginType: "dialog";
 	width: 470;
@@ -61,24 +63,32 @@ MuseScore
 	property var referenceNoteAccidental;
 	property var referenceNote;
 	
+	// Amount of notes which were tuned successfully.
+	property var tunedNotes: 0;
+	// Total amount of notes encountered in the portion of the score to tune.
+	property var totalNotes: 0;
+	
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
 	
-	// List contaning every custom tuning, for generating the checkbox in the
-	// delete custom tuning dialog.
-	ListModel
-	{
-		id: customTuningChoices;
-	}
-	
-	MessageDialog
+	Dialog
 	{
 		id: fifthSizeDialog;
 		title: "WARNING - Fifth Size";
-		text: "";
-		standardButtons: StandardButton.Yes | StandardButton.No;
+		standardButtons: Dialog.Yes | Dialog.No;
 		
-		onYes:
+		contentItem: Column
+		{
+			Label
+			{
+				id: fifthSizeDialogText;
+				text: "";
+				width: 460;
+				wrapMode: Text.Wrap;
+			}
+		}
+		
+		onAccepted:
 		{
 			try
 			{
@@ -87,7 +97,15 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error;
+				logger.error(error.toString());
+				logger.writeLogMessages();
 			}
+		}
+		
+		onRejected:
+		{
+			logger.log("Tuning canceled.");
+			logger.writeLogMessages();
 		}
 	}
 	
@@ -128,7 +146,9 @@ MuseScore
 			}
 			catch (error)
 			{
-				outputMessageArea.text = error;
+				outputMessageArea.text = error.toString();
+				logger.error(error.toString());
+				logger.writeLogMessages();
 			}
 		}
 	}
@@ -141,19 +161,35 @@ MuseScore
 		
 		contentItem: Column
 		{
-			spacing: 10;
-			padding: 10;
-		
-			Repeater
+			CheckBox
 			{
-				model: customTuningChoices;
-				
-				CheckBox
-				{
-					text: model.text;
-					checked: model.checked;
-					onCheckedChanged: model.checked = checked;
-				}
+				id: deleteCustomCheckbox0;
+				text: "";
+				visible: false;
+			}
+			CheckBox
+			{
+				id: deleteCustomCheckbox1;
+				text: "";
+				visible: false;
+			}
+			CheckBox
+			{
+				id: deleteCustomCheckbox2;
+				text: "";
+				visible: false;
+			}
+			CheckBox
+			{
+				id: deleteCustomCheckbox3;
+				text: "";
+				visible: false;
+			}
+			CheckBox
+			{
+				id: deleteCustomCheckbox4;
+				text: "";
+				visible: false;
 			}
 		}
 		
@@ -162,13 +198,25 @@ MuseScore
 			try
 			{
 				var selectedCustomTunings = [];
-				for (var i = 0; i < customTuningChoices.count; i++)
+				if (deleteCustomCheckbox0.checked)
 				{
-					var currentTuning = customTuningChoices.get(i);
-					if (currentTuning.checked)
-					{
-						selectedCustomTunings.push(currentTuning.text);
-					}
+					selectedCustomTunings.push(deleteCustomCheckbox0.text);
+				}
+				if (deleteCustomCheckbox1.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox1.text);
+				}
+				if (deleteCustomCheckbox2.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox2.text);
+				}
+				if (deleteCustomCheckbox3.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox3.text);
+				}
+				if (deleteCustomCheckbox4.checked)
+				{
+					selectedCustomTunings.push(deleteCustomCheckbox4.text);
 				}
 				deleteCustomTunings(selectedCustomTunings);
 				loadCustomTunings();
@@ -176,6 +224,65 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error.toString();
+				logger.error(error.toString());
+				logger.writeLogMessages();
+			}
+		}
+	}
+	
+	FileIO
+	{
+		id: logger;
+		source: Qt.resolvedUrl(".").toString().substring(8) + "logs/" + DateUtils.getFileDateTime() + "_log.txt";
+		property var logMessages: "";
+		property var currentLogLevel: 2;
+		property variant logLevels:
+		{
+			0: " | TRACE   | ",
+			1: " | INFO    | ",
+			2: " | WARNING | ",
+			3: " | ERROR   | ",
+			4: " | FATAL   | ",
+		}
+		
+		function log(message, logLevel)
+		{
+			if (logLevel === undefined)
+			{
+				logLevel = 1;
+			}
+			
+			if (logLevel >= currentLogLevel)
+			{
+				logMessages += DateUtils.getRFC3339DateTime() + logLevels[logLevel] + message + "\n";
+			}
+		}
+		
+		function trace(message)
+		{
+			log(message, 0);
+		}
+		
+		function warning(message)
+		{
+			log(message, 2);
+		}
+		
+		function error(message)
+		{
+			log(message, 3);
+		}
+		
+		function fatal(message)
+		{
+			log(message, 4);
+		}
+		
+		function writeLogMessages()
+		{
+			if (logMessages != "")
+			{
+				write(logMessages);
 			}
 		}
 	}
@@ -183,22 +290,26 @@ MuseScore
 	FileIO
 	{
 		id: customTuningsIO;
-		source: Qt.resolvedUrl(".").substring(8) + "CustomTunings.tsv";
+		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
 		
 		onError:
 		{
 			outputMessageArea.text = msg;
+			logger.error(msg);
+			logger.writeLogMessages();
 		}
 	}
 	
 	FileIO
 	{
 		id: settingsIO;
-		source: Qt.resolvedUrl(".").substring(8) + "Settings.tsv";
+		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
 		
 		onError:
 		{
 			outputMessageArea.text = msg;
+			logger.error(msg);
+			logger.writeLogMessages();
 		}
 	}
 	
@@ -251,16 +362,20 @@ MuseScore
 						}
 						else
 						{
+							logger.log("Fifth size: " + fifthSize);
 							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
+							logger.log("Fifth deviation: " + fifthDeviation);
 							
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
-								fifthSizeDialog.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								logger.warning("Fifth smaller than the smallest diatonic fifth.");
+								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
-								fifthSizeDialog.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								logger.warning("Fifth larger than the largest diatonic fifth");
+								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else
@@ -272,6 +387,11 @@ MuseScore
 					catch (error)
 					{
 						outputMessageArea.text = error;
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -301,11 +421,17 @@ MuseScore
 						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
 						writeSettings();
 						referenceNoteName = referenceNoteNameComboBox.currentText;
-						referenceNote = referenceNoteName + referenceNoteAccidental;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -313,7 +439,7 @@ MuseScore
 			ComboBox
 			{
 				id: referenceNoteAccidentalComboBox;
-				model: ["bbb", "bb", "b", "", "#", "x", "#x"];
+				model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
 				width: 50;
 				onActivated:
 				{
@@ -322,11 +448,17 @@ MuseScore
 						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
 						writeSettings();
 						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-						referenceNote = referenceNoteName + referenceNoteAccidental;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
+						logger.error(error);
+					}
+					finally
+					{
+						logger.writeLogMessages();
 					}
 				}
 			}
@@ -702,17 +834,6 @@ MuseScore
 					{
 						try
 						{
-							// Populate the checkbox with every custom tuning.
-							customTuningChoices.clear();
-							var fileContent = customTuningsIO.read().split("\n");
-							for (var i = 0; i < fileContent.length; i++)
-							{
-								if (fileContent[i].trim() != "")
-								{
-									var rowData = StringUtils.parseTsvRow(fileContent[i]);
-									customTuningChoices.append({ text: rowData[0], checked: false });
-								}
-							}
 							deleteCustomDialog.open();
 						}
 						catch (error)
@@ -748,92 +869,149 @@ MuseScore
 	 */
 	function tuneNotes()
 	{
-		curScore.startCmd();
-	
-		// Calculate the portion of the score to tune.
-		var cursor = curScore.newCursor();
-		var startStaff;
-		var endStaff;
-		var startTick;
-		var endTick;
-		cursor.rewind(Cursor.SELECTION_START);
-		if (!cursor.segment)
+		try
 		{
-			// Tune the entire score.
-			startStaff = 0;
-			endStaff = curScore.nstaves - 1;
-			startTick = 0;
-			endTick = curScore.lastSegment.tick + 1;
-		}
-		else
-		{
-			// Tune only the selection.
-			startStaff = cursor.staffIdx;
-			startTick = cursor.tick;
-			cursor.rewind(Cursor.SELECTION_END);
-			endStaff = cursor.staffIdx;
-			if (cursor.tick == 0)
+			logger.log("Tuning notes.");
+			
+			curScore.startCmd();
+		
+			// Calculate the portion of the score to tune.
+			var cursor = curScore.newCursor();
+			var startStaff;
+			var endStaff;
+			var startTick;
+			var endTick;
+			cursor.rewind(Cursor.SELECTION_START);
+			if (!cursor.segment)
 			{
-				// If the selection includes the last measure of the score,
-				// .rewind() overflows and goes back to tick 0.
+				logger.log("Tuning the entire score.");
+				startStaff = 0;
+				endStaff = curScore.nstaves - 1;
+				startTick = 0;
 				endTick = curScore.lastSegment.tick + 1;
 			}
 			else
 			{
-				endTick = cursor.tick;
-			}
-		}
-		
-		// Loop on the portion of the score to tune.
-		for (var staff = startStaff; staff <= endStaff; staff++)
-		{
-			for (var voice = 0; voice < 4; voice++)
-			{
-				cursor.voice = voice;
-				cursor.staffIdx = staff;
-				cursor.rewindToTick(startTick);
-				
-				while (cursor.segment && (cursor.tick < endTick))
+				logger.log("Tuning only the current selection.");
+				startStaff = cursor.staffIdx;
+				startTick = cursor.tick;
+				cursor.rewind(Cursor.SELECTION_END);
+				endStaff = cursor.staffIdx;
+				if (cursor.tick == 0)
 				{
-					// Tune notes.
-					if (cursor.element)
+					// If the selection includes the last measure of the score,
+					// .rewind() overflows and goes back to tick 0.
+					endTick = curScore.lastSegment.tick + 1;
+				}
+				else
+				{
+					endTick = cursor.tick;
+				}
+				logger.trace("Tuning only ticks: " + startTick + " - " + endTick);
+				logger.trace("Tuning only staffs: " + startStaff + " - " + endStaff);
+			}
+			
+			// Loop on the portion of the score to tune.
+			for (var staff = startStaff; staff <= endStaff; staff++)
+			{
+				for (var voice = 0; voice < 4; voice++)
+				{
+					logger.log("Tuning Staff: " + staff + "; Voice: " + voice);
+					
+					cursor.voice = voice;
+					cursor.staffIdx = staff;
+					cursor.rewindToTick(startTick);
+					
+					while (cursor.segment && (cursor.tick < endTick))
 					{
-						if (cursor.element.type == Element.CHORD)
+						// Tune notes.
+						if (cursor.element)
 						{
-							var graceChords = cursor.element.graceNotes;
-							for (var i = 0; i < graceChords.length; i++)
+							if (cursor.element.type == Element.CHORD)
 							{
-								var notes = graceChords[i].notes;
-								for (var j = 0; j < notes.length; j++)
+								var graceChords = cursor.element.graceNotes;
+								for (var i = 0; i < graceChords.length; i++)
 								{
-									notes[j].tuning = -TuningUtils.circleOfFifthsDistance(notes[j], referenceNote) * fifthDeviation;
+									var notes = graceChords[i].notes;
+									for (var j = 0; j < notes.length; j++)
+									{
+										try
+										{
+											notes[j].tuning = calculateTuningOffset(notes[j]);
+										}
+										catch (error)
+										{
+											logger.error(error);
+										}
+									}
+								}
+								
+								var notes = cursor.element.notes;
+								for (var i = 0; i < notes.length; i++)
+								{
+									try
+									{
+										notes[i].tuning = calculateTuningOffset(notes[i]);
+									}
+									catch (error)
+									{
+										logger.error(error);
+									}
 								}
 							}
-							
-							var notes = cursor.element.notes;
-							for (var i = 0; i < notes.length; i++)
-							{
-								notes[i].tuning = -TuningUtils.circleOfFifthsDistance(notes[i], referenceNote) * fifthDeviation;
-							}
 						}
+						
+						cursor.next();
 					}
-					
-					cursor.next();
 				}
 			}
+			
+			logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+			
+			curScore.endCmd();
 		}
+		catch (error)
+		{
+			logger.fatal(error);
+		}
+		finally
+		{
+			logger.writeLogMessages();
 		
-		curScore.endCmd();
+			quit();
+		}
+	}
+	
+	/**
+	 * Returns the amount of cents necessary to tune the input note to 31EDO.
+	 */
+	function calculateTuningOffset(note)
+	{
+		totalNotes += 1;
 		
-		quit();
+		logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
+		
+		try
+		{
+			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
+			tunedNotes += 1;
+			logger.trace("Tuning offset: " + tuningOffset);
+			return tuningOffset;
+		}
+		catch (error)
+		{
+			logger.error(error);
+			// Leave the tuning of the input note unchanged.
+			return note.tuning;
+		}
 	}
 	
 	Component.onCompleted:
 	{
-		// Read settings file.
-		settings = {};
 		try
 		{
+			// Read settings file.
+			settings = {};
 			var settingsFileContents = settingsIO.read().split("\n");
 			for (var i = 0; i < settingsFileContents.length; i++)
 			{
@@ -843,40 +1021,43 @@ MuseScore
 					settings[rowData[0]] = rowData[1];
 				}
 			}
-		}
-		catch (error)
-		{
-			outputMessageArea.text = error.toString();
-		}
-		
-		// Initialise monospaced font.
-		for (var i = 0; i < preferredFonts.length; i++)
-		{
-			if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
+			logger.currentLogLevel = parseInt(settings["LogLevel"]);
+			
+			logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
+			logger.log("Log level set to: " + logger.currentLogLevel);
+			
+			// Initialise monospaced font.
+			for (var i = 0; i < preferredFonts.length; i++)
 			{
-				monospacedFont = preferredFonts[i];
-				break;
+				if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
+				{
+					monospacedFont = preferredFonts[i];
+					logger.log("Monospaced font set to: " + monospacedFont);
+					break;
+				}
 			}
-		}
+			
+			// Initialise reference note.
+			referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
+			referenceNoteName = referenceNoteNameComboBox.currentText;
+			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
+			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+			referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+			logger.log("Reference note set to: " + referenceNote);
+			
+			// Initialise output message area.
+			outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
 		
-		// Initialise reference note.
-		referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
-		referenceNoteName = referenceNoteNameComboBox.currentText;
-		referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
-		referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-		referenceNote = referenceNoteName + referenceNoteAccidental;
-		
-		// Initialise output message area.
-		outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
-		
-		// Initialise custom tunings buttons.
-		try
-		{
+			// Initialise custom tunings buttons.
 			loadCustomTunings();
 		}
 		catch (error)
 		{
-			outputMessageArea.error;
+			logger.fatal(error.toString());
+		}
+		finally
+		{
+			logger.writeLogMessages();
 		}
 	}
 	
@@ -893,6 +1074,8 @@ MuseScore
 	 */
 	function writeSettings()
 	{
+		logger.log("Updating settings file.");
+	
 		var fileContent = "";
 		for (var i = 0; i < Object.keys(settings).length; i++)
 		{
@@ -901,6 +1084,9 @@ MuseScore
 			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
 		}
 		settingsIO.write(fileContent);
+		
+		logger.log("Settings file updated successfully.");
+		logger.writeLogMessages();
 	}
 	
 	/**
@@ -909,11 +1095,19 @@ MuseScore
 	 */
 	function loadCustomTunings()
 	{
+		logger.log("Loading custom tunings.");
+	
 		custom0.visible = false;
 		custom1.visible = false;
 		custom2.visible = false;
 		custom3.visible = false;
 		custom4.visible = false;
+		
+		deleteCustomCheckbox0.visible = false;
+		deleteCustomCheckbox1.visible = false;
+		deleteCustomCheckbox2.visible = false;
+		deleteCustomCheckbox3.visible = false;
+		deleteCustomCheckbox4.visible = false;
 	
 		var customTuningCounter = 0;
 		var fileContent = customTuningsIO.read().split("\n");
@@ -922,36 +1116,47 @@ MuseScore
 			if (fileContent[i].trim() != "")
 			{
 				var rowData = StringUtils.parseTsvRow(fileContent[i]);
+				logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
 				switch (customTuningCounter)
 				{
 					case 0:
 						custom0.text = rowData[0];
 						custom0.customFifthSize0 = rowData[1];
 						custom0.visible = true;
+						deleteCustomCheckbox0.text = rowData[0];
+						deleteCustomCheckbox0.visible = true;
 						break;
 					
 					case 1:
 						custom1.text = rowData[0];
 						custom1.customFifthSize1 = rowData[1];
 						custom1.visible = true;
+						deleteCustomCheckbox1.text = rowData[0];
+						deleteCustomCheckbox1.visible = true;
 						break;
 					
 					case 2:
 						custom2.text = rowData[0];
 						custom2.customFifthSize2 = rowData[1];
 						custom2.visible = true;
+						deleteCustomCheckbox2.text = rowData[0];
+						deleteCustomCheckbox2.visible = true;
 						break;
 					
 					case 3:
 						custom3.text = rowData[0];
 						custom3.customFifthSize3 = rowData[1];
 						custom3.visible = true;
+						deleteCustomCheckbox3.text = rowData[0];
+						deleteCustomCheckbox3.visible = true;
 						break;
 					
 					case 4:
 						custom4.text = rowData[0];
 						custom4.customFifthSize4 = rowData[1];
 						custom4.visible = true;
+						deleteCustomCheckbox4.text = rowData[0];
+						deleteCustomCheckbox4.visible = true;
 						break;
 				}
 				
@@ -971,6 +1176,7 @@ MuseScore
 		{
 			addCustom.enabled = true;
 		}
+		
 		if (customTuningCounter >= 1)
 		{
 			deleteCustom.enabled = true;
@@ -979,6 +1185,9 @@ MuseScore
 		{
 			deleteCustom.enabled = false;
 		}
+		
+		logger.log("Custom tunings loaded successfully.");
+		logger.writeLogMessages();
 	}
 	
 	/**
@@ -986,8 +1195,11 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
+		logger.log("Adding a new custom tuning");
+		
 		tuningName = StringUtils.formatForTsv(tuningName.trim());
 		customFifthSize = ("" + customFifthSize).trim();
+		logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
 		if ((customFifthSize == "") || isNaN(customFifthSize))
 		{
 			throw "Invalid custom fifth size: " + customFifthSize;
@@ -996,6 +1208,9 @@ MuseScore
 		var fileContent = customTuningsIO.read();
 		fileContent += "\n" + tuningName + "\t" + customFifthSize;
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
+		
+		logger.log("New custom tuning added successfully.");
+		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1003,10 +1218,13 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
+		logger.log("Deleting selected custom tunings.");
+		
 		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < tuningsToDelete.length; i++)
 		{
 			var tuningToDelete = tuningsToDelete[i];
+			logger.trace("Deleting tuning: " + tuningToDelete);
 			for (var j = fileContent.length - 1; j >= 0; j--)
 			{
 				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
@@ -1017,5 +1235,8 @@ MuseScore
 			}
 		}
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
+		
+		logger.log("Tuning deleted successfully.");
+		logger.writeLogMessages();
 	}
 }

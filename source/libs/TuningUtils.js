@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "1.1.0";
+const VERSION = "1.1.1";
 
 // Size in cents of a justly tuned perfect fifth.
 const JUST_FIFTH = 1200.0 * Math.log2(3 / 2);
@@ -52,23 +52,7 @@ function circleOfFifthsDistance(n1, n2, tpcMode = "tpc1")
 	switch (typeof n1)
 	{
 		case "object":
-			switch (tpcMode)
-			{
-				case "tpc":
-					n1Tpc = n1.tpc - 14;
-					break;
-				
-				case "tpc1":
-					n1Tpc = n1.tpc1 - 14;
-					break;
-				
-				case "tpc2":
-					n1Tpc = n1.tpc2 - 14;
-					break;
-				
-				default:
-					throw "Unsupported value for tpcMode: " + tpcMode;
-			}
+			n1Tpc = n1[tpcMode] - 14;
 			break;
 		
 		case "string":
@@ -83,23 +67,7 @@ function circleOfFifthsDistance(n1, n2, tpcMode = "tpc1")
 	switch (typeof n2)
 	{
 		case "object":
-			switch (tpcMode)
-			{
-				case "tpc":
-					n2Tpc = n2.tpc - 14;
-					break;
-				
-				case "tpc1":
-					n2Tpc = n2.tpc1 - 14;
-					break;
-				
-				case "tpc2":
-					n2Tpc = n2.tpc2 - 14;
-					break;
-				
-				default:
-					throw "Unsupported value for tpcMode: " + tpcMode;
-			}
+			n2Tpc = n2[tpcMode] - 14;
 			break;
 		
 		case "string":
