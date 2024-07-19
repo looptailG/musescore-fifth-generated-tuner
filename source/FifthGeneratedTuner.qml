@@ -99,6 +99,12 @@ MuseScore
 				logger.writeLogMessages();
 			}
 		}
+		
+		onRejected:
+		{
+			logger.log("Tuning canceled.");
+			logger.writeLogMessages();
+		}
 	}
 	
 	Dialog
@@ -362,13 +368,13 @@ MuseScore
 							{
 								logger.warning("Fifth smaller than the smallest diatonic fifth.");
 								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-								fifthSizeDialogText.open();
+								fifthSizeDialog.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
 								logger.warning("Fifth larger than the largest diatonic fifth");
 								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-								fifthSizeDialogText.open();
+								fifthSizeDialog.open();
 							}
 							else
 							{
