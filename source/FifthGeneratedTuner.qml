@@ -368,13 +368,13 @@ MuseScore
 							
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
-								logger.warning("Fifth smaller than the smallest diatonic fifth.");
+								logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
 								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
-								logger.warning("Fifth larger than the largest diatonic fifth");
+								logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
 								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
