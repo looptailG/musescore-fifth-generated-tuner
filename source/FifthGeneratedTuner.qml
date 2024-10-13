@@ -98,14 +98,12 @@ MuseScore
 			{
 				outputMessageArea.text = error;
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 		
 		onRejected:
 		{
 			logger.log("Tuning canceled.");
-			logger.writeLogMessages();
 		}
 	}
 	
@@ -148,7 +146,6 @@ MuseScore
 			{
 				outputMessageArea.text = error.toString();
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 	}
@@ -225,7 +222,6 @@ MuseScore
 			{
 				outputMessageArea.text = error.toString();
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 	}
@@ -255,6 +251,7 @@ MuseScore
 			if (logLevel >= currentLogLevel)
 			{
 				logMessages += DateUtils.getRFC3339DateTime() + logLevels[logLevel] + message + "\n";
+				write(logMessages);
 			}
 		}
 		
@@ -277,14 +274,6 @@ MuseScore
 		{
 			log(message, 4);
 		}
-		
-		function writeLogMessages()
-		{
-			if (logMessages != "")
-			{
-				write(logMessages);
-			}
-		}
 	}
 	
 	FileIO
@@ -296,7 +285,6 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			logger.error(msg);
-			logger.writeLogMessages();
 		}
 	}
 	
@@ -309,7 +297,6 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			logger.error(msg);
-			logger.writeLogMessages();
 		}
 	}
 	
@@ -389,10 +376,6 @@ MuseScore
 						outputMessageArea.text = error;
 						logger.error(error);
 					}
-					finally
-					{
-						logger.writeLogMessages();
-					}
 				}
 			}
 		}
@@ -429,10 +412,6 @@ MuseScore
 						outputMessageArea.text = error.toString();
 						logger.error(error);
 					}
-					finally
-					{
-						logger.writeLogMessages();
-					}
 				}
 			}
 			
@@ -455,10 +434,6 @@ MuseScore
 					{
 						outputMessageArea.text = error.toString();
 						logger.error(error);
-					}
-					finally
-					{
-						logger.writeLogMessages();
 					}
 				}
 			}
@@ -973,8 +948,6 @@ MuseScore
 		}
 		finally
 		{
-			logger.writeLogMessages();
-		
 			quit();
 		}
 	}
@@ -1052,10 +1025,6 @@ MuseScore
 		{
 			logger.fatal(error.toString());
 		}
-		finally
-		{
-			logger.writeLogMessages();
-		}
 	}
 	
 	onRun:
@@ -1083,7 +1052,6 @@ MuseScore
 		settingsIO.write(fileContent);
 		
 		logger.log("Settings file updated successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1184,7 +1152,6 @@ MuseScore
 		}
 		
 		logger.log("Custom tunings loaded successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1207,7 +1174,6 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
 		
 		logger.log("New custom tuning added successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1234,6 +1200,5 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
 		
 		logger.log("Tuning deleted successfully.");
-		logger.writeLogMessages();
 	}
 }
