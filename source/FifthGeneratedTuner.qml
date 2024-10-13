@@ -828,6 +828,7 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
+				wrapMode: TextEdit.Wrap;
 				width: 400;
 				height: 50;
 			}
