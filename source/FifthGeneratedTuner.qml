@@ -925,38 +925,35 @@ MuseScore
 					while (cursor.segment && (cursor.tick < endTick))
 					{
 						// Tune notes.
-						if (cursor.element)
+						if (cursor.element && (cursor.element.type == Element.CHORD))
 						{
-							if (cursor.element.type == Element.CHORD)
+							var graceChords = cursor.element.graceNotes;
+							for (var i = 0; i < graceChords.length; i++)
 							{
-								var graceChords = cursor.element.graceNotes;
-								for (var i = 0; i < graceChords.length; i++)
-								{
-									var notes = graceChords[i].notes;
-									for (var j = 0; j < notes.length; j++)
-									{
-										try
-										{
-											notes[j].tuning = calculateTuningOffset(notes[j]);
-										}
-										catch (error)
-										{
-											logger.error(error);
-										}
-									}
-								}
-								
-								var notes = cursor.element.notes;
-								for (var i = 0; i < notes.length; i++)
+								var notes = graceChords[i].notes;
+								for (var j = 0; j < notes.length; j++)
 								{
 									try
 									{
-										notes[i].tuning = calculateTuningOffset(notes[i]);
+										notes[j].tuning = calculateTuningOffset(notes[j]);
 									}
 									catch (error)
 									{
 										logger.error(error);
 									}
+								}
+							}
+							
+							var notes = cursor.element.notes;
+							for (var i = 0; i < notes.length; i++)
+							{
+								try
+								{
+									notes[i].tuning = calculateTuningOffset(notes[i]);
+								}
+								catch (error)
+								{
+									logger.error(error);
 								}
 							}
 						}
