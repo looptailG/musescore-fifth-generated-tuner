@@ -35,8 +35,9 @@ MuseScore
 	version: "1.3.1";
 	
 	pluginType: "dialog";
-	width: guiColumn.implicitWidth;
-	height: guiColumn.implicitHeight;
+	property var padding: 10;
+	width: guiColumn.implicitWidth + 2*padding;
+	height: guiColumn.implicitHeight + 2*padding;
 	
 	property variant settings: {};
 	
@@ -304,12 +305,11 @@ MuseScore
 	{
 		id: guiColumn;
 		anchors.centerIn: parent;
-		anchors.margins: 10;
-		spacing: 10;
+		spacing: padding;
 		
 		Row
 		{
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -383,7 +383,7 @@ MuseScore
 	
 		Row
 		{
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -444,7 +444,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -576,7 +576,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -686,7 +686,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -819,7 +819,7 @@ MuseScore
 		
 		Row
 		{
-			spacing: 10;
+			spacing: padding;
 			
 			TextArea
 			{
@@ -827,7 +827,7 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
-				width: 450;
+				width: 400;
 				height: 50;
 			}
 		}
