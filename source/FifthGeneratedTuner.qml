@@ -84,7 +84,7 @@ MuseScore
 			{
 				id: fifthSizeDialogText;
 				text: "";
-				width: 460;
+				width: guiColumn.implicitWidth;
 				wrapMode: Text.Wrap;
 			}
 		}
