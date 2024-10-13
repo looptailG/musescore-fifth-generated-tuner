@@ -35,8 +35,9 @@ MuseScore
 	version: "1.3.1";
 	
 	pluginType: "dialog";
-	width: 470;
-	height: 760;
+	property var padding: 10;
+	width: guiColumn.implicitWidth + 2*padding;
+	height: guiColumn.implicitHeight + 2*padding;
 	
 	property variant settings: {};
 	
@@ -300,15 +301,15 @@ MuseScore
 		}
 	}
 	
-	Rectangle
+	Column
 	{
-		anchors.fill: parent;
+		id: guiColumn;
+		anchors.centerIn: parent;
+		spacing: padding;
 		
 		Row
 		{
-			x: 10;
-			y: 10;
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -379,12 +380,10 @@ MuseScore
 				}
 			}
 		}
-		
+	
 		Row
 		{
-			x: 10;
-			y: 50;
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -441,13 +440,12 @@ MuseScore
 		
 		Row
 		{
-			x: 10;
-			y: 100;
-			spacing: 50;
+			anchors.horizontalCenter: parent.horizontalCenter;
+			spacing: 5 * padding;
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -579,7 +577,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -689,7 +687,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -822,9 +820,8 @@ MuseScore
 		
 		Row
 		{
-			x: 10;
-			y: 700;
-			spacing: 10;
+			anchors.horizontalCenter: parent.horizontalCenter;
+			spacing: padding;
 			
 			TextArea
 			{
@@ -832,7 +829,8 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
-				width: 450;
+				wrapMode: TextEdit.Wrap;
+				width: 400;
 				height: 50;
 			}
 		}
