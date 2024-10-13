@@ -819,6 +819,7 @@ MuseScore
 		
 		Row
 		{
+			anchors.horizontalCenter: parent.horizontalCenter;
 			spacing: padding;
 			
 			TextArea
