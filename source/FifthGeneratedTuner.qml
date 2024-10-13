@@ -440,7 +440,8 @@ MuseScore
 		
 		Row
 		{
-			spacing: 50;
+			anchors.horizontalCenter: parent.horizontalCenter;
+			spacing: 5 * padding;
 			
 			Column
 			{
