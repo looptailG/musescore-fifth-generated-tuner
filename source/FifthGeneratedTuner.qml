@@ -35,8 +35,8 @@ MuseScore
 	version: "1.3.1";
 	
 	pluginType: "dialog";
-	width: 470;
-	height: 760;
+	width: guiColumn.implicitWidth;
+	height: guiColumn.implicitHeight;
 	
 	property variant settings: {};
 	
@@ -300,543 +300,537 @@ MuseScore
 		}
 	}
 	
-	Rectangle
+	Column
 	{
-		anchors.fill: parent;
+		id: guiColumn;
+		anchors.centerIn: parent;
+		anchors.margins: 10;
+		spacing: 10;
 		
-		Column
+		Row
 		{
-			x: 10;
-			y: 10;
 			spacing: 10;
 			
-			Row
+			Text
 			{
-				spacing: 10;
-				
-				Text
+				text: "Fifth size in cents:";
+				font.pixelSize: 20;
+			}
+			
+			TextField
+			{
+				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
+				font.family: monospacedFont;
+				id: fifthSizeField;
+				width: 150;
+				height: 30;
+			}
+			
+			Button
+			{
+				width: 100;
+				height: 30;
+				text: "Tune";
+				onClicked:
 				{
-					text: "Fifth size in cents:";
-					font.pixelSize: 20;
-				}
-				
-				TextField
-				{
-					placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
-					font.family: monospacedFont;
-					id: fifthSizeField;
-					width: 150;
-					height: 30;
-				}
-				
-				Button
-				{
-					width: 100;
-					height: 30;
-					text: "Tune";
-					onClicked:
+					try
 					{
-						try
+						// Read the input fifth size.
+						var fifthSize = parseFloat(fifthSizeField.text);
+						if (isNaN(fifthSize))
 						{
-							// Read the input fifth size.
-							var fifthSize = parseFloat(fifthSizeField.text);
-							if (isNaN(fifthSize))
+							if (fifthSizeField.text == "")
 							{
-								if (fifthSizeField.text == "")
-								{
-									throw "Empty input field.";
-								}
-								else
-								{
-									throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
-								}
+								throw "Empty input field.";
 							}
 							else
 							{
-								logger.log("Fifth size: " + fifthSize);
-								fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
-								logger.log("Fifth deviation: " + fifthDeviation);
-								
-								if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
-								{
-									logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
-									fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-									fifthSizeDialog.open();
-								}
-								else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
-								{
-									logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
-									fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-									fifthSizeDialog.open();
-								}
-								else
-								{
-									tuneNotes();
-								}
+								throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
 							}
 						}
-						catch (error)
+						else
 						{
-							outputMessageArea.text = error;
-							logger.error(error);
+							logger.log("Fifth size: " + fifthSize);
+							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
+							logger.log("Fifth deviation: " + fifthDeviation);
+							
+							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
+							{
+								logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
+								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
+							}
+							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
+							{
+								logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
+								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
+							}
+							else
+							{
+								tuneNotes();
+							}
 						}
+					}
+					catch (error)
+					{
+						outputMessageArea.text = error;
+						logger.error(error);
 					}
 				}
 			}
-		
-			Row
+		}
+	
+		Row
+		{
+			spacing: 10;
+			
+			Text
 			{
-				spacing: 10;
-				
-				Text
+				text: "Reference note:";
+				font.pixelSize: 15;
+			}
+			
+			ComboBox
+			{
+				id: referenceNoteNameComboBox;
+				model: ["A", "B", "C", "D", "E", "F", "G"];
+				width: 50;
+				onActivated:
 				{
-					text: "Reference note:";
-					font.pixelSize: 15;
-				}
-				
-				ComboBox
-				{
-					id: referenceNoteNameComboBox;
-					model: ["A", "B", "C", "D", "E", "F", "G"];
-					width: 50;
-					onActivated:
+					try
 					{
-						try
-						{
-							settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
-							writeSettings();
-							referenceNoteName = referenceNoteNameComboBox.currentText;
-							referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-							logger.log("Reference note changed to: " + referenceNote);
-						}
-						catch (error)
-						{
-							outputMessageArea.text = error.toString();
-							logger.error(error);
-						}
+						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
+						writeSettings();
+						referenceNoteName = referenceNoteNameComboBox.currentText;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
-				}
-				
-				ComboBox
-				{
-					id: referenceNoteAccidentalComboBox;
-					model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
-					width: 50;
-					onActivated:
+					catch (error)
 					{
-						try
-						{
-							settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
-							writeSettings();
-							referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-							referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-							logger.log("Reference note changed to: " + referenceNote);
-						}
-						catch (error)
-						{
-							outputMessageArea.text = error.toString();
-							logger.error(error);
-						}
+						outputMessageArea.text = error.toString();
+						logger.error(error);
 					}
 				}
 			}
 			
-			Row
+			ComboBox
 			{
-				spacing: 50;
-				
-				Column
+				id: referenceNoteAccidentalComboBox;
+				model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+				width: 50;
+				onActivated:
 				{
-					spacing: 10;
-					
-					Text
+					try
 					{
-						text: "EDOs";
-						font.pixelSize: 15;
+						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
+						writeSettings();
+						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						logger.log("Reference note changed to: " + referenceNote);
 					}
-					
-					Button
+					catch (error)
 					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "5";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 5 * 3;
-						}
+						outputMessageArea.text = error.toString();
+						logger.error(error);
 					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "7";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 7 * 4;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "12";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.DEFAULT_FIFTH;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "17";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 17 * 10;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "19";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 19 * 11;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "26";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 26 * 15;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "29";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 29 * 17;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "31";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 31 * 18;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "41";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 41 * 24;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "43";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 43 * 25;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "50";
-						onClicked:
-						{
-							fifthSizeField.text = 1200.0 / 50 * 29;
-						}
-					}
-				}
-				
-				Column
-				{
-					spacing: 10;
-					
-					Text
-					{
-						text: "Meantones";
-						font.pixelSize: 15;
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "1/3 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "2/7 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "7/26 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "1/4 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "2/9 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "1/5 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "1/6 Comma";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "Golden";
-						onClicked:
-						{
-							fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "Tungsten";
-						onClicked:
-						{
-							fifthSizeField.text = 600.0 * (Math.sqrt(10) - 2);
-						}
-					}
-				}
-				
-				Column
-				{
-					spacing: 10;
-					
-					Text
-					{
-						text: "Others";
-						font.pixelSize: 15;
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "Pythagorean";
-						onClicked:
-						{
-							fifthSizeField.text = TuningUtils.JUST_FIFTH;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "";
-						property var customFifthSize0;
-						id: custom0;
-						visible: false;
-						onClicked:
-						{
-							fifthSizeField.text = customFifthSize0;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "";
-						property var customFifthSize1;
-						id: custom1;
-						visible: false;
-						onClicked:
-						{
-							fifthSizeField.text = customFifthSize1;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "";
-						property var customFifthSize2;
-						id: custom2;
-						visible: false;
-						onClicked:
-						{
-							fifthSizeField.text = customFifthSize2;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "";
-						property var customFifthSize3;
-						id: custom3;
-						visible: false;
-						onClicked:
-						{
-							fifthSizeField.text = customFifthSize3;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "";
-						property var customFifthSize4;
-						id: custom4;
-						visible: false;
-						onClicked:
-						{
-							fifthSizeField.text = customFifthSize4;
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "Add Custom";
-						font.italic: true;
-						id: addCustom;
-						onClicked:
-						{
-							try
-							{
-								newCustomTuningDialog.open();
-							}
-							catch (error)
-							{
-								outputMessageArea.text = error;
-							}
-						}
-					}
-					
-					Button
-					{
-						width: buttonWidth;
-						height: buttonHeight;
-						text: "Delete Custom";
-						font.italic: true;
-						id: deleteCustom;
-						onClicked:
-						{
-							try
-							{
-								deleteCustomDialog.open();
-							}
-							catch (error)
-							{
-								outputMessageArea.text = error.toString();
-							}
-						}
-					}
-				}
-			}
-			
-			Row
-			{
-				spacing: 10;
-				
-				TextArea
-				{
-					id: outputMessageArea;
-					text: "";
-					font.family: monospacedFont;
-					readOnly: true;
-					width: 450;
-					height: 50;
 				}
 			}
 		}
 		
-
+		Row
+		{
+			spacing: 50;
+			
+			Column
+			{
+				spacing: 10;
+				
+				Text
+				{
+					text: "EDOs";
+					font.pixelSize: 15;
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "5";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 5 * 3;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "7";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 7 * 4;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "12";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.DEFAULT_FIFTH;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "17";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 17 * 10;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "19";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 19 * 11;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "26";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 26 * 15;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "29";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 29 * 17;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "31";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 31 * 18;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "41";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 41 * 24;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "43";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 43 * 25;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "50";
+					onClicked:
+					{
+						fifthSizeField.text = 1200.0 / 50 * 29;
+					}
+				}
+			}
+			
+			Column
+			{
+				spacing: 10;
+				
+				Text
+				{
+					text: "Meantones";
+					font.pixelSize: 15;
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "1/3 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "2/7 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "7/26 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "1/4 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "2/9 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "1/5 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "1/6 Comma";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Golden";
+					onClicked:
+					{
+						fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Tungsten";
+					onClicked:
+					{
+						fifthSizeField.text = 600.0 * (Math.sqrt(10) - 2);
+					}
+				}
+			}
+			
+			Column
+			{
+				spacing: 10;
+				
+				Text
+				{
+					text: "Others";
+					font.pixelSize: 15;
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Pythagorean";
+					onClicked:
+					{
+						fifthSizeField.text = TuningUtils.JUST_FIFTH;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize0;
+					id: custom0;
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize0;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize1;
+					id: custom1;
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize1;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize2;
+					id: custom2;
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize2;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize3;
+					id: custom3;
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize3;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "";
+					property var customFifthSize4;
+					id: custom4;
+					visible: false;
+					onClicked:
+					{
+						fifthSizeField.text = customFifthSize4;
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Add Custom";
+					font.italic: true;
+					id: addCustom;
+					onClicked:
+					{
+						try
+						{
+							newCustomTuningDialog.open();
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error;
+						}
+					}
+				}
+				
+				Button
+				{
+					width: buttonWidth;
+					height: buttonHeight;
+					text: "Delete Custom";
+					font.italic: true;
+					id: deleteCustom;
+					onClicked:
+					{
+						try
+						{
+							deleteCustomDialog.open();
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error.toString();
+						}
+					}
+				}
+			}
+		}
+		
+		Row
+		{
+			spacing: 10;
+			
+			TextArea
+			{
+				id: outputMessageArea;
+				text: "";
+				font.family: monospacedFont;
+				readOnly: true;
+				width: 450;
+				height: 50;
+			}
+		}
 	}
 	
 	/**
