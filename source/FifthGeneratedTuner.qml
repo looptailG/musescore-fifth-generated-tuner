@@ -32,11 +32,12 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.3.0";
+	version: "1.3.1";
 	
 	pluginType: "dialog";
-	width: 470;
-	height: 760;
+	property var padding: 10;
+	width: guiColumn.implicitWidth + 2*padding;
+	height: guiColumn.implicitHeight + 2*padding;
 	
 	property variant settings: {};
 	
@@ -83,7 +84,7 @@ MuseScore
 			{
 				id: fifthSizeDialogText;
 				text: "";
-				width: 460;
+				width: guiColumn.implicitWidth;
 				wrapMode: Text.Wrap;
 			}
 		}
@@ -98,14 +99,12 @@ MuseScore
 			{
 				outputMessageArea.text = error;
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 		
 		onRejected:
 		{
 			logger.log("Tuning canceled.");
-			logger.writeLogMessages();
 		}
 	}
 	
@@ -148,7 +147,6 @@ MuseScore
 			{
 				outputMessageArea.text = error.toString();
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 	}
@@ -225,7 +223,6 @@ MuseScore
 			{
 				outputMessageArea.text = error.toString();
 				logger.error(error.toString());
-				logger.writeLogMessages();
 			}
 		}
 	}
@@ -255,6 +252,7 @@ MuseScore
 			if (logLevel >= currentLogLevel)
 			{
 				logMessages += DateUtils.getRFC3339DateTime() + logLevels[logLevel] + message + "\n";
+				write(logMessages);
 			}
 		}
 		
@@ -277,14 +275,6 @@ MuseScore
 		{
 			log(message, 4);
 		}
-		
-		function writeLogMessages()
-		{
-			if (logMessages != "")
-			{
-				write(logMessages);
-			}
-		}
 	}
 	
 	FileIO
@@ -296,7 +286,6 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			logger.error(msg);
-			logger.writeLogMessages();
 		}
 	}
 	
@@ -309,19 +298,18 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			logger.error(msg);
-			logger.writeLogMessages();
 		}
 	}
 	
-	Rectangle
+	Column
 	{
-		anchors.fill: parent;
+		id: guiColumn;
+		anchors.centerIn: parent;
+		spacing: padding;
 		
 		Row
 		{
-			x: 10;
-			y: 10;
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -389,19 +377,13 @@ MuseScore
 						outputMessageArea.text = error;
 						logger.error(error);
 					}
-					finally
-					{
-						logger.writeLogMessages();
-					}
 				}
 			}
 		}
-		
+	
 		Row
 		{
-			x: 10;
-			y: 50;
-			spacing: 10;
+			spacing: padding;
 			
 			Text
 			{
@@ -429,10 +411,6 @@ MuseScore
 						outputMessageArea.text = error.toString();
 						logger.error(error);
 					}
-					finally
-					{
-						logger.writeLogMessages();
-					}
 				}
 			}
 			
@@ -456,23 +434,18 @@ MuseScore
 						outputMessageArea.text = error.toString();
 						logger.error(error);
 					}
-					finally
-					{
-						logger.writeLogMessages();
-					}
 				}
 			}
 		}
 		
 		Row
 		{
-			x: 10;
-			y: 100;
-			spacing: 50;
+			anchors.horizontalCenter: parent.horizontalCenter;
+			spacing: 5 * padding;
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -604,7 +577,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -714,7 +687,7 @@ MuseScore
 			
 			Column
 			{
-				spacing: 10;
+				spacing: padding;
 				
 				Text
 				{
@@ -847,9 +820,8 @@ MuseScore
 		
 		Row
 		{
-			x: 10;
-			y: 700;
-			spacing: 10;
+			anchors.horizontalCenter: parent.horizontalCenter;
+			spacing: padding;
 			
 			TextArea
 			{
@@ -857,7 +829,8 @@ MuseScore
 				text: "";
 				font.family: monospacedFont;
 				readOnly: true;
-				width: 450;
+				wrapMode: TextEdit.Wrap;
+				width: 400;
 				height: 50;
 			}
 		}
@@ -925,38 +898,35 @@ MuseScore
 					while (cursor.segment && (cursor.tick < endTick))
 					{
 						// Tune notes.
-						if (cursor.element)
+						if (cursor.element && (cursor.element.type == Element.CHORD))
 						{
-							if (cursor.element.type == Element.CHORD)
+							var graceChords = cursor.element.graceNotes;
+							for (var i = 0; i < graceChords.length; i++)
 							{
-								var graceChords = cursor.element.graceNotes;
-								for (var i = 0; i < graceChords.length; i++)
-								{
-									var notes = graceChords[i].notes;
-									for (var j = 0; j < notes.length; j++)
-									{
-										try
-										{
-											notes[j].tuning = calculateTuningOffset(notes[j]);
-										}
-										catch (error)
-										{
-											logger.error(error);
-										}
-									}
-								}
-								
-								var notes = cursor.element.notes;
-								for (var i = 0; i < notes.length; i++)
+								var notes = graceChords[i].notes;
+								for (var j = 0; j < notes.length; j++)
 								{
 									try
 									{
-										notes[i].tuning = calculateTuningOffset(notes[i]);
+										notes[j].tuning = calculateTuningOffset(notes[j]);
 									}
 									catch (error)
 									{
 										logger.error(error);
 									}
+								}
+							}
+							
+							var notes = cursor.element.notes;
+							for (var i = 0; i < notes.length; i++)
+							{
+								try
+								{
+									notes[i].tuning = calculateTuningOffset(notes[i]);
+								}
+								catch (error)
+								{
+									logger.error(error);
 								}
 							}
 						}
@@ -976,8 +946,6 @@ MuseScore
 		}
 		finally
 		{
-			logger.writeLogMessages();
-		
 			quit();
 		}
 	}
@@ -1055,10 +1023,6 @@ MuseScore
 		{
 			logger.fatal(error.toString());
 		}
-		finally
-		{
-			logger.writeLogMessages();
-		}
 	}
 	
 	onRun:
@@ -1086,7 +1050,6 @@ MuseScore
 		settingsIO.write(fileContent);
 		
 		logger.log("Settings file updated successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1187,7 +1150,6 @@ MuseScore
 		}
 		
 		logger.log("Custom tunings loaded successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1210,7 +1172,6 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
 		
 		logger.log("New custom tuning added successfully.");
-		logger.writeLogMessages();
 	}
 	
 	/**
@@ -1237,6 +1198,5 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
 		
 		logger.log("Tuning deleted successfully.");
-		logger.writeLogMessages();
 	}
 }
