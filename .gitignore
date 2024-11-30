@@ -1,2 +1,4 @@
-out
+out/*
+!out/GenerateFifthGeneratedPlugin.py
+
 source/CustomTunings.tsv

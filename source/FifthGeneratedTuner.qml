@@ -22,6 +22,7 @@ import FileIO 3.0
 import MuseScore 3.0
 import "libs/AccidentalUtils.js" as AccidentalUtils
 import "libs/DateUtils.js" as DateUtils
+import "libs/IterationUtils.js" as IterationUtils
 import "libs/NoteUtils.js" as NoteUtils
 import "libs/StringUtils.js" as StringUtils
 import "libs/TuningUtils.js" as TuningUtils
@@ -32,7 +33,7 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.3.1";
+	version: "1.3.2";
 	
 	pluginType: "dialog";
 	property var padding: 10;
@@ -846,99 +847,15 @@ MuseScore
 		{
 			logger.log("Tuning notes.");
 			
-			curScore.startCmd();
-		
-			// Calculate the portion of the score to tune.
-			var cursor = curScore.newCursor();
-			var startStaff;
-			var endStaff;
-			var startTick;
-			var endTick;
-			cursor.rewind(Cursor.SELECTION_START);
-			if (!cursor.segment)
-			{
-				logger.log("Tuning the entire score.");
-				startStaff = 0;
-				endStaff = curScore.nstaves - 1;
-				startTick = 0;
-				endTick = curScore.lastSegment.tick + 1;
-			}
-			else
-			{
-				logger.log("Tuning only the current selection.");
-				startStaff = cursor.staffIdx;
-				startTick = cursor.tick;
-				cursor.rewind(Cursor.SELECTION_END);
-				endStaff = cursor.staffIdx;
-				if (cursor.tick == 0)
+			IterationUtils.iterate(
+				curScore,
 				{
-					// If the selection includes the last measure of the score,
-					// .rewind() overflows and goes back to tick 0.
-					endTick = curScore.lastSegment.tick + 1;
-				}
-				else
-				{
-					endTick = cursor.tick;
-				}
-				logger.trace("Tuning only ticks: " + startTick + " - " + endTick);
-				logger.trace("Tuning only staffs: " + startStaff + " - " + endStaff);
-			}
-			
-			// Loop on the portion of the score to tune.
-			for (var staff = startStaff; staff <= endStaff; staff++)
-			{
-				for (var voice = 0; voice < 4; voice++)
-				{
-					logger.log("Tuning Staff: " + staff + "; Voice: " + voice);
-					
-					cursor.voice = voice;
-					cursor.staffIdx = staff;
-					cursor.rewindToTick(startTick);
-					
-					while (cursor.segment && (cursor.tick < endTick))
-					{
-						// Tune notes.
-						if (cursor.element && (cursor.element.type == Element.CHORD))
-						{
-							var graceChords = cursor.element.graceNotes;
-							for (var i = 0; i < graceChords.length; i++)
-							{
-								var notes = graceChords[i].notes;
-								for (var j = 0; j < notes.length; j++)
-								{
-									try
-									{
-										notes[j].tuning = calculateTuningOffset(notes[j]);
-									}
-									catch (error)
-									{
-										logger.error(error);
-									}
-								}
-							}
-							
-							var notes = cursor.element.notes;
-							for (var i = 0; i < notes.length; i++)
-							{
-								try
-								{
-									notes[i].tuning = calculateTuningOffset(notes[i]);
-								}
-								catch (error)
-								{
-									logger.error(error);
-								}
-							}
-						}
-						
-						cursor.next();
-					}
-				}
-			}
+					"onNote": onNote
+				},
+				logger
+			);
 			
 			logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
-			
-			curScore.endCmd();
 		}
 		catch (error)
 		{
@@ -950,27 +867,21 @@ MuseScore
 		}
 	}
 	
-	/**
-	 * Returns the amount of cents necessary to tune the input note to 31EDO.
-	 */
-	function calculateTuningOffset(note)
+	function onNote(note)
 	{
 		totalNotes += 1;
 		
-		logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
-		
 		try
 		{
+			logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
 			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
-			tunedNotes += 1;
 			logger.trace("Tuning offset: " + tuningOffset);
-			return tuningOffset;
+			note.tuning = tuningOffset;
+			tunedNotes += 1;
 		}
 		catch (error)
 		{
 			logger.error(error);
-			// Leave the tuning of the input note unchanged.
-			return note.tuning;
 		}
 	}
 	
