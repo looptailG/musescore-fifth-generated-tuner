@@ -1,6 +1,6 @@
 /*
 	A Musescore plugin for tuning a score based on the specified fifth size.
-	Copyright (C) 2024 Alessandro Culatti
+	Copyright (C) 2024 - 2025 Alessandro Culatti
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.3.2";
+	version: "1.3.3";
 	
 	pluginType: "dialog";
 	property var padding: 10;
-	width: guiColumn.implicitWidth + 2*padding;
-	height: guiColumn.implicitHeight + 2*padding;
+	width: guiColumn.implicitWidth + 2 * padding;
+	height: guiColumn.implicitHeight + 2 * padding;
 	
 	property variant settings: {};
 	
