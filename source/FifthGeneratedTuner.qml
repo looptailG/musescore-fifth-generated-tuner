@@ -20,13 +20,13 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 import FileIO 3.0
 import MuseScore 3.0
-import "libs/AccidentalUtils.js" as AccidentalUtils
-import "libs/DateUtils.js" as DateUtils
-import "libs/IterationUtils.js" as IterationUtils
-import "libs/Logger.js" as Logger
-import "libs/NoteUtils.js" as NoteUtils
-import "libs/StringUtils.js" as StringUtils
-import "libs/TuningUtils.js" as TuningUtils
+import "AccidentalUtils.js" as AccidentalUtils
+import "DateUtils.js" as DateUtils
+import "IterationUtils.js" as IterationUtils
+import "Logger.js" as Logger
+import "NoteUtils.js" as NoteUtils
+import "StringUtils.js" as StringUtils
+import "TuningUtils.js" as TuningUtils
 
 MuseScore
 {
