@@ -76,7 +76,7 @@ MuseScore
 	
 	FileIO
 	{
-		id: logger;
+		id: loggerId;
 	}
 	
 	Dialog
@@ -105,13 +105,13 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error;
-				logger.error(error.toString());
+				Logger.err(error.toString());
 			}
 		}
 		
 		onRejected:
 		{
-			logger.log("Tuning canceled.");
+			Logger.log("Tuning canceled.");
 		}
 	}
 	
@@ -153,7 +153,7 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error.toString();
-				logger.error(error.toString());
+				Logger.err(error.toString());
 			}
 		}
 	}
@@ -229,7 +229,7 @@ MuseScore
 			catch (error)
 			{
 				outputMessageArea.text = error.toString();
-				logger.error(error.toString());
+				Logger.err(error.toString());
 			}
 		}
 	}
@@ -242,7 +242,7 @@ MuseScore
 		onError:
 		{
 			outputMessageArea.text = msg;
-			logger.error(msg);
+			Logger.err(msg);
 		}
 	}
 	
@@ -254,7 +254,7 @@ MuseScore
 		onError:
 		{
 			outputMessageArea.text = msg;
-			logger.error(msg);
+			Logger.err(msg);
 		}
 	}
 	
@@ -307,19 +307,19 @@ MuseScore
 						}
 						else
 						{
-							logger.log("Fifth size: " + fifthSize);
+							Logger.log("Fifth size: " + fifthSize);
 							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
-							logger.log("Fifth deviation: " + fifthDeviation);
+							Logger.log("Fifth deviation: " + fifthDeviation);
 							
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
-								logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
+								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
 								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
-								logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
+								Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
 								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
@@ -332,7 +332,7 @@ MuseScore
 					catch (error)
 					{
 						outputMessageArea.text = error;
-						logger.error(error);
+						Logger.err(error);
 					}
 				}
 			}
@@ -361,12 +361,12 @@ MuseScore
 						writeSettings();
 						referenceNoteName = referenceNoteNameComboBox.currentText;
 						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-						logger.log("Reference note changed to: " + referenceNote);
+						Logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
-						logger.error(error);
+						Logger.err(error);
 					}
 				}
 			}
@@ -384,12 +384,12 @@ MuseScore
 						writeSettings();
 						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-						logger.log("Reference note changed to: " + referenceNote);
+						Logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
 					{
 						outputMessageArea.text = error.toString();
-						logger.error(error);
+						Logger.err(error);
 					}
 				}
 			}
@@ -801,21 +801,21 @@ MuseScore
 	{
 		try
 		{
-			logger.log("Tuning notes.");
+			Logger.log("Tuning notes.");
 			
 			IterationUtils.iterate(
 				curScore,
 				{
 					"onNote": onNote
 				},
-				logger
+				loggerId
 			);
 			
-			logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
 		}
 		catch (error)
 		{
-			logger.fatal(error);
+			Logger.fatal(error);
 		}
 		finally
 		{
@@ -829,15 +829,15 @@ MuseScore
 		
 		try
 		{
-			logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
+			Logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
 			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
-			logger.trace("Tuning offset: " + tuningOffset);
+			Logger.trace("Tuning offset: " + tuningOffset);
 			note.tuning = tuningOffset;
 			tunedNotes += 1;
 		}
 		catch (error)
 		{
-			logger.error(error);
+			Logger.err(error);
 		}
 	}
 	
@@ -856,10 +856,9 @@ MuseScore
 					settings[rowData[0]] = rowData[1];
 				}
 			}
-			logger.currentLogLevel = parseInt(settings["LogLevel"]);
 			
-			logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
-			logger.log("Log level set to: " + logger.currentLogLevel);
+			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
+			Logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
 			
 			// Initialise monospaced font.
 			for (var i = 0; i < preferredFonts.length; i++)
@@ -867,7 +866,7 @@ MuseScore
 				if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
 				{
 					monospacedFont = preferredFonts[i];
-					logger.log("Monospaced font set to: " + monospacedFont);
+					Logger.log("Monospaced font set to: " + monospacedFont);
 					break;
 				}
 			}
@@ -878,7 +877,7 @@ MuseScore
 			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
 			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 			referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-			logger.log("Reference note set to: " + referenceNote);
+			Logger.log("Reference note set to: " + referenceNote);
 			
 			// Initialise output message area.
 			outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
@@ -888,7 +887,11 @@ MuseScore
 		}
 		catch (error)
 		{
-			logger.fatal(error.toString());
+			Logger.fatal(error.toString());
+		}
+		finally
+		{
+			Logger.writeLogs();
 		}
 	}
 	
@@ -905,7 +908,7 @@ MuseScore
 	 */
 	function writeSettings()
 	{
-		logger.log("Updating settings file.");
+		Logger.log("Updating settings file.");
 	
 		var fileContent = "";
 		for (var i = 0; i < Object.keys(settings).length; i++)
@@ -916,7 +919,7 @@ MuseScore
 		}
 		settingsIO.write(fileContent);
 		
-		logger.log("Settings file updated successfully.");
+		Logger.log("Settings file updated successfully.");
 	}
 	
 	/**
@@ -925,7 +928,7 @@ MuseScore
 	 */
 	function loadCustomTunings()
 	{
-		logger.log("Loading custom tunings.");
+		Logger.log("Loading custom tunings.");
 	
 		custom0.visible = false;
 		custom1.visible = false;
@@ -946,7 +949,7 @@ MuseScore
 			if (fileContent[i].trim() != "")
 			{
 				var rowData = StringUtils.parseTsvRow(fileContent[i]);
-				logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
+				Logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
 				switch (customTuningCounter)
 				{
 					case 0:
@@ -1016,7 +1019,7 @@ MuseScore
 			deleteCustom.enabled = false;
 		}
 		
-		logger.log("Custom tunings loaded successfully.");
+		Logger.log("Custom tunings loaded successfully.");
 	}
 	
 	/**
@@ -1024,11 +1027,11 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
-		logger.log("Adding a new custom tuning");
+		Logger.log("Adding a new custom tuning");
 		
 		tuningName = StringUtils.formatForTsv(tuningName.trim());
 		customFifthSize = ("" + customFifthSize).trim();
-		logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
+		Logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
 		if ((customFifthSize == "") || isNaN(customFifthSize))
 		{
 			throw "Invalid custom fifth size: " + customFifthSize;
@@ -1038,7 +1041,7 @@ MuseScore
 		fileContent += "\n" + tuningName + "\t" + customFifthSize;
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
 		
-		logger.log("New custom tuning added successfully.");
+		Logger.log("New custom tuning added successfully.");
 	}
 	
 	/**
@@ -1046,13 +1049,13 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
-		logger.log("Deleting selected custom tunings.");
+		Logger.log("Deleting selected custom tunings.");
 		
 		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < tuningsToDelete.length; i++)
 		{
 			var tuningToDelete = tuningsToDelete[i];
-			logger.trace("Deleting tuning: " + tuningToDelete);
+			Logger.trace("Deleting tuning: " + tuningToDelete);
 			for (var j = fileContent.length - 1; j >= 0; j--)
 			{
 				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
@@ -1064,6 +1067,6 @@ MuseScore
 		}
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
 		
-		logger.log("Tuning deleted successfully.");
+		Logger.log("Tuning deleted successfully.");
 	}
 }
