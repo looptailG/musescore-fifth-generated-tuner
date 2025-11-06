@@ -34,7 +34,7 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.3.3";
+	version: "1.3.4";
 	
 	pluginType: "dialog";
 	property var padding: 10;
@@ -73,6 +73,11 @@ MuseScore
 	
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
+	
+	FileIO
+	{
+		id: logger;
+	}
 	
 	Dialog
 	{
@@ -226,56 +231,6 @@ MuseScore
 				outputMessageArea.text = error.toString();
 				logger.error(error.toString());
 			}
-		}
-	}
-	
-	FileIO
-	{
-		id: logger;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "logs/" + DateUtils.getFileDateTime() + "_log.txt";
-		property var logMessages: "";
-		property var currentLogLevel: 2;
-		property variant logLevels:
-		{
-			0: " | TRACE   | ",
-			1: " | INFO    | ",
-			2: " | WARNING | ",
-			3: " | ERROR   | ",
-			4: " | FATAL   | ",
-		}
-		
-		function log(message, logLevel)
-		{
-			if (logLevel === undefined)
-			{
-				logLevel = 1;
-			}
-			
-			if (logLevel >= currentLogLevel)
-			{
-				logMessages += DateUtils.getRFC3339DateTime() + logLevels[logLevel] + message + "\n";
-				write(logMessages);
-			}
-		}
-		
-		function trace(message)
-		{
-			log(message, 0);
-		}
-		
-		function warning(message)
-		{
-			log(message, 2);
-		}
-		
-		function error(message)
-		{
-			log(message, 3);
-		}
-		
-		function fatal(message)
-		{
-			log(message, 4);
 		}
 	}
 	
