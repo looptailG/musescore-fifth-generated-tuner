@@ -23,6 +23,7 @@ import MuseScore 3.0
 import "libs/AccidentalUtils.js" as AccidentalUtils
 import "libs/DateUtils.js" as DateUtils
 import "libs/IterationUtils.js" as IterationUtils
+import "libs/Logger.js" as Logger
 import "libs/NoteUtils.js" as NoteUtils
 import "libs/StringUtils.js" as StringUtils
 import "libs/TuningUtils.js" as TuningUtils
