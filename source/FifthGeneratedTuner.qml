@@ -434,6 +434,7 @@ MuseScore
 				{
 					text: "EDOs";
 					font.pixelSize: 15;
+					anchors.horizontalCenter: parent.horizontalCenter;
 				}
 				
 				Button
@@ -566,6 +567,7 @@ MuseScore
 				{
 					text: "Meantones";
 					font.pixelSize: 15;
+					anchors.horizontalCenter: parent.horizontalCenter;
 				}
 				
 				Button
@@ -676,6 +678,7 @@ MuseScore
 				{
 					text: "Others";
 					font.pixelSize: 15;
+					anchors.horizontalCenter: parent.horizontalCenter;
 				}
 				
 				Button
