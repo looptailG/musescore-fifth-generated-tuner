@@ -107,6 +107,10 @@ MuseScore
 				outputMessageArea.text = error;
 				Logger.err(error.toString());
 			}
+			finally
+			{
+				Logger.writeLogs();
+			}
 		}
 		
 		onRejected:
@@ -154,6 +158,10 @@ MuseScore
 			{
 				outputMessageArea.text = error.toString();
 				Logger.err(error.toString());
+			}
+			finally
+			{
+				Logger.writeLogs();
 			}
 		}
 	}
@@ -231,6 +239,10 @@ MuseScore
 				outputMessageArea.text = error.toString();
 				Logger.err(error.toString());
 			}
+			finally
+			{
+				Logger.writeLogs();
+			}
 		}
 	}
 	
@@ -243,6 +255,7 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			Logger.err(msg);
+			Logger.writeLogs();
 		}
 	}
 	
@@ -255,6 +268,7 @@ MuseScore
 		{
 			outputMessageArea.text = msg;
 			Logger.err(msg);
+			Logger.writeLogs();
 		}
 	}
 	
@@ -334,6 +348,10 @@ MuseScore
 						outputMessageArea.text = error;
 						Logger.err(error);
 					}
+					finally
+					{
+						Logger.writeLogs();
+					}
 				}
 			}
 		}
@@ -368,6 +386,10 @@ MuseScore
 						outputMessageArea.text = error.toString();
 						Logger.err(error);
 					}
+					finally
+					{
+						Logger.writeLogs();
+					}
 				}
 			}
 			
@@ -390,6 +412,10 @@ MuseScore
 					{
 						outputMessageArea.text = error.toString();
 						Logger.err(error);
+					}
+					finally
+					{
+						Logger.writeLogs();
 					}
 				}
 			}
@@ -819,6 +845,7 @@ MuseScore
 		}
 		finally
 		{
+			Logger.writeLogs();
 			quit();
 		}
 	}
@@ -920,6 +947,7 @@ MuseScore
 		settingsIO.write(fileContent);
 		
 		Logger.log("Settings file updated successfully.");
+		Logger.writeLogs();
 	}
 	
 	/**
@@ -1020,6 +1048,7 @@ MuseScore
 		}
 		
 		Logger.log("Custom tunings loaded successfully.");
+		Logger.writeLogs();
 	}
 	
 	/**
@@ -1042,6 +1071,7 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
 		
 		Logger.log("New custom tuning added successfully.");
+		Logger.writeLogs();
 	}
 	
 	/**
@@ -1068,5 +1098,6 @@ MuseScore
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
 		
 		Logger.log("Tuning deleted successfully.");
+		Logger.writeLogs();
 	}
 }
