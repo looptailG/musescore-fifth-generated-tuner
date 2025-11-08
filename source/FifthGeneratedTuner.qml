@@ -108,6 +108,7 @@ MuseScore
 		onRejected:
 		{
 			Logger.log("Tuning canceled.");
+			Logger.writeLogs();
 		}
 	}
 	
