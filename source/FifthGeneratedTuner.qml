@@ -16,10 +16,12 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.2
+import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import FileIO 3.0
 import MuseScore 3.0
+import Muse.UiComponents 1.0
 import "AccidentalUtils.js" as AccidentalUtils
 import "DateUtils.js" as DateUtils
 import "IterationUtils.js" as IterationUtils
