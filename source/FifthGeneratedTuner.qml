@@ -322,7 +322,7 @@ MuseScore
 						else
 						{
 							Logger.log("Fifth size: " + fifthSize);
-							fifthDeviation = TuningUtils.DEFAULT_FIFTH - fifthSize;
+							fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
 							Logger.log("Fifth deviation: " + fifthDeviation);
 							
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
@@ -466,7 +466,7 @@ MuseScore
 					text: "12";
 					onClicked:
 					{
-						fifthSizeField.text = TuningUtils.DEFAULT_FIFTH;
+						fifthSizeField.text = TuningUtils.STANDARD_FIFTH;
 					}
 				}
 				
