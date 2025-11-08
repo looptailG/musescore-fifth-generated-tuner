@@ -249,7 +249,7 @@ MuseScore
 	FileIO
 	{
 		id: customTuningsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
+		source: Logger.getCurrentFolderPath() + "CustomTunings.tsv";
 		
 		onError:
 		{
@@ -262,7 +262,7 @@ MuseScore
 	FileIO
 	{
 		id: settingsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
+		source: Logger.getCurrentFolderPath() + "Settings.tsv";
 		
 		onError:
 		{
