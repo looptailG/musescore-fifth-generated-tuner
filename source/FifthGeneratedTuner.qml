@@ -38,18 +38,9 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.3.4";
 	
-	pluginType: "dialog";
 	property var padding: 10;
-	width: guiColumn.implicitWidth + 2 * padding;
-	height: guiColumn.implicitHeight + 2 * padding;
 	
 	property variant settings: {};
-	
-	// List containing some commonly installed monospaced fonts.
-	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
-	// Variable containing the name of an installed monospaced font from the
-	// previous list.
-	property var monospacedFont: null;
 	
 	// Size of the buttons of the pre-set tuning systems.
 	property int buttonWidth: 100;
@@ -265,7 +256,48 @@ MuseScore
 		}
 	}
 	
-	Column
+	ApplicationWindow
+	{
+		id: mainWindow;
+		minimumHeight: 400;
+		minimumWidth: 400;
+		background: Rectangle
+		{
+			color: ui.theme.backgroundPrimaryColor;
+		}
+	
+		ColumnLayout
+		{
+			anchors.margins: padding;
+			
+			RowLayout
+			{
+				Label
+				{
+					text: "Fifth size in cents:";
+					font: ui.theme.largeBodyBoldFont;
+					color: ui.theme.fontPrimaryColor;
+				}
+				
+				TextField
+				{
+					placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
+					font: ui.theme.bodyFont;
+					color: ui.theme.fontPrimaryColor;
+					placeholderTextColor: ui.theme.fontSecondaryColor;
+					id: fifthSizeField;
+					width: 150;
+					height: 30;
+					background: Rectangle
+					{
+						color: ui.theme.backgroundSecondaryColor;
+					}
+				}
+			}
+		}
+	}
+	
+/*	Column
 	{
 		id: guiColumn;
 		anchors.centerIn: parent;
@@ -274,21 +306,6 @@ MuseScore
 		Row
 		{
 			spacing: padding;
-			
-			Text
-			{
-				text: "Fifth size in cents:";
-				font.pixelSize: 20;
-			}
-			
-			TextField
-			{
-				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
-				font.family: monospacedFont;
-				id: fifthSizeField;
-				width: 150;
-				height: 30;
-			}
 			
 			Button
 			{
@@ -823,7 +840,7 @@ MuseScore
 				height: 50;
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Tune the notes in the selection, or the entire score if nothing is
@@ -893,17 +910,6 @@ MuseScore
 			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
 			Logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
 			
-			// Initialise monospaced font.
-			for (var i = 0; i < preferredFonts.length; i++)
-			{
-				if (Qt.fontFamilies().indexOf(preferredFonts[i]) !== -1)
-				{
-					monospacedFont = preferredFonts[i];
-					Logger.log("Monospaced font set to: " + monospacedFont);
-					break;
-				}
-			}
-			
 			// Initialise reference note.
 			referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
 			referenceNoteName = referenceNoteNameComboBox.currentText;
@@ -930,10 +936,7 @@ MuseScore
 	
 	onRun:
 	{
-		if (typeof curScore === "undefined")
-		{
-			quit();
-		}
+		mainWindow.show();
 	}
 	
 	/**
