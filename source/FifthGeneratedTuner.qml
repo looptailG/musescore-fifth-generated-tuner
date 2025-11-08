@@ -837,7 +837,7 @@ MuseScore
 				{
 					"onNote": onNote
 				},
-				loggerId
+				Logger
 			);
 			
 			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
