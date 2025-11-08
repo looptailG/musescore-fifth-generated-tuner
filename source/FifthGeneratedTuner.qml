@@ -692,6 +692,16 @@ MuseScore
 					}
 				}
 				
+				Text
+				{
+					text: "Customs";
+					font.pixelSize: 15;
+					anchors.horizontalCenter: parent.horizontalCenter;
+					verticalAlignment: Text.AlignBottom;
+					// In order to keep the buttons aligned to each other.
+					height: buttonHeight;
+				}
+				
 				Button
 				{
 					width: buttonWidth;
