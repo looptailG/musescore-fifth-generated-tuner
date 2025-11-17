@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
 
 let loggerId = null;
 
@@ -48,7 +48,7 @@ const separator = "\t";
 function initialise(id, level = ERROR, folderPath = "logs")
 {
 	loggerId = id;
-	loggerId.source = getCurrentFolderPath() + folderPath + "/" + getFileDateTime() + "_log.txt";
+	loggerId.source = Qt.resolvedUrl(".").toString() + folderPath + "/" + getFileDateTime() + "_log.txt";
 	
 	logLevel = level;
 	logMessages = "";
@@ -122,16 +122,6 @@ function logProperties(obj, level = INFO)
 		s += "\n\t" + key + ": " + obj[key];
 	}
 	log(s, level);
-}
-
-/**
- * Return the path of the current folder.
- */
-function getCurrentFolderPath()
-{
-	let path = Qt.resolvedUrl(".").toString();
-	// The path we obtained has the prefix "file:///", remove it.
-	return path.substring("file:///".length);
 }
 
 /**
