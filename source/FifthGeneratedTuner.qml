@@ -293,6 +293,71 @@ MuseScore
 						color: ui.theme.backgroundSecondaryColor;
 					}
 				}
+				
+				Button
+				{
+					width: 100;
+					height: 30;
+					text: "Tune";
+					font: ui.theme.bodyFont;
+					palette.buttonText: ui.theme.fontPrimaryColor;
+					background: Rectangle
+					{
+						color: ui.theme.buttonColor;
+					}
+					
+					onClicked:
+					{
+						try
+						{
+							// Read the input fifth size.
+							var fifthSize = parseFloat(fifthSizeField.text);
+							if (isNaN(fifthSize))
+							{
+								if (fifthSizeField.text == "")
+								{
+									throw "Empty input field.";
+								}
+								else
+								{
+									throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
+								}
+							}
+							else
+							{
+								Logger.log("Fifth size: " + fifthSize);
+								fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
+								Logger.log("Fifth deviation: " + fifthDeviation);
+								
+								if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
+								{
+									Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
+									fifthSizeDialog.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+									fifthSizeDialog.open();
+								}
+								else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
+								{
+									Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
+									fifthSizeDialog.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+									fifthSizeDialog.open();
+								}
+								else
+								{
+									tuneNotes();
+								}
+							}
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error;
+							Logger.err(error);
+						}
+						finally
+						{
+							Logger.writeLogs();
+						}
+					}
+				}
 			}
 		}
 	}
@@ -302,69 +367,6 @@ MuseScore
 		id: guiColumn;
 		anchors.centerIn: parent;
 		spacing: padding;
-		
-		Row
-		{
-			spacing: padding;
-			
-			Button
-			{
-				width: 100;
-				height: 30;
-				text: "Tune";
-				onClicked:
-				{
-					try
-					{
-						// Read the input fifth size.
-						var fifthSize = parseFloat(fifthSizeField.text);
-						if (isNaN(fifthSize))
-						{
-							if (fifthSizeField.text == "")
-							{
-								throw "Empty input field.";
-							}
-							else
-							{
-								throw "Cannot convert to number the input fifth size: " + fifthSizeField.text;
-							}
-						}
-						else
-						{
-							Logger.log("Fifth size: " + fifthSize);
-							fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
-							Logger.log("Fifth deviation: " + fifthDeviation);
-							
-							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
-							{
-								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
-								fifthSizeDialog.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-								fifthSizeDialog.open();
-							}
-							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
-							{
-								Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
-								fifthSizeDialog.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
-								fifthSizeDialog.open();
-							}
-							else
-							{
-								tuneNotes();
-							}
-						}
-					}
-					catch (error)
-					{
-						outputMessageArea.text = error;
-						Logger.err(error);
-					}
-					finally
-					{
-						Logger.writeLogs();
-					}
-				}
-			}
-		}
 	
 		Row
 		{
