@@ -72,6 +72,32 @@ MuseScore
 		id: loggerId;
 	}
 	
+	FileIO
+	{
+		id: customTuningsIO;
+		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
+		
+		onError:
+		{
+			outputMessageArea.text = msg;
+			Logger.err(msg);
+			Logger.writeLogs();
+		}
+	}
+	
+	FileIO
+	{
+		id: settingsIO;
+		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
+		
+		onError:
+		{
+			outputMessageArea.text = msg;
+			Logger.err(msg);
+			Logger.writeLogs();
+		}
+	}
+	
 	MessageDialog
 	{
 		id: fifthSizeDialog;
@@ -227,32 +253,6 @@ MuseScore
 			{
 				Logger.writeLogs();
 			}
-		}
-	}
-	
-	FileIO
-	{
-		id: customTuningsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
-		}
-	}
-	
-	FileIO
-	{
-		id: settingsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
 		}
 	}
 	
