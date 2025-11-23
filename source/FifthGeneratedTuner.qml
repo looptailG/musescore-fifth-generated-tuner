@@ -395,6 +395,34 @@ MuseScore
 						}
 					}
 				}
+				
+				// TODO: set colour, text font and size.
+				ComboBox
+				{
+					id: referenceNoteAccidentalComboBox;
+					model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+					
+					onActivated:
+					{
+						try
+						{
+							settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
+							writeSettings();
+							referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
+							referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+							Logger.log("Reference note changed to: " + referenceNote);
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error.toString();
+							Logger.err(error);
+						}
+						finally
+						{
+							Logger.writeLogs();
+						}
+					}
+				}
 			}
 		}
 	}
@@ -404,38 +432,6 @@ MuseScore
 		id: guiColumn;
 		anchors.centerIn: parent;
 		spacing: padding;
-	
-		Row
-		{
-			spacing: padding;
-			
-			ComboBox
-			{
-				id: referenceNoteAccidentalComboBox;
-				model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
-				width: 50;
-				onActivated:
-				{
-					try
-					{
-						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
-						writeSettings();
-						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-						Logger.log("Reference note changed to: " + referenceNote);
-					}
-					catch (error)
-					{
-						outputMessageArea.text = error.toString();
-						Logger.err(error);
-					}
-					finally
-					{
-						Logger.writeLogs();
-					}
-				}
-			}
-		}
 		
 		Row
 		{
