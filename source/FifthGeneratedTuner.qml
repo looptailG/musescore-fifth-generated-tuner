@@ -359,6 +359,16 @@ MuseScore
 					}
 				}
 			}
+			
+			RowLayout
+			{
+				Label
+				{
+					text: "Reference note:";
+					font: ui.theme.bodyBoldFont;
+					color: ui.theme.fontPrimaryColor;
+				}
+			}
 		}
 	}
 	
@@ -371,12 +381,6 @@ MuseScore
 		Row
 		{
 			spacing: padding;
-			
-			Text
-			{
-				text: "Reference note:";
-				font.pixelSize: 15;
-			}
 			
 			ComboBox
 			{
