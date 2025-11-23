@@ -287,7 +287,6 @@ MuseScore
 					placeholderTextColor: ui.theme.fontSecondaryColor;
 					id: fifthSizeField;
 					width: 150;
-					height: 30;
 					background: Rectangle
 					{
 						color: ui.theme.backgroundSecondaryColor;
@@ -368,6 +367,34 @@ MuseScore
 					font: ui.theme.bodyBoldFont;
 					color: ui.theme.fontPrimaryColor;
 				}
+				
+				// TODO: set colour, text font and size.
+				ComboBox
+				{
+					id: referenceNoteNameComboBox;
+					model: ["A", "B", "C", "D", "E", "F", "G"];
+					
+					onActivated:
+					{
+						try
+						{
+							settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
+							writeSettings();
+							referenceNoteName = referenceNoteNameComboBox.currentText;
+							referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+							Logger.log("Reference note changed to: " + referenceNote);
+						}
+						catch (error)
+						{
+							outputMessageArea.text = error.toString();
+							Logger.err(error);
+						}
+						finally
+						{
+							Logger.writeLogs();
+						}
+					}
+				}
 			}
 		}
 	}
@@ -381,33 +408,6 @@ MuseScore
 		Row
 		{
 			spacing: padding;
-			
-			ComboBox
-			{
-				id: referenceNoteNameComboBox;
-				model: ["A", "B", "C", "D", "E", "F", "G"];
-				width: 50;
-				onActivated:
-				{
-					try
-					{
-						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
-						writeSettings();
-						referenceNoteName = referenceNoteNameComboBox.currentText;
-						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
-						Logger.log("Reference note changed to: " + referenceNote);
-					}
-					catch (error)
-					{
-						outputMessageArea.text = error.toString();
-						Logger.err(error);
-					}
-					finally
-					{
-						Logger.writeLogs();
-					}
-				}
-			}
 			
 			ComboBox
 			{
