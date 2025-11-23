@@ -641,6 +641,168 @@ MuseScore
 						font: ui.theme.bodyBoldFont;
 						color: ui.theme.fontPrimaryColor;
 					}
+					
+					Button
+					{
+						text: "1/3 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
+						}
+					}
+					
+					Button
+					{
+						text: "2/7 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
+						}
+					}
+					
+					Button
+					{
+						text: "7/26 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
+						}
+					}
+					
+					Button
+					{
+						text: "1/4 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
+						}
+					}
+					
+					Button
+					{
+						text: "2/9 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
+						}
+					}
+					
+					Button
+					{
+						text: "1/5 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
+						}
+					}
+					
+					Button
+					{
+						text: "1/6 Comma";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
+						}
+					}
+					
+					Button
+					{
+						text: "Golden";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
+						}
+					}
+					
+					Button
+					{
+						text: "Tungsten";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 600.0 * (Math.sqrt(10) - 2);
+						}
+					}
 				}
 			}
 		}
@@ -656,117 +818,6 @@ MuseScore
 		{
 			anchors.horizontalCenter: parent.horizontalCenter;
 			spacing: 5 * padding;
-			
-			Column
-			{
-				spacing: padding;
-				
-				Text
-				{
-					text: "Meantones";
-					font.pixelSize: 15;
-					anchors.horizontalCenter: parent.horizontalCenter;
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "1/3 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "2/7 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "7/26 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "1/4 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "2/9 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "1/5 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "1/6 Comma";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "Golden";
-					onClicked:
-					{
-						fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "Tungsten";
-					onClicked:
-					{
-						fifthSizeField.text = 600.0 * (Math.sqrt(10) - 2);
-					}
-				}
-			}
 			
 			Column
 			{
