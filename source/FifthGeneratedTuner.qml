@@ -39,12 +39,9 @@ MuseScore
 	version: "1.3.4";
 	
 	property var padding: 10;
+	property int buttonWidth: 50;
 	
 	property variant settings: {};
-	
-	// Size of the buttons of the pre-set tuning systems.
-	property int buttonWidth: 100;
-	property int buttonHeight: 40;
 	
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
@@ -287,6 +284,7 @@ MuseScore
 					placeholderTextColor: ui.theme.fontSecondaryColor;
 					id: fifthSizeField;
 					width: 150;
+					
 					background: Rectangle
 					{
 						color: ui.theme.backgroundSecondaryColor;
@@ -295,14 +293,14 @@ MuseScore
 				
 				Button
 				{
-					width: 100;
-					height: 30;
 					text: "Tune";
 					font: ui.theme.bodyFont;
 					palette.buttonText: ui.theme.fontPrimaryColor;
+					
 					background: Rectangle
 					{
 						color: ui.theme.buttonColor;
+						width: buttonWidth;
 					}
 					
 					onClicked:
@@ -424,6 +422,227 @@ MuseScore
 					}
 				}
 			}
+			
+			RowLayout
+			{
+				ColumnLayout
+				{
+					Label
+					{
+						text: "EDOs";
+						font: ui.theme.bodyBoldFont;
+						color: ui.theme.fontPrimaryColor;
+					}
+					
+					Button
+					{
+						text: "5";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 5 * 3;
+						}
+					}
+					
+					Button
+					{
+						text: "7";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 7 * 4;
+						}
+					}
+					
+					Button
+					{
+						text: "12";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.STANDARD_FIFTH;
+						}
+					}
+					
+					Button
+					{
+						text: "17";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 17 * 10;
+						}
+					}
+					
+					Button
+					{
+						text: "19";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 19 * 11;
+						}
+					}
+					
+					Button
+					{
+						text: "26";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 26 * 15;
+						}
+					}
+					
+					Button
+					{
+						text: "29";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 29 * 17;
+						}
+					}
+					
+					Button
+					{
+						text: "31";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 31 * 18;
+						}
+					}
+					
+					Button
+					{
+						text: "41";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 41 * 24;
+						}
+					}
+					
+					Button
+					{
+						text: "43";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 43 * 25;
+						}
+					}
+					
+					Button
+					{
+						text: "50";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = 1200.0 / 50 * 29;
+						}
+					}
+				}
+				
+				ColumnLayout
+				{
+					Label
+					{
+						text: "Meantones";
+						font: ui.theme.bodyBoldFont;
+						color: ui.theme.fontPrimaryColor;
+					}
+				}
+			}
 		}
 	}
 	
@@ -437,139 +656,6 @@ MuseScore
 		{
 			anchors.horizontalCenter: parent.horizontalCenter;
 			spacing: 5 * padding;
-			
-			Column
-			{
-				spacing: padding;
-				
-				Text
-				{
-					text: "EDOs";
-					font.pixelSize: 15;
-					anchors.horizontalCenter: parent.horizontalCenter;
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "5";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 5 * 3;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "7";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 7 * 4;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "12";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.STANDARD_FIFTH;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "17";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 17 * 10;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "19";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 19 * 11;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "26";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 26 * 15;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "29";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 29 * 17;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "31";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 31 * 18;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "41";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 41 * 24;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "43";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 43 * 25;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "50";
-					onClicked:
-					{
-						fifthSizeField.text = 1200.0 / 50 * 29;
-					}
-				}
-			}
 			
 			Column
 			{
