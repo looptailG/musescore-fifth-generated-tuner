@@ -271,8 +271,8 @@ MuseScore
 			{
 				Label
 				{
-					text: "Fifth size in cents:";
-					font: ui.theme.largeBodyBoldFont;
+					text: "Fifth size (¢):";
+					font: ui.theme.headerBoldFont;
 					color: ui.theme.fontPrimaryColor;
 				}
 				
@@ -362,7 +362,7 @@ MuseScore
 				Label
 				{
 					text: "Reference note:";
-					font: ui.theme.bodyBoldFont;
+					font: ui.theme.headerBoldFont;
 					color: ui.theme.fontPrimaryColor;
 				}
 				
