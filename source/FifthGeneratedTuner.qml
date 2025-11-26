@@ -831,164 +831,186 @@ MuseScore
 							fifthSizeField.text = TuningUtils.JUST_FIFTH;
 						}
 					}
+					
+					Label
+					{
+						text: "Customs";
+						font: ui.theme.bodyBoldFont;
+						color: ui.theme.fontPrimaryColor;
+					}
+					
+					Button
+					{
+						id: custom0;
+						property var customFifthSize0;
+						
+						text: "";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						visible: false;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = customFifthSize0;
+						}
+					}
+					
+					Button
+					{
+						id: custom1;
+						property var customFifthSize1;
+						
+						text: "";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						visible: false;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = customFifthSize1;
+						}
+					}
+					
+					Button
+					{
+						id: custom2;
+						property var customFifthSize2;
+						
+						text: "";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						visible: false;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = customFifthSize2;
+						}
+					}
+					
+					Button
+					{
+						id: custom3;
+						property var customFifthSize3;
+						
+						text: "";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						visible: false;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = customFifthSize3;
+						}
+					}
+					
+					Button
+					{
+						id: custom4;
+						property var customFifthSize4;
+						
+						text: "";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						visible: false;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = customFifthSize4;
+						}
+					}
+					
+					Button
+					{
+						id: addCustom;
+						
+						text: "Add Custom";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							try
+							{
+								newCustomTuningDialog.open();
+							}
+							catch (error)
+							{
+								outputMessageArea.text = error;
+							}
+						}
+					}
+					
+					Button
+					{
+						id: deleteCustom;
+						
+						text: "Delete Custom";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							try
+							{
+								deleteCustomDialog.open();
+							}
+							catch (error)
+							{
+								outputMessageArea.text = error.toString();
+							}
+						}
+					}
 				}
 			}
 		}
 	}
-	
-/*	Column
-	{
-		id: guiColumn;
-		anchors.centerIn: parent;
-		spacing: padding;
-		
-		Row
-		{
-			anchors.horizontalCenter: parent.horizontalCenter;
-			spacing: 5 * padding;
-			
-			Column
-			{
-				
-				Text
-				{
-					text: "Customs";
-					font.pixelSize: 15;
-					// In order to keep the buttons aligned to each other.
-					height: buttonHeight;
-					anchors.horizontalCenter: parent.horizontalCenter;
-					verticalAlignment: Text.AlignBottom;
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "";
-					property var customFifthSize0;
-					id: custom0;
-					visible: false;
-					onClicked:
-					{
-						fifthSizeField.text = customFifthSize0;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "";
-					property var customFifthSize1;
-					id: custom1;
-					visible: false;
-					onClicked:
-					{
-						fifthSizeField.text = customFifthSize1;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "";
-					property var customFifthSize2;
-					id: custom2;
-					visible: false;
-					onClicked:
-					{
-						fifthSizeField.text = customFifthSize2;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "";
-					property var customFifthSize3;
-					id: custom3;
-					visible: false;
-					onClicked:
-					{
-						fifthSizeField.text = customFifthSize3;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "";
-					property var customFifthSize4;
-					id: custom4;
-					visible: false;
-					onClicked:
-					{
-						fifthSizeField.text = customFifthSize4;
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "Add Custom";
-					font.italic: true;
-					id: addCustom;
-					onClicked:
-					{
-						try
-						{
-							newCustomTuningDialog.open();
-						}
-						catch (error)
-						{
-							outputMessageArea.text = error;
-						}
-					}
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "Delete Custom";
-					font.italic: true;
-					id: deleteCustom;
-					onClicked:
-					{
-						try
-						{
-							deleteCustomDialog.open();
-						}
-						catch (error)
-						{
-							outputMessageArea.text = error.toString();
-						}
-					}
-				}
-			}
-		}
-		
-		Row
-		{
-			anchors.horizontalCenter: parent.horizontalCenter;
-			spacing: padding;
-			
-			TextArea
-			{
-				id: outputMessageArea;
-				text: "";
-				font.family: monospacedFont;
-				readOnly: true;
-				wrapMode: TextEdit.Wrap;
-				width: 400;
-				height: 50;
-			}
-		}
-	}*/
 	
 	/**
 	 * Tune the notes in the selection, or the entire score if nothing is
