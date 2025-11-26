@@ -804,6 +804,34 @@ MuseScore
 						}
 					}
 				}
+				
+				ColumnLayout
+				{
+					Label
+					{
+						text: "Others";
+						font: ui.theme.bodyBoldFont;
+						color: ui.theme.fontPrimaryColor;
+					}
+					
+					Button
+					{
+						text: "Pythagorean";
+						font: ui.theme.bodyFont;
+						palette.buttonText: ui.theme.fontPrimaryColor;
+						
+						background: Rectangle
+						{
+							color: ui.theme.buttonColor;
+							width: buttonWidth;
+						}
+						
+						onClicked:
+						{
+							fifthSizeField.text = TuningUtils.JUST_FIFTH;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -821,25 +849,6 @@ MuseScore
 			
 			Column
 			{
-				spacing: padding;
-				
-				Text
-				{
-					text: "Others";
-					font.pixelSize: 15;
-					anchors.horizontalCenter: parent.horizontalCenter;
-				}
-				
-				Button
-				{
-					width: buttonWidth;
-					height: buttonHeight;
-					text: "Pythagorean";
-					onClicked:
-					{
-						fifthSizeField.text = TuningUtils.JUST_FIFTH;
-					}
-				}
 				
 				Text
 				{
