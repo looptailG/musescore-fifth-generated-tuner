@@ -328,13 +328,19 @@ MuseScore
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
 								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
-								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString + " ¢, which is the smallest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialogText.text = "The input fifth is smaller than " + smallestFifthString
+										+ " ¢, which is the smallest fifth for which standard notation makes sense."
+										+ "\nThe plugin can work anyway, but it could produce some counterintuitive "
+										+ "results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
 							{
 								Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
-								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString + " ¢, which is the largest fifth for which standard notation makes sense.\nThe plugin can work anyway, but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialogText.text = "The input fifth is larger than " + largestFifthString
+										+ " ¢, which is the largest fifth for which standard notation makes sense."
+										+ "\nThe plugin can work anyway, but it could produce some counterintuitive "
+										+ "results.\nTune the score anyway?";
 								fifthSizeDialog.open();
 							}
 							else
@@ -424,7 +430,9 @@ MuseScore
 						writeSettings();
 						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 						referenceNoteAccidental = AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidental];
-						referenceNoteAccidental = referenceNoteAccidental.replace(AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], "");
+						referenceNoteAccidental = referenceNoteAccidental.replace(
+								AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], ""
+						);
 						referenceNote = referenceNoteName + referenceNoteAccidental;
 						Logger.log("Reference note changed to: " + referenceNote);
 					}
@@ -889,7 +897,10 @@ MuseScore
 
 		try
 		{
-			Logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
+			Logger.trace(
+					"Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note)
+					+ " " + NoteUtils.getOctave(note)
+			);
 			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
 			Logger.trace("Tuning offset: " + tuningOffset);
 			note.tuning = tuningOffset;
@@ -937,7 +948,9 @@ MuseScore
 			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
 			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 			referenceNoteAccidental = AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidental];
-			referenceNoteAccidental = referenceNoteAccidental.replace(AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], "");
+			referenceNoteAccidental = referenceNoteAccidental.replace(
+					AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], ""
+			);
 			referenceNote = referenceNoteName + referenceNoteAccidental;
 			Logger.log("Reference note set to: " + referenceNote);
 
