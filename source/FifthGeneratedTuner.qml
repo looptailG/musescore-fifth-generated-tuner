@@ -1078,6 +1078,10 @@ MuseScore
 		}
 
 		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		if (fileContent.hasOwnProperty(tuningName))
+		{
+			throw "Tuning name already present: " + tuningName;
+		}
 		fileContent[tuningName] = customFifthSize;
 		SettingsIO.writeTsvFile(fileContent, customTuningsId);
 
