@@ -987,61 +987,58 @@ MuseScore
 		deleteCustomCheckbox4.visible = false;
 
 		var customTuningCounter = 0;
-		var fileContent = customTuningsIO.read().split("\n");
-		for (var i = 0; i < fileContent.length; i++)
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName in fileContent)
 		{
-			if (fileContent[i].trim() != "")
+			var fifthSize = fileContent[tuningName];
+			Logger.trace("Name: " + tuningName + "; Fifth Size: " + fifthSize);
+			switch (customTuningCounter)
 			{
-				var rowData = StringUtils.parseTsvRow(fileContent[i]);
-				Logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
-				switch (customTuningCounter)
-				{
-					case 0:
-						custom0.text = rowData[0];
-						custom0.customFifthSize0 = rowData[1];
-						custom0.visible = true;
-						deleteCustomCheckbox0.text = rowData[0];
-						deleteCustomCheckbox0.visible = true;
-						break;
-
-					case 1:
-						custom1.text = rowData[0];
-						custom1.customFifthSize1 = rowData[1];
-						custom1.visible = true;
-						deleteCustomCheckbox1.text = rowData[0];
-						deleteCustomCheckbox1.visible = true;
-						break;
-
-					case 2:
-						custom2.text = rowData[0];
-						custom2.customFifthSize2 = rowData[1];
-						custom2.visible = true;
-						deleteCustomCheckbox2.text = rowData[0];
-						deleteCustomCheckbox2.visible = true;
-						break;
-
-					case 3:
-						custom3.text = rowData[0];
-						custom3.customFifthSize3 = rowData[1];
-						custom3.visible = true;
-						deleteCustomCheckbox3.text = rowData[0];
-						deleteCustomCheckbox3.visible = true;
-						break;
-
-					case 4:
-						custom4.text = rowData[0];
-						custom4.customFifthSize4 = rowData[1];
-						custom4.visible = true;
-						deleteCustomCheckbox4.text = rowData[0];
-						deleteCustomCheckbox4.visible = true;
-						break;
-				}
-
-				customTuningCounter++;
-				if (customTuningCounter >= maxCustomTunings)
-				{
+				case 0:
+					custom0.text = tuningName;
+					custom0.customFifthSize0 = fifthSize;
+					custom0.visible = true;
+					deleteCustomCheckbox0.text = tuningName;
+					deleteCustomCheckbox0.visible = true;
 					break;
-				}
+
+				case 1:
+					custom1.text = tuningName;
+					custom1.customFifthSize1 = fifthSize;
+					custom1.visible = true;
+					deleteCustomCheckbox1.text = tuningName;
+					deleteCustomCheckbox1.visible = true;
+					break;
+
+				case 2:
+					custom2.text = tuningName;
+					custom2.customFifthSize2 = fifthSize;
+					custom2.visible = true;
+					deleteCustomCheckbox2.text = tuningName;
+					deleteCustomCheckbox2.visible = true;
+					break;
+
+				case 3:
+					custom3.text = tuningName;
+					custom3.customFifthSize3 = fifthSize;
+					custom3.visible = true;
+					deleteCustomCheckbox3.text = tuningName;
+					deleteCustomCheckbox3.visible = true;
+					break;
+
+				case 4:
+					custom4.text = tuningName;
+					custom4.customFifthSize4 = fifthSize;
+					custom4.visible = true;
+					deleteCustomCheckbox4.text = tuningName;
+					deleteCustomCheckbox4.visible = true;
+					break;
+			}
+			
+			customTuningCounter++;
+			if (customTuningCounter >= maxCustomTunings)
+			{
+				break;
 			}
 		}
 
