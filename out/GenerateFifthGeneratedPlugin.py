@@ -3,36 +3,38 @@ import shutil
 import re
 
 
-PLUGIN_FOLDER_NAME = "fifth_generated_tuner"
-SOURCE_FOLDER = "../source"
-LOGS_FOLDER = f"{PLUGIN_FOLDER_NAME}/logs"
-README_PATH = "../README.md"
-LICENSE_PATH = "../LICENSE"
-THUMBNAIL_PATH = "../thumbnail/FifthGeneratedTunerThumbnail.png"
+PLUGIN_FOLDER = "fifth_generated_tuner"
+PROJECT_FOLDER = ".."
+SOURCE_FOLDER = "source"
+LOGS_FOLDER = "logs"
+README_FILE = f"{PROJECT_FOLDER}/README.md"
+LICENSE_FILE = f"{PROJECT_FOLDER}/LICENSE"
+THUMBNAIL = f"{PROJECT_FOLDER}/thumbnail/FifthGeneratedTunerThumbnail.png"
 FILES_TO_COPY = [
-    LICENSE_PATH,
-    THUMBNAIL_PATH,
+    README_FILE,
+    LICENSE_FILE,
+    THUMBNAIL,
 ]
 FILES_TO_CREATE = [
-    f"{PLUGIN_FOLDER_NAME}/CustomTunings.tsv"
+    f"{PLUGIN_FOLDER}/CustomTunings.tsv"
 ]
 
 
 def main():
     try:
-        shutil.copytree(SOURCE_FOLDER, PLUGIN_FOLDER_NAME, dirs_exist_ok=True)
+        shutil.copytree(f"{PROJECT_FOLDER}/{SOURCE_FOLDER}", PLUGIN_FOLDER, dirs_exist_ok=True)
         for file_path in FILES_TO_COPY:
             file_name = file_path[file_path.rindex("/") + 1:]
-            shutil.copyfile(file_path, f"{PLUGIN_FOLDER_NAME}/{file_name}")
-        if not os.path.exists(LOGS_FOLDER):
-            os.makedirs(LOGS_FOLDER)
+            shutil.copyfile(file_path, f"{PLUGIN_FOLDER}/{file_name}")
+        if not os.path.exists(f"{PLUGIN_FOLDER}/{LOGS_FOLDER}"):
+            os.makedirs(f"{PLUGIN_FOLDER}/{LOGS_FOLDER}")
         for file_path in FILES_TO_CREATE:
             open(file_path, "w")
 
         version_number = get_version_number()
-        output_folder_name = f"{PLUGIN_FOLDER_NAME}_{version_number}"
+        output_folder_name = f"{PLUGIN_FOLDER}_{version_number}"
         temporary_folder = "tmp"
-        shutil.copytree(PLUGIN_FOLDER_NAME, f"{temporary_folder}/{PLUGIN_FOLDER_NAME}", dirs_exist_ok=True)
+        shutil.copytree(PLUGIN_FOLDER, f"{temporary_folder}/{PLUGIN_FOLDER}", dirs_exist_ok=True)
         shutil.make_archive(output_folder_name, "zip", temporary_folder)
         shutil.rmtree(temporary_folder)
 
@@ -43,9 +45,9 @@ def main():
 
 def get_version_number() -> str:
     version_number_pattern = re.compile(r"version:\s*\"(.+)\";")
-    for root, _, files in os.walk(SOURCE_FOLDER):
+    for root, _, files in os.walk(f"{PROJECT_FOLDER}/{SOURCE_FOLDER}"):
         for file_name in files:
-            if simplify_file_name(PLUGIN_FOLDER_NAME) not in simplify_file_name(file_name):
+            if simplify_file_name(PLUGIN_FOLDER) not in simplify_file_name(file_name):
                 continue
 
             file_path = os.path.join(root, file_name)
