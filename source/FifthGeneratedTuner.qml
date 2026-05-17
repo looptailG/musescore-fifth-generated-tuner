@@ -1092,8 +1092,9 @@ MuseScore
 	{
 		Logger.log("Deleting custom tunings: " + tuningsToDelete.join(", "));
 		var fileContent = SettingsIO.readTsvFile(customTuningsId);
-		for (var tuningName in tuningsToDelete)
+		for (var tuningName of tuningsToDelete)
 		{
+			Logger.trace("Deleting key: " + tuningName);
 			delete fileContent[tuningName];
 		}
 		SettingsIO.writeTsvFile(fileContent, customTuningsId);
