@@ -25,6 +25,7 @@ import "DateUtils.js" as DateUtils
 import "IterationUtils.js" as IterationUtils
 import "Logger.js" as Logger
 import "NoteUtils.js" as NoteUtils
+import "SettingsIO.js" as SettingsIO
 import "StringUtils.js" as StringUtils
 import "TuningUtils.js" as TuningUtils
 
@@ -248,28 +249,14 @@ MuseScore
 
 	FileIO
 	{
-		id: customTuningsIO;
+		id: customTuningsId;
 		source: Qt.resolvedUrl(".").toString() + "CustomTunings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
-		}
 	}
 
 	FileIO
 	{
-		id: settingsIO;
+		id: settingsId;
 		source: Qt.resolvedUrl(".").toString() + "Settings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
-		}
 	}
 
 	Column
@@ -916,17 +903,7 @@ MuseScore
 	{
 		try
 		{
-			// Read settings file.
-			settings = {};
-			var settingsFileContents = settingsIO.read().split("\n");
-			for (var i = 0; i < settingsFileContents.length; i++)
-			{
-				if (settingsFileContents[i].trim() != "")
-				{
-					var rowData = StringUtils.parseTsvRow(settingsFileContents[i]);
-					settings[rowData[0]] = rowData[1];
-				}
-			}
+			settings = SettingsIO.readTsvFile(settingsId);
 
 			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
 			Logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
@@ -984,16 +961,7 @@ MuseScore
 	function writeSettings()
 	{
 		Logger.log("Updating settings file.");
-
-		var fileContent = "";
-		for (var i = 0; i < Object.keys(settings).length; i++)
-		{
-			var key = Object.keys(settings)[i].toString();
-			var value = settings[key].toString();
-			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
-		}
-		settingsIO.write(fileContent);
-
+		SettingsIO.writeTsvFile(settings, settingsId);
 		Logger.log("Settings file updated successfully.");
 		Logger.writeLogs();
 	}
@@ -1019,61 +987,58 @@ MuseScore
 		deleteCustomCheckbox4.visible = false;
 
 		var customTuningCounter = 0;
-		var fileContent = customTuningsIO.read().split("\n");
-		for (var i = 0; i < fileContent.length; i++)
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName in fileContent)
 		{
-			if (fileContent[i].trim() != "")
+			var fifthSize = fileContent[tuningName];
+			Logger.trace("Name: " + tuningName + "; Fifth Size: " + fifthSize);
+			switch (customTuningCounter)
 			{
-				var rowData = StringUtils.parseTsvRow(fileContent[i]);
-				Logger.trace("Name: " + rowData[0] + "; Fifth Size: " + rowData[1]);
-				switch (customTuningCounter)
-				{
-					case 0:
-						custom0.text = rowData[0];
-						custom0.customFifthSize0 = rowData[1];
-						custom0.visible = true;
-						deleteCustomCheckbox0.text = rowData[0];
-						deleteCustomCheckbox0.visible = true;
-						break;
-
-					case 1:
-						custom1.text = rowData[0];
-						custom1.customFifthSize1 = rowData[1];
-						custom1.visible = true;
-						deleteCustomCheckbox1.text = rowData[0];
-						deleteCustomCheckbox1.visible = true;
-						break;
-
-					case 2:
-						custom2.text = rowData[0];
-						custom2.customFifthSize2 = rowData[1];
-						custom2.visible = true;
-						deleteCustomCheckbox2.text = rowData[0];
-						deleteCustomCheckbox2.visible = true;
-						break;
-
-					case 3:
-						custom3.text = rowData[0];
-						custom3.customFifthSize3 = rowData[1];
-						custom3.visible = true;
-						deleteCustomCheckbox3.text = rowData[0];
-						deleteCustomCheckbox3.visible = true;
-						break;
-
-					case 4:
-						custom4.text = rowData[0];
-						custom4.customFifthSize4 = rowData[1];
-						custom4.visible = true;
-						deleteCustomCheckbox4.text = rowData[0];
-						deleteCustomCheckbox4.visible = true;
-						break;
-				}
-
-				customTuningCounter++;
-				if (customTuningCounter >= maxCustomTunings)
-				{
+				case 0:
+					custom0.text = tuningName;
+					custom0.customFifthSize0 = fifthSize;
+					custom0.visible = true;
+					deleteCustomCheckbox0.text = tuningName;
+					deleteCustomCheckbox0.visible = true;
 					break;
-				}
+
+				case 1:
+					custom1.text = tuningName;
+					custom1.customFifthSize1 = fifthSize;
+					custom1.visible = true;
+					deleteCustomCheckbox1.text = tuningName;
+					deleteCustomCheckbox1.visible = true;
+					break;
+
+				case 2:
+					custom2.text = tuningName;
+					custom2.customFifthSize2 = fifthSize;
+					custom2.visible = true;
+					deleteCustomCheckbox2.text = tuningName;
+					deleteCustomCheckbox2.visible = true;
+					break;
+
+				case 3:
+					custom3.text = tuningName;
+					custom3.customFifthSize3 = fifthSize;
+					custom3.visible = true;
+					deleteCustomCheckbox3.text = tuningName;
+					deleteCustomCheckbox3.visible = true;
+					break;
+
+				case 4:
+					custom4.text = tuningName;
+					custom4.customFifthSize4 = fifthSize;
+					custom4.visible = true;
+					deleteCustomCheckbox4.text = tuningName;
+					deleteCustomCheckbox4.visible = true;
+					break;
+			}
+
+			customTuningCounter++;
+			if (customTuningCounter >= maxCustomTunings)
+			{
+				break;
 			}
 		}
 
@@ -1104,19 +1069,21 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
-		Logger.log("Adding a new custom tuning");
-
-		tuningName = StringUtils.formatForTsv(tuningName.trim());
+		tuningName = tuningName.trim();
 		customFifthSize = ("" + customFifthSize).trim();
-		Logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
+		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + customFifthSize);
 		if ((customFifthSize == "") || isNaN(customFifthSize))
 		{
 			throw "Invalid custom fifth size: " + customFifthSize;
 		}
 
-		var fileContent = customTuningsIO.read();
-		fileContent += "\n" + tuningName + "\t" + customFifthSize;
-		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		if (fileContent.hasOwnProperty(tuningName))
+		{
+			throw "Tuning name already present: " + tuningName;
+		}
+		fileContent[tuningName] = customFifthSize;
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
 
 		Logger.log("New custom tuning added successfully.");
 		Logger.writeLogs();
@@ -1127,23 +1094,14 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
-		Logger.log("Deleting selected custom tunings.");
-
-		var fileContent = customTuningsIO.read().split("\n");
-		for (var i = 0; i < tuningsToDelete.length; i++)
+		Logger.log("Deleting custom tunings: " + tuningsToDelete.join(", "));
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName of tuningsToDelete)
 		{
-			var tuningToDelete = tuningsToDelete[i];
-			Logger.trace("Deleting tuning: " + tuningToDelete);
-			for (var j = fileContent.length - 1; j >= 0; j--)
-			{
-				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
-				if (currentTuningName == tuningToDelete)
-				{
-					fileContent.splice(j, 1);
-				}
-			}
+			Logger.trace("Deleting key: " + tuningName);
+			delete fileContent[tuningName];
 		}
-		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
 
 		Logger.log("Tuning deleted successfully.");
 		Logger.writeLogs();
