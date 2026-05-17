@@ -35,24 +35,24 @@ MuseScore
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.3.4";
-	
+
 	pluginType: "dialog";
 	property var padding: 10;
 	width: guiColumn.implicitWidth + 2 * padding;
 	height: guiColumn.implicitHeight + 2 * padding;
-	
+
 	property variant settings: {};
-	
+
 	// List containing some commonly installed monospaced fonts.
 	property var preferredFonts: ["Consolas", "Courier New", "Menlo", "Monaco", "DejaVu Sans Mono", "Ubuntu Mono"];
 	// Variable containing the name of an installed monospaced font from the
 	// previous list.
 	property var monospacedFont: null;
-	
+
 	// Size of the buttons of the pre-set tuning systems.
 	property int buttonWidth: 100;
 	property int buttonHeight: 40;
-	
+
 	// String variables containing the sizes of the smallest and largest fifths,
 	// rounded to 1 digit after the decimal point.
 	property var smallestFifthString: StringUtils.roundToOneDecimalDigit(TuningUtils.SMALLEST_DIATONIC_FIFTH);
@@ -60,31 +60,31 @@ MuseScore
 	// Difference in cents between a 12EDO fifth and the fifh selected by the
 	// user.
 	property var fifthDeviation;
-	
+
 	// Reference note, which has a tuning offset of zero.
 	property var referenceNoteName;
 	property var referenceNoteAccidental;
 	property var referenceNote;
-	
+
 	// Amount of notes which were tuned successfully.
 	property var tunedNotes: 0;
 	// Total amount of notes encountered in the portion of the score to tune.
 	property var totalNotes: 0;
-	
+
 	// Maximum number of custom tuning systems.
 	property var maxCustomTunings: 5;
-	
+
 	FileIO
 	{
 		id: loggerId;
 	}
-	
+
 	Dialog
 	{
 		id: fifthSizeDialog;
 		title: "WARNING - Fifth Size";
 		standardButtons: Dialog.Yes | Dialog.No;
-		
+
 		contentItem: Column
 		{
 			Label
@@ -95,7 +95,7 @@ MuseScore
 				wrapMode: Text.Wrap;
 			}
 		}
-		
+
 		onAccepted:
 		{
 			try
@@ -112,19 +112,19 @@ MuseScore
 				Logger.writeLogs();
 			}
 		}
-		
+
 		onRejected:
 		{
 			Logger.log("Tuning canceled.");
 		}
 	}
-	
+
 	Dialog
 	{
 		id: newCustomTuningDialog;
 		title: "New Custom Tuning";
 		standardButtons: Dialog.Ok | Dialog.Cancel;
-		
+
 		contentItem: Column
 		{
 			Label
@@ -135,7 +135,7 @@ MuseScore
 			{
 				id: customTuningNameField;
 			}
-			
+
 			Label
 			{
 				text: "Fifth Size";
@@ -146,7 +146,7 @@ MuseScore
 				font.family: monospacedFont;
 			}
 		}
-		
+
 		onAccepted:
 		{
 			try
@@ -165,13 +165,13 @@ MuseScore
 			}
 		}
 	}
-	
+
 	Dialog
 	{
 		id: deleteCustomDialog;
 		title: "Delete Custom Tunings";
 		standardButtons: Dialog.Ok | Dialog.Cancel;
-		
+
 		contentItem: Column
 		{
 			CheckBox
@@ -205,7 +205,7 @@ MuseScore
 				visible: false;
 			}
 		}
-		
+
 		onAccepted:
 		{
 			try
@@ -245,12 +245,12 @@ MuseScore
 			}
 		}
 	}
-	
+
 	FileIO
 	{
 		id: customTuningsIO;
 		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
-		
+
 		onError:
 		{
 			outputMessageArea.text = msg;
@@ -258,12 +258,12 @@ MuseScore
 			Logger.writeLogs();
 		}
 	}
-	
+
 	FileIO
 	{
 		id: settingsIO;
 		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
-		
+
 		onError:
 		{
 			outputMessageArea.text = msg;
@@ -271,23 +271,23 @@ MuseScore
 			Logger.writeLogs();
 		}
 	}
-	
+
 	Column
 	{
 		id: guiColumn;
 		anchors.centerIn: parent;
 		spacing: padding;
-		
+
 		Row
 		{
 			spacing: padding;
-			
+
 			Text
 			{
 				text: "Fifth size in cents:";
 				font.pixelSize: 20;
 			}
-			
+
 			TextField
 			{
 				placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
@@ -296,7 +296,7 @@ MuseScore
 				width: 150;
 				height: 30;
 			}
-			
+
 			Button
 			{
 				width: 100;
@@ -324,7 +324,7 @@ MuseScore
 							Logger.log("Fifth size: " + fifthSize);
 							fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
 							Logger.log("Fifth deviation: " + fifthDeviation);
-							
+
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
 								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
@@ -355,22 +355,23 @@ MuseScore
 				}
 			}
 		}
-	
+
 		Row
 		{
 			spacing: padding;
-			
+
 			Text
 			{
 				text: "Reference note:";
 				font.pixelSize: 15;
 			}
-			
+
 			ComboBox
 			{
 				id: referenceNoteNameComboBox;
 				model: ["A", "B", "C", "D", "E", "F", "G"];
 				width: 50;
+
 				onActivated:
 				{
 					try
@@ -392,12 +393,29 @@ MuseScore
 					}
 				}
 			}
-			
+
 			ComboBox
 			{
 				id: referenceNoteAccidentalComboBox;
-				model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+				model: [
+					AccidentalUtils.UNICODE_ACCIDENTALS["FLAT3"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["FLAT2"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["FLAT"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["SHARP"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["SHARP2"],
+					AccidentalUtils.UNICODE_ACCIDENTALS["SHARP3"]
+				];
 				width: 50;
+				font: ui.theme.musicalFont;
+
+				delegate: ItemDelegate
+				{
+					text: modelData;
+					font: ui.theme.musicalFont;
+					height: 30;
+				}
+
 				onActivated:
 				{
 					try
@@ -420,23 +438,23 @@ MuseScore
 				}
 			}
 		}
-		
+
 		Row
 		{
 			anchors.horizontalCenter: parent.horizontalCenter;
 			spacing: 5 * padding;
-			
+
 			Column
 			{
 				spacing: padding;
-				
+
 				Text
 				{
 					text: "EDOs";
 					font.pixelSize: 15;
 					anchors.horizontalCenter: parent.horizontalCenter;
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -447,7 +465,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 5 * 3;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -458,7 +476,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 7 * 4;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -469,7 +487,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.STANDARD_FIFTH;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -480,7 +498,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 17 * 10;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -491,7 +509,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 19 * 11;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -502,7 +520,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 26 * 15;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -513,7 +531,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 29 * 17;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -524,7 +542,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 31 * 18;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -535,7 +553,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 41 * 24;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -546,7 +564,7 @@ MuseScore
 						fifthSizeField.text = 1200.0 / 43 * 25;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -558,18 +576,18 @@ MuseScore
 					}
 				}
 			}
-			
+
 			Column
 			{
 				spacing: padding;
-				
+
 				Text
 				{
 					text: "Meantones";
 					font.pixelSize: 15;
 					anchors.horizontalCenter: parent.horizontalCenter;
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -580,7 +598,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -591,7 +609,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -602,7 +620,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -613,7 +631,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -624,7 +642,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -635,7 +653,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -646,7 +664,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -657,7 +675,7 @@ MuseScore
 						fifthSizeField.text = 600.0 / 11 * (15 - Math.sqrt(5));
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -669,18 +687,18 @@ MuseScore
 					}
 				}
 			}
-			
+
 			Column
 			{
 				spacing: padding;
-				
+
 				Text
 				{
 					text: "Others";
 					font.pixelSize: 15;
 					anchors.horizontalCenter: parent.horizontalCenter;
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -691,7 +709,7 @@ MuseScore
 						fifthSizeField.text = TuningUtils.JUST_FIFTH;
 					}
 				}
-				
+
 				Text
 				{
 					text: "Customs";
@@ -701,7 +719,7 @@ MuseScore
 					anchors.horizontalCenter: parent.horizontalCenter;
 					verticalAlignment: Text.AlignBottom;
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -715,7 +733,7 @@ MuseScore
 						fifthSizeField.text = customFifthSize0;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -729,7 +747,7 @@ MuseScore
 						fifthSizeField.text = customFifthSize1;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -743,7 +761,7 @@ MuseScore
 						fifthSizeField.text = customFifthSize2;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -757,7 +775,7 @@ MuseScore
 						fifthSizeField.text = customFifthSize3;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -771,7 +789,7 @@ MuseScore
 						fifthSizeField.text = customFifthSize4;
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -791,7 +809,7 @@ MuseScore
 						}
 					}
 				}
-				
+
 				Button
 				{
 					width: buttonWidth;
@@ -813,12 +831,12 @@ MuseScore
 				}
 			}
 		}
-		
+
 		Row
 		{
 			anchors.horizontalCenter: parent.horizontalCenter;
 			spacing: padding;
-			
+
 			TextArea
 			{
 				id: outputMessageArea;
@@ -831,7 +849,7 @@ MuseScore
 			}
 		}
 	}
-	
+
 	/**
 	 * Tune the notes in the selection, or the entire score if nothing is
 	 * selected, according to the selected fifth size.
@@ -841,7 +859,7 @@ MuseScore
 		try
 		{
 			Logger.log("Tuning notes.");
-			
+
 			IterationUtils.iterate(
 				curScore,
 				{
@@ -849,7 +867,7 @@ MuseScore
 				},
 				Logger
 			);
-			
+
 			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
 		}
 		catch (error)
@@ -862,11 +880,11 @@ MuseScore
 			quit();
 		}
 	}
-	
+
 	function onNote(note)
 	{
 		totalNotes += 1;
-		
+
 		try
 		{
 			Logger.trace("Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " " + NoteUtils.getOctave(note));
@@ -880,7 +898,7 @@ MuseScore
 			Logger.err(error);
 		}
 	}
-	
+
 	Component.onCompleted:
 	{
 		try
@@ -896,10 +914,10 @@ MuseScore
 					settings[rowData[0]] = rowData[1];
 				}
 			}
-			
+
 			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
 			Logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
-			
+
 			// Initialise monospaced font.
 			for (var i = 0; i < preferredFonts.length; i++)
 			{
@@ -910,7 +928,7 @@ MuseScore
 					break;
 				}
 			}
-			
+
 			// Initialise reference note.
 			referenceNoteNameComboBox.currentIndex = settings["ReferenceNoteNameIndex"];
 			referenceNoteName = referenceNoteNameComboBox.currentText;
@@ -918,10 +936,10 @@ MuseScore
 			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
 			referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
 			Logger.log("Reference note set to: " + referenceNote);
-			
+
 			// Initialise output message area.
 			outputMessageArea.text = "-- Fifth Generated Tuner -- Version " + version + " --";
-		
+
 			// Initialise custom tunings buttons.
 			loadCustomTunings();
 		}
@@ -934,7 +952,7 @@ MuseScore
 			Logger.writeLogs();
 		}
 	}
-	
+
 	onRun:
 	{
 		if (typeof curScore === "undefined")
@@ -942,14 +960,14 @@ MuseScore
 			quit();
 		}
 	}
-	
+
 	/**
 	 * Write the contents of settings to the settings file.
 	 */
 	function writeSettings()
 	{
 		Logger.log("Updating settings file.");
-	
+
 		var fileContent = "";
 		for (var i = 0; i < Object.keys(settings).length; i++)
 		{
@@ -958,11 +976,11 @@ MuseScore
 			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
 		}
 		settingsIO.write(fileContent);
-		
+
 		Logger.log("Settings file updated successfully.");
 		Logger.writeLogs();
 	}
-	
+
 	/**
 	 * Load the custom tunings from the cunfiguration file, and set the
 	 * properties of the custom tunings buttons.
@@ -970,19 +988,19 @@ MuseScore
 	function loadCustomTunings()
 	{
 		Logger.log("Loading custom tunings.");
-	
+
 		custom0.visible = false;
 		custom1.visible = false;
 		custom2.visible = false;
 		custom3.visible = false;
 		custom4.visible = false;
-		
+
 		deleteCustomCheckbox0.visible = false;
 		deleteCustomCheckbox1.visible = false;
 		deleteCustomCheckbox2.visible = false;
 		deleteCustomCheckbox3.visible = false;
 		deleteCustomCheckbox4.visible = false;
-	
+
 		var customTuningCounter = 0;
 		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < fileContent.length; i++)
@@ -1000,7 +1018,7 @@ MuseScore
 						deleteCustomCheckbox0.text = rowData[0];
 						deleteCustomCheckbox0.visible = true;
 						break;
-					
+
 					case 1:
 						custom1.text = rowData[0];
 						custom1.customFifthSize1 = rowData[1];
@@ -1008,7 +1026,7 @@ MuseScore
 						deleteCustomCheckbox1.text = rowData[0];
 						deleteCustomCheckbox1.visible = true;
 						break;
-					
+
 					case 2:
 						custom2.text = rowData[0];
 						custom2.customFifthSize2 = rowData[1];
@@ -1016,7 +1034,7 @@ MuseScore
 						deleteCustomCheckbox2.text = rowData[0];
 						deleteCustomCheckbox2.visible = true;
 						break;
-					
+
 					case 3:
 						custom3.text = rowData[0];
 						custom3.customFifthSize3 = rowData[1];
@@ -1024,7 +1042,7 @@ MuseScore
 						deleteCustomCheckbox3.text = rowData[0];
 						deleteCustomCheckbox3.visible = true;
 						break;
-					
+
 					case 4:
 						custom4.text = rowData[0];
 						custom4.customFifthSize4 = rowData[1];
@@ -1033,7 +1051,7 @@ MuseScore
 						deleteCustomCheckbox4.visible = true;
 						break;
 				}
-				
+
 				customTuningCounter++;
 				if (customTuningCounter >= maxCustomTunings)
 				{
@@ -1041,7 +1059,7 @@ MuseScore
 				}
 			}
 		}
-		
+
 		if (customTuningCounter >= maxCustomTunings)
 		{
 			addCustom.enabled = false;
@@ -1050,7 +1068,7 @@ MuseScore
 		{
 			addCustom.enabled = true;
 		}
-		
+
 		if (customTuningCounter >= 1)
 		{
 			deleteCustom.enabled = true;
@@ -1059,18 +1077,18 @@ MuseScore
 		{
 			deleteCustom.enabled = false;
 		}
-		
+
 		Logger.log("Custom tunings loaded successfully.");
 		Logger.writeLogs();
 	}
-	
+
 	/**
 	 * Add the input custom tuning to the configuration file.
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
 		Logger.log("Adding a new custom tuning");
-		
+
 		tuningName = StringUtils.formatForTsv(tuningName.trim());
 		customFifthSize = ("" + customFifthSize).trim();
 		Logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
@@ -1078,22 +1096,22 @@ MuseScore
 		{
 			throw "Invalid custom fifth size: " + customFifthSize;
 		}
-		
+
 		var fileContent = customTuningsIO.read();
 		fileContent += "\n" + tuningName + "\t" + customFifthSize;
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
-		
+
 		Logger.log("New custom tuning added successfully.");
 		Logger.writeLogs();
 	}
-	
+
 	/**
 	 * Delete the tunings with the input names from the configuration file.
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
 		Logger.log("Deleting selected custom tunings.");
-		
+
 		var fileContent = customTuningsIO.read().split("\n");
 		for (var i = 0; i < tuningsToDelete.length; i++)
 		{
@@ -1109,7 +1127,7 @@ MuseScore
 			}
 		}
 		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
-		
+
 		Logger.log("Tuning deleted successfully.");
 		Logger.writeLogs();
 	}
