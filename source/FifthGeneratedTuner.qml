@@ -25,6 +25,7 @@ import "DateUtils.js" as DateUtils
 import "IterationUtils.js" as IterationUtils
 import "Logger.js" as Logger
 import "NoteUtils.js" as NoteUtils
+import "SettingsIO.js" as SettingsIO
 import "StringUtils.js" as StringUtils
 import "TuningUtils.js" as TuningUtils
 
@@ -248,28 +249,14 @@ MuseScore
 
 	FileIO
 	{
-		id: customTuningsIO;
+		id: customTuningsId;
 		source: Qt.resolvedUrl(".").toString() + "CustomTunings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
-		}
 	}
 
 	FileIO
 	{
-		id: settingsIO;
+		id: settingsId;
 		source: Qt.resolvedUrl(".").toString() + "Settings.tsv";
-		
-		onError:
-		{
-			outputMessageArea.text = msg;
-			Logger.err(msg);
-			Logger.writeLogs();
-		}
 	}
 
 	Column
@@ -916,17 +903,7 @@ MuseScore
 	{
 		try
 		{
-			// Read settings file.
-			settings = {};
-			var settingsFileContents = settingsIO.read().split("\n");
-			for (var i = 0; i < settingsFileContents.length; i++)
-			{
-				if (settingsFileContents[i].trim() != "")
-				{
-					var rowData = StringUtils.parseTsvRow(settingsFileContents[i]);
-					settings[rowData[0]] = rowData[1];
-				}
-			}
+			settings = SettingsIO.readTsvFile(settingsId);
 
 			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
 			Logger.log("-- Fifth Generated Tuner -- Version " + version + " --");
@@ -984,16 +961,7 @@ MuseScore
 	function writeSettings()
 	{
 		Logger.log("Updating settings file.");
-
-		var fileContent = "";
-		for (var i = 0; i < Object.keys(settings).length; i++)
-		{
-			var key = Object.keys(settings)[i].toString();
-			var value = settings[key].toString();
-			fileContent += StringUtils.formatForTsv(key) + "\t" + StringUtils.formatForTsv(value) + "\n";
-		}
-		settingsIO.write(fileContent);
-
+		SettingsIO.writeTsvFile(settings, settingsId);
 		Logger.log("Settings file updated successfully.");
 		Logger.writeLogs();
 	}
