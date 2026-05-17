@@ -32,6 +32,20 @@ const UNICODE_ACCIDENTALS = {
 	"SHARP_SLASH4": "\uE283"
 };
 
+const UNICODE_TO_ASCII = {
+	"\uE260": "b",
+	"\uE261": "h",
+	"\uE262": "#",
+	"\uE263": "x",
+	"\uE264": "bb",
+	"\uE265": "#x",
+	"\uE266": "bbb",
+	"\uE280": "d",
+	"\uE281": "db",
+	"\uE282": "t",
+	"\uE283": "t#"
+};
+
 const ACCIDENTAL_DATA = {
 	"NONE":
 	{

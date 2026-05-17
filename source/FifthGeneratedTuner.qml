@@ -379,7 +379,7 @@ MuseScore
 						settings["ReferenceNoteNameIndex"] = referenceNoteNameComboBox.currentIndex;
 						writeSettings();
 						referenceNoteName = referenceNoteNameComboBox.currentText;
-						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						referenceNote = referenceNoteName + referenceNoteAccidental;
 						Logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
@@ -423,7 +423,9 @@ MuseScore
 						settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalComboBox.currentIndex;
 						writeSettings();
 						referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-						referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+						referenceNoteAccidental = AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidental];
+						referenceNoteAccidental = referenceNoteAccidental.replace(AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], "");
+						referenceNote = referenceNoteName + referenceNoteAccidental;
 						Logger.log("Reference note changed to: " + referenceNote);
 					}
 					catch (error)
@@ -934,7 +936,9 @@ MuseScore
 			referenceNoteName = referenceNoteNameComboBox.currentText;
 			referenceNoteAccidentalComboBox.currentIndex = settings["ReferenceNoteAccidentalIndex"];
 			referenceNoteAccidental = referenceNoteAccidentalComboBox.currentText;
-			referenceNote = referenceNoteName + ((referenceNoteAccidental == "-") ? "" : referenceNoteAccidental);
+			referenceNoteAccidental = AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidental];
+			referenceNoteAccidental = referenceNoteAccidental.replace(AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], "");
+			referenceNote = referenceNoteName + referenceNoteAccidental;
 			Logger.log("Reference note set to: " + referenceNote);
 
 			// Initialise output message area.
