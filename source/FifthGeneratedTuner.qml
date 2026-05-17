@@ -1090,23 +1090,13 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
-		Logger.log("Deleting selected custom tunings.");
-
-		var fileContent = customTuningsIO.read().split("\n");
-		for (var i = 0; i < tuningsToDelete.length; i++)
+		Logger.log("Deleting custom tunings: " + tuningsToDelete.join(", "));
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName in tuningsToDelete)
 		{
-			var tuningToDelete = tuningsToDelete[i];
-			Logger.trace("Deleting tuning: " + tuningToDelete);
-			for (var j = fileContent.length - 1; j >= 0; j--)
-			{
-				var currentTuningName = StringUtils.parseTsvRow(fileContent[j])[0];
-				if (currentTuningName == tuningToDelete)
-				{
-					fileContent.splice(j, 1);
-				}
-			}
+			delete fileContent[tuningName];
 		}
-		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent.join("\n")));
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
 
 		Logger.log("Tuning deleted successfully.");
 		Logger.writeLogs();
