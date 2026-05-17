@@ -1,6 +1,6 @@
 /*
 	A Musescore plugin for tuning a score based on the specified fifth size.
-	Copyright (C) 2024 - 2025 Alessandro Culatti
+	Copyright (C) 2024 - 2026 Alessandro Culatti
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -249,8 +249,8 @@ MuseScore
 	FileIO
 	{
 		id: customTuningsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "CustomTunings.tsv";
-
+		source: Qt.resolvedUrl(".").toString() + "CustomTunings.tsv";
+		
 		onError:
 		{
 			outputMessageArea.text = msg;
@@ -262,8 +262,8 @@ MuseScore
 	FileIO
 	{
 		id: settingsIO;
-		source: Qt.resolvedUrl(".").toString().substring(8) + "Settings.tsv";
-
+		source: Qt.resolvedUrl(".").toString() + "Settings.tsv";
+		
 		onError:
 		{
 			outputMessageArea.text = msg;
