@@ -1034,7 +1034,7 @@ MuseScore
 					deleteCustomCheckbox4.visible = true;
 					break;
 			}
-			
+
 			customTuningCounter++;
 			if (customTuningCounter >= maxCustomTunings)
 			{
