@@ -1069,19 +1069,17 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, customFifthSize)
 	{
-		Logger.log("Adding a new custom tuning");
-
-		tuningName = StringUtils.formatForTsv(tuningName.trim());
+		tuningName = tuningName.trim();
 		customFifthSize = ("" + customFifthSize).trim();
-		Logger.trace("Name: " + tuningName + "; Size: " + customFifthSize);
+		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + customFifthSize);
 		if ((customFifthSize == "") || isNaN(customFifthSize))
 		{
 			throw "Invalid custom fifth size: " + customFifthSize;
 		}
 
-		var fileContent = customTuningsIO.read();
-		fileContent += "\n" + tuningName + "\t" + customFifthSize;
-		customTuningsIO.write(StringUtils.removeEmptyRows(fileContent));
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		fileContent[tuningName] = customFifthSize;
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
 
 		Logger.log("New custom tuning added successfully.");
 		Logger.writeLogs();
