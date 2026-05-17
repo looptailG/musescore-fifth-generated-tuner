@@ -1,6 +1,6 @@
 /*
 	A Musescore plugin for tuning a score based on the specified fifth size.
-	Copyright (C) 2024 - 2025 Alessandro Culatti
+	Copyright (C) 2024 - 2026 Alessandro Culatti
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
