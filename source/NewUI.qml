@@ -13,25 +13,25 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.3.4";
 	pluginType: "dialog";
-	
+
 	id: root;
 	width: childrenRect.width + 20;
 	height: childrenRect.height + 20;
-	
+
 	ColumnLayout
 	{
 		anchors.centerIn: parent;
 		spacing: 10;
-		
+
 		Row
 		{
 			spacing: 10;
-			
+
 			MU.StyledGroupBox
 			{
 				title: "Fifth Size (in cents)";
 				width: fifthSizeInput.width + 25;
-				
+
 				ColumnLayout
 				{
 					spacing: 10;
@@ -40,42 +40,55 @@ MuseScore
 					{
 						placeholderText: qsTr("TBD");
 						id: fifthSizeInput;
+						width: 150;
 					}
 				}
 			}
-			
+
 			MU.StyledGroupBox
 			{
 				title: "Reference Note";
-				width: referenceNoteName.width + referenceNoteAccidental.width + 35;
-				
+				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 35;
+
 				RowLayout
 				{
 					spacing: 10;
-					
+
 					MU.StyledDropdown
 					{
-						id: referenceNoteName;
+						id: referenceNoteNameId;
+						width: 50;
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 						currentIndex: 0;
-						
+
 						onActivated: function(index, value)
 						{
 							currentIndex = index;
 						}
 					}
-					
+
 					MU.StyledDropdown
 					{
-						id: referenceNoteAccidental;
+						id: referenceNoteAccidentalId;
+						width: 50;
 						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
 						currentIndex: 3;
-						
+
 						onActivated: function(index, value)
 						{
 							currentIndex = index;
 						}
 					}
+				}
+			}
+
+			MU.FlatButton
+			{
+				text: "Tune";
+				accentButton: true;
+
+				onClicked:
+				{
 				}
 			}
 		}
