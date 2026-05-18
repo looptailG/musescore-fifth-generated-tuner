@@ -34,7 +34,7 @@ import "TuningUtils.js" as TuningUtils
 
 MuseScore
 {
-	title: "Fifth Generated Tuner";
+	title: "OLD_Fifth Generated Tuner";
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
