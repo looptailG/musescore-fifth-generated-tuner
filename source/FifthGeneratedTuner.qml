@@ -18,6 +18,7 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import Muse.Ui
 import Muse.UiComponents as MU
 import FileIO 3.0
@@ -249,6 +250,28 @@ MuseScore
 	{
 		id: settingsId;
 		source: Qt.resolvedUrl(".").toString() + "Settings.tsv";
+	}
+	
+	ColumnLayout
+	{
+		anchors.centerIn: parent;
+		spacing: padding;
+		
+		Row
+		{
+			spacing: padding;
+			
+			MU.StyledGroupBox
+			{
+				title: "Fifth size (in cents)";
+
+				TextArea
+				{
+					placeholderText: qsTr(smallestFifthString + " - " + largestFifthString);
+					id: fifthSizeField;
+				}
+			}
+		}
 	}
 
 /*	Column
