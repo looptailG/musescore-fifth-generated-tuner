@@ -23,7 +23,7 @@ MuseScore
 		anchors.centerIn: parent;
 		spacing: 10;
 
-		Row
+		RowLayout
 		{
 			spacing: 10;
 
@@ -31,16 +31,17 @@ MuseScore
 			{
 				title: "Fifth Size (in cents)";
 				width: fifthSizeInput.width + 25;
+				Layout.alignment: Qt.AlignVCenter
 
 				ColumnLayout
 				{
 					spacing: 10;
 
-					TextArea
+					TextField
 					{
 						placeholderText: qsTr("TBD");
 						id: fifthSizeInput;
-						width: 150;
+						width: 300;
 					}
 				}
 			}
@@ -49,6 +50,7 @@ MuseScore
 			{
 				title: "Reference Note";
 				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 35;
+				Layout.alignment: Qt.AlignVCenter
 
 				RowLayout
 				{
@@ -57,7 +59,7 @@ MuseScore
 					MU.StyledDropdown
 					{
 						id: referenceNoteNameId;
-						width: 50;
+						width: 80;
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 						currentIndex: 0;
 
@@ -70,7 +72,7 @@ MuseScore
 					MU.StyledDropdown
 					{
 						id: referenceNoteAccidentalId;
-						width: 50;
+						width: 80;
 						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
 						currentIndex: 3;
 
@@ -86,6 +88,7 @@ MuseScore
 			{
 				text: "Tune";
 				accentButton: true;
+				Layout.alignment: Qt.AlignVCenter
 
 				onClicked:
 				{
