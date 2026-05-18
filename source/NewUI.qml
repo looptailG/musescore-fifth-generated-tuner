@@ -30,7 +30,7 @@ MuseScore
 			MU.StyledGroupBox
 			{
 				title: "Fifth Size (in cents)";
-				width: 200;
+				width: fifthSizeInput.width + 25;
 				
 				ColumnLayout
 				{
@@ -39,7 +39,7 @@ MuseScore
 					TextArea
 					{
 						placeholderText: qsTr("TBD");
-						id: fifthSizeField;
+						id: fifthSizeInput;
 					}
 				}
 			}
@@ -47,7 +47,36 @@ MuseScore
 			MU.StyledGroupBox
 			{
 				title: "Reference Note";
-				width: 200;
+				width: referenceNoteName.width + referenceNoteAccidental.width + 35;
+				
+				RowLayout
+				{
+					spacing: 10;
+					
+					MU.StyledDropdown
+					{
+						id: referenceNoteName;
+						model: ["A", "B", "C", "D", "E", "F", "G"];
+						currentIndex: 0;
+						
+						onActivated: function(index, value)
+						{
+							currentIndex = index;
+						}
+					}
+					
+					MU.StyledDropdown
+					{
+						id: referenceNoteAccidental;
+						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+						currentIndex: 3;
+						
+						onActivated: function(index, value)
+						{
+							currentIndex = index;
+						}
+					}
+				}
 			}
 		}
 	}
