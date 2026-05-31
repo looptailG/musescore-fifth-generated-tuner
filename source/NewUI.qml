@@ -13,29 +13,31 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.3.4";
 	pluginType: "dialog";
+	
+	readonly property int defaultPadding: 10;
 
 	id: root;
-	width: childrenRect.width + 20;
-	height: childrenRect.height + 20;
+	width: childrenRect.width + 2 * defaultPadding;
+	height: childrenRect.height + 2 * defaultPadding;
 
 	ColumnLayout
 	{
 		anchors.centerIn: parent;
-		spacing: 10;
+		spacing: defaultPadding;
 
 		RowLayout
 		{
-			spacing: 10;
+			spacing: defaultPadding;
 
 			MU.StyledGroupBox
 			{
 				title: "Fifth Size (in cents)";
-				width: fifthSizeInput.width + 25;
+				width: fifthSizeInput.width + 2 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				ColumnLayout
 				{
-					spacing: 10;
+					spacing: defaultPadding;
 
 					TextField
 					{
@@ -54,7 +56,7 @@ MuseScore
 
 				RowLayout
 				{
-					spacing: 10;
+					spacing: defaultPadding;
 
 					MU.StyledDropdown
 					{
