@@ -136,14 +136,14 @@ MuseScore
 		{
 			spacing: defaultPadding;
 
-			ColumnLayout
+			MU.StyledGroupBox
 			{
-				spacing: defaultPadding;
+				title: "EDOs";
 				Layout.alignment: Qt.AlignTop;
 
-				MU.StyledGroupBox
+				ColumnLayout
 				{
-					title: "EDOs";
+					spacing: defaultPadding;
 					Layout.alignment: Qt.AlignTop;
 
 					MU.FlatButton
@@ -155,17 +155,117 @@ MuseScore
 							setFifthSize(1200.0 / 5 * 3);
 						}
 					}
+
+					MU.FlatButton
+					{
+						text: "7";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 7 * 4);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "12";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.STANDARD_FIFTH);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "17";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 17 * 10);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "19";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 19 * 11);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "26";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 26 * 15);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "29";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 29 * 17);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "31";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 31 * 18);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "41";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 41 * 24);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "43";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 43 * 25);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "50";
+
+						onClicked:
+						{
+							setFifthSize(1200.0 / 50 * 29);
+						}
+					}
 				}
 			}
 
-			ColumnLayout
+			MU.StyledGroupBox
 			{
-				spacing: defaultPadding;
+				title: "Meantones";
 				Layout.alignment: Qt.AlignTop;
 
-				MU.StyledGroupBox
+				ColumnLayout
 				{
-					title: "Meantones";
+					spacing: defaultPadding;
 					Layout.alignment: Qt.AlignTop;
 
 					MU.FlatButton
@@ -177,6 +277,86 @@ MuseScore
 							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3);
 						}
 					}
+
+					MU.FlatButton
+					{
+						text: "2/7 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 7);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "7/26 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 7 / 26);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "1/4 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 4);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "2/9 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA * 2 / 9);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "1/5 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 5);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "1/6 Comma";
+
+						onClicked:
+						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 6);
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "Golden";
+
+						onClicked:
+						{
+							setFifthSize(600.0 / 11 * (15 - Math.sqrt(5)));
+						}
+					}
+
+					MU.FlatButton
+					{
+						text: "Tungsten";
+
+						onClicked:
+						{
+							setFifthSize(600.0 * (Math.sqrt(10) - 2));
+						}
+					}
 				}
 			}
 
@@ -187,23 +367,29 @@ MuseScore
 
 				MU.StyledGroupBox
 				{
-					title: "Others";
+					title: "Other Tunings";
 					Layout.alignment: Qt.AlignTop;
 
-					MU.FlatButton
+					ColumnLayout
 					{
-						text: "Pythagorean";
+						spacing: defaultPadding;
+						Layout.alignment: Qt.AlignTop;
 
-						onClicked:
+						MU.FlatButton
 						{
-							setFifthSize(TuningUtils.JUST_FIFTH);
+							text: "Pythagorean";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH);
+							}
 						}
 					}
 				}
 
 				MU.StyledGroupBox
 				{
-					title: "Custom";
+					title: "Custom Tunings";
 					Layout.alignment: Qt.AlignTop;
 				}
 			}
