@@ -43,13 +43,21 @@ MuseScore
 	id: root;
 	width: childrenRect.width + 2 * defaultPadding;
 	height: childrenRect.height + 2 * defaultPadding;
-	
+
 	property var customTuningsButtons: [
 		custom0,
 		custom1,
 		custom2,
 		custom3,
 		custom4
+	];
+
+	property var deleteCustomTuningsCheckBoxes: [
+		deleteCustomCheckBox0,
+		deleteCustomCheckBox1,
+		deleteCustomCheckBox2,
+		deleteCustomCheckBox3,
+		deleteCustomCheckBox4
 	];
 
 	FileIO
@@ -68,38 +76,38 @@ MuseScore
 	{
 		id: logggerId;
 	}
-	
+
 	Dialog
 	{
 		id: newCustomTuningDialog;
 		title: "New Custom Tuning";
 		standardButtons: Dialog.Ok | Dialog.Cancel;
-		
+
 		contentItem: ColumnLayout
 		{
 			spacing: defaultPadding;
-		
+
 			MU.StyledGroupBox
 			{
 				title: "Tuning Name";
-				
+
 				TextField
 				{
 					id: customTuningNameField;
 				}
 			}
-			
+
 			MU.StyledGroupBox
 			{
 				title: "Fifth Size";
-				
+
 				TextField
 				{
 					id: customTuningFifthSizeField;
 				}
 			}
 		}
-		
+
 		onAccepted:
 		{
 			try
@@ -117,34 +125,108 @@ MuseScore
 			}
 		}
 	}
-	
+
 	Dialog
 	{
 		id: deleteCustomTuningDialog;
 		title: "Delete Custom Tunings";
 		standardButtons: Dialog.Ok | Dialog.Cancel;
-		
+
 		contentItem: ColumnLayout
 		{
 			spacing: defaultPadding;
-			
+
 			MU.CheckBox
 			{
 				id: deleteCustomCheckBox0;
 				text: "";
-				
+				visible: false;
+
 				onClicked:
 				{
 					deleteCustomCheckBox0.checked = !deleteCustomCheckBox0.checked;
 				}
 			}
+
+			MU.CheckBox
+			{
+				id: deleteCustomCheckBox1;
+				text: "";
+				visible: false;
+
+				onClicked:
+				{
+					deleteCustomCheckBox1.checked = !deleteCustomCheckBox1.checked;
+				}
+			}
+
+			MU.CheckBox
+			{
+				id: deleteCustomCheckBox2;
+				text: "";
+				visible: false;
+
+				onClicked:
+				{
+					deleteCustomCheckBox2.checked = !deleteCustomCheckBox2.checked;
+				}
+			}
+
+			MU.CheckBox
+			{
+				id: deleteCustomCheckBox3;
+				text: "";
+				visible: false;
+
+				onClicked:
+				{
+					deleteCustomCheckBox3.checked = !deleteCustomCheckBox3.checked;
+				}
+			}
+
+			MU.CheckBox
+			{
+				id: deleteCustomCheckBox4;
+				text: "";
+				visible: false;
+
+				onClicked:
+				{
+					deleteCustomCheckBox4.checked = !deleteCustomCheckBox4.checked;
+				}
+			}
+		}
+
+		onAccepted:
+		{
+			try
+			{
+				var customTuningsToDelete = [];
+				for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+				{
+					if (customTuningCheckBox.checked)
+					{
+						customTuningsToDelete.push(customTuningCheckBox.text);
+					}
+				}
+				deleteCustomTunings(customTuningsToDelete);
+				loadCustomTunings();
+			}
+			catch (error)
+			{
+				Logger.err(error.toString());
+			}
+			finally
+			{
+				Logger.writeLogs();
+			}
 		}
 	}
-	
+
 	Dialog
 	{
 		id: errorDialog;
-		
+
 		contentItem: MU.StyledTextLabel
 		{
 			id: errorText;
@@ -579,6 +661,7 @@ MuseScore
 
 							onClicked:
 							{
+								deleteCustomTuningDialog.open();
 							}
 						}
 					}
@@ -613,7 +696,7 @@ MuseScore
 			quit();
 		}
 	}
-	
+
 	/**
 	 * Load the custom tunings from the configuration file, and set the
 	 * properties of the custom tunings buttons.
@@ -621,17 +704,25 @@ MuseScore
 	function loadCustomTunings()
 	{
 		Logger.log("Loading custom tunings.");
-		
+
 		for (var customButton of customTuningsButtons)
 		{
 			customButton.visible = false;
 		}
 	}
-	
+
 	/**
 	 * Add the input custom tuning to the configuration file.
 	 */
 	function newCustomTuning(tuningName, fifthSize)
+	{
+	}
+
+	/**
+	 * Delete the tunings with the specified input names from the configuration
+	 * file.
+	 */
+	function deleteCustomTunings(tuningsToDelete)
 	{
 	}
 
