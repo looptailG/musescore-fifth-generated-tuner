@@ -43,6 +43,14 @@ MuseScore
 	id: root;
 	width: childrenRect.width + 2 * defaultPadding;
 	height: childrenRect.height + 2 * defaultPadding;
+	
+	property var customTuningsButtons: [
+		custom0,
+		custom1,
+		custom2,
+		custom3,
+		custom4
+	];
 
 	FileIO
 	{
@@ -59,6 +67,65 @@ MuseScore
 	FileIO
 	{
 		id: logggerId;
+	}
+	
+	Dialog
+	{
+		id: newCustomTuningDialog;
+		title: "New Custom Tuning";
+		standardButtons: Dialog.Ok | Dialog.Cancel;
+		
+		contentItem: ColumnLayout
+		{
+			MU.StyledGroupBox
+			{
+				title: "Tuning Name";
+				
+				TextField
+				{
+					id: customTuningNameField;
+				}
+			}
+			
+			MU.StyledGroupBox
+			{
+				title: "Fifth Size";
+				
+				TextField
+				{
+					id: customTuningFifthSizeField;
+				}
+			}
+		}
+		
+		onAccepted:
+		{
+			try
+			{
+				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
+				loadCustomTunings();
+			}
+			catch (error)
+			{
+				Logger.err(error.toString());
+			}
+			finally
+			{
+				Logger.writeLogs();
+			}
+		}
+	}
+	
+	Dialog
+	{
+		id: errorDialog;
+		
+		contentItem: MU.StyledTextLabel
+		{
+			id: errorText;
+			wrapMode: Text.WordWrap;
+			text: "";
+		}
 	}
 
 	ColumnLayout
@@ -476,6 +543,7 @@ MuseScore
 
 							onClicked:
 							{
+								newCustomTuningDialog.open();
 							}
 						}
 
@@ -513,6 +581,38 @@ MuseScore
 		}
 	}
 
+	onRun:
+	{
+		if (typeof curScore === "undefined")
+		{
+			quit();
+		}
+	}
+	
+	/**
+	 * Load the custom tunings from the configuration file, and set the
+	 * properties of the custom tunings buttons.
+	 */
+	function loadCustomTunings()
+	{
+		Logger.log("Loading custom tunings.");
+		
+		for (var customButton of customTuningsButtons)
+		{
+			customButton.visible = false;
+		}
+	}
+	
+	/**
+	 * Add the input custom tuning to the configuration file.
+	 */
+	function newCustomTuning(tuningName, fifthSize)
+	{
+	}
+
+	/**
+	 * Set the fifth size text box to the specified value.
+	 */
 	function setFifthSize(fifthSize)
 	{
 		Logger.log("Setting fifth size to: " + fifthSize);
