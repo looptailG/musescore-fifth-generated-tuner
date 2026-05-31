@@ -13,7 +13,7 @@ MuseScore
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.3.4";
 	pluginType: "dialog";
-	
+
 	readonly property int defaultPadding: 10;
 
 	id: root;
@@ -51,7 +51,7 @@ MuseScore
 			MU.StyledGroupBox
 			{
 				title: "Reference Note";
-				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 35;
+				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				RowLayout
@@ -90,10 +90,54 @@ MuseScore
 			{
 				text: "Tune";
 				accentButton: true;
-				Layout.alignment: Qt.AlignVCenter
 
 				onClicked:
 				{
+				}
+			}
+		}
+
+		RowLayout
+		{
+			spacing: defaultPadding;
+
+			ColumnLayout
+			{
+				spacing: defaultPadding;
+
+				MU.StyledGroupBox
+				{
+					title: "EDOs";
+					Layout.alignment: Qt.AlignVCenter;
+
+					MU.FlatButton
+					{
+						text: "5";
+
+						onClicked:
+						{
+						}
+					}
+				}
+			}
+
+			ColumnLayout
+			{
+				spacing: defaultPadding;
+
+				MU.StyledGroupBox
+				{
+					title: "Meantones";
+					Layout.alignment: Qt.AlignVCenter;
+
+					MU.FlatButton
+					{
+						text: "1/3 Comma";
+
+						onClicked:
+						{
+						}
+					}
 				}
 			}
 		}
