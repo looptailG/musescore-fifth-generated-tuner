@@ -678,6 +678,8 @@ MuseScore
 
 			Logger.initialise(logggerId, parseInt(settings["LogLevel"]));
 			Logger.log(title + " - v" + version);
+
+			loadCustomTunings();
 		}
 		catch (error)
 		{
@@ -709,6 +711,52 @@ MuseScore
 		{
 			customButton.visible = false;
 		}
+		for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+		{
+			customTuningCheckBox.visible = false;
+		}
+
+		var counter = 0;
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName in fileContent)
+		{
+			var fifthSize = fileContent[tuningName];
+			Logger.trace("Name: " + tuningName + "; Fifth Size: " + fifthSize);
+			if (counter >= customTuningsButtons.length)
+			{
+				Logger.warning("Too many custom tunings;");
+				continue;
+			}
+
+			customTuningsButtons[counter].text = tuningName;
+			customTuningsButtons[counter].fifthSize = fifthSize;
+			customTuningsButtons[counter].visible = true;
+			deleteCustomTuningsCheckBoxes[counter].text = tuningName;
+			deleteCustomTuningsCheckBoxes[counter].visible = true;
+
+			counter++;
+		}
+
+		if (counter < customTuningsButtons.length)
+		{
+			addCustom.enabled = true;
+		}
+		else
+		{
+			addCustom.enabled = false;
+		}
+
+		if (counter > 0)
+		{
+			deleteCustom.enabled = true;
+		}
+		else
+		{
+			deleteCustom.enabled = false;
+		}
+
+		Logger.log("Custom tunings loaded successfully.");
+		Logger.writeLogs();
 	}
 
 	/**
