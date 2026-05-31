@@ -76,7 +76,8 @@ MuseScore
 
 					TextField
 					{
-						placeholderText: qsTr("TBD");
+						placeholderText: TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " - "
+							+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1);
 						id: fifthSizeInput;
 						width: 300;
 					}
