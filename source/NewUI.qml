@@ -1,9 +1,12 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import FileIO
 import Muse.Ui
 import Muse.UiComponents as MU
 import MuseScore 3.0
+import "Logger.js" as Logger
+import "SettingsIO.js" as SettingsIO
 
 MuseScore
 {
@@ -14,11 +17,24 @@ MuseScore
 	version: "1.3.4";
 	pluginType: "dialog";
 
+	property variant settings: {};
+
 	readonly property int defaultPadding: 10;
 
 	id: root;
 	width: childrenRect.width + 2 * defaultPadding;
 	height: childrenRect.height + 2 * defaultPadding;
+
+	FileIO
+	{
+		id: settingsId;
+		source: Qt.resolvedUrl(".").toString() + "Settings.tsv";
+	}
+
+	FileIO
+	{
+		id: logggerId;
+	}
 
 	ColumnLayout
 	{
@@ -142,33 +158,52 @@ MuseScore
 					}
 				}
 			}
-			
+
 			ColumnLayout
 			{
 				spacing: defaultPadding;
 				Layout.alignment: Qt.AlignTop;
-				
+
 				MU.StyledGroupBox
 				{
 					title: "Others";
 					Layout.alignment: Qt.AlignTop;
-					
+
 					MU.FlatButton
 					{
 						text: "Pythagorean";
-						
+
 						onClicked:
 						{
 						}
 					}
 				}
-				
+
 				MU.StyledGroupBox
 				{
 					title: "Custom";
 					Layout.alignment: Qt.AlignTop;
 				}
 			}
+		}
+	}
+
+	Component.onCompleted:
+	{
+		try
+		{
+			settings = SettingsIO.readTsvFile(settingsId);
+
+			Logger.initialise(logggerId, parseInt(settings["LogLevel"]));
+			Logger.log(title + " - v" + version);
+		}
+		catch (error)
+		{
+			Logger.fatal(error.toString());
+		}
+		finally
+		{
+			Logger.writeLogs();
 		}
 	}
 }
