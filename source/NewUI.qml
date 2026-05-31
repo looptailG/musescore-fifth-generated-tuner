@@ -77,6 +77,8 @@ MuseScore
 		
 		contentItem: ColumnLayout
 		{
+			spacing: defaultPadding;
+		
 			MU.StyledGroupBox
 			{
 				title: "Tuning Name";
@@ -112,6 +114,29 @@ MuseScore
 			finally
 			{
 				Logger.writeLogs();
+			}
+		}
+	}
+	
+	Dialog
+	{
+		id: deleteCustomTuningDialog;
+		title: "Delete Custom Tunings";
+		standardButtons: Dialog.Ok | Dialog.Cancel;
+		
+		contentItem: ColumnLayout
+		{
+			spacing: defaultPadding;
+			
+			MU.CheckBox
+			{
+				id: deleteCustomCheckBox0;
+				text: "";
+				
+				onClicked:
+				{
+					deleteCustomCheckBox0.checked = !deleteCustomCheckBox0.checked;
+				}
 			}
 		}
 	}
