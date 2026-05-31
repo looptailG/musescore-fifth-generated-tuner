@@ -104,11 +104,12 @@ MuseScore
 			ColumnLayout
 			{
 				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignTop;
 
 				MU.StyledGroupBox
 				{
 					title: "EDOs";
-					Layout.alignment: Qt.AlignVCenter;
+					Layout.alignment: Qt.AlignTop;
 
 					MU.FlatButton
 					{
@@ -124,11 +125,12 @@ MuseScore
 			ColumnLayout
 			{
 				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignTop;
 
 				MU.StyledGroupBox
 				{
 					title: "Meantones";
-					Layout.alignment: Qt.AlignVCenter;
+					Layout.alignment: Qt.AlignTop;
 
 					MU.FlatButton
 					{
@@ -138,6 +140,33 @@ MuseScore
 						{
 						}
 					}
+				}
+			}
+			
+			ColumnLayout
+			{
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignTop;
+				
+				MU.StyledGroupBox
+				{
+					title: "Others";
+					Layout.alignment: Qt.AlignTop;
+					
+					MU.FlatButton
+					{
+						text: "Pythagorean";
+						
+						onClicked:
+						{
+						}
+					}
+				}
+				
+				MU.StyledGroupBox
+				{
+					title: "Custom";
+					Layout.alignment: Qt.AlignTop;
 				}
 			}
 		}
