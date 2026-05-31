@@ -1,3 +1,21 @@
+/*
+	A Musescore plugin for tuning a score based on the specified fifth size.
+	Copyright (C) 2024 - 2026 Alessandro Culatti
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -7,6 +25,7 @@ import Muse.UiComponents as MU
 import MuseScore 3.0
 import "Logger.js" as Logger
 import "SettingsIO.js" as SettingsIO
+import "TuningUtils.js" as TuningUtils
 
 MuseScore
 {
@@ -133,6 +152,7 @@ MuseScore
 
 						onClicked:
 						{
+							setFifthSize(1200.0 / 5 * 3);
 						}
 					}
 				}
@@ -154,6 +174,7 @@ MuseScore
 
 						onClicked:
 						{
+							setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SYNTONIC_COMMA / 3);
 						}
 					}
 				}
@@ -175,6 +196,7 @@ MuseScore
 
 						onClicked:
 						{
+							setFifthSize(TuningUtils.JUST_FIFTH);
 						}
 					}
 				}
@@ -205,5 +227,12 @@ MuseScore
 		{
 			Logger.writeLogs();
 		}
+	}
+
+	function setFifthSize(fifthSize)
+	{
+		Logger.log("Setting fifth size to: " + fifthSize);
+		fifthSizeInput.text = fifthSize;
+		Logger.writeLogs();
 	}
 }
