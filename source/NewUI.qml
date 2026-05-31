@@ -52,6 +52,12 @@ MuseScore
 
 	FileIO
 	{
+		id: customTuningsId;
+		source: Qt.resolvedUrl(".").toString() + "CustomTunings.tsv";
+	}
+
+	FileIO
+	{
 		id: logggerId;
 	}
 
@@ -392,6 +398,97 @@ MuseScore
 				{
 					title: "Custom Tunings";
 					Layout.alignment: Qt.AlignTop;
+
+					ColumnLayout
+					{
+						spacing: defaultPadding;
+						Layout.alignment: Qt.AlignTop;
+
+						MU.FlatButton
+						{
+							id: custom0;
+							text: "";
+							property var fifthSize;
+							visible: false;
+
+							onClicked:
+							{
+								setFifthSize(custom0.fifthSize);
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: custom1;
+							text: "";
+							property var fifthSize;
+							visible: false;
+
+							onClicked:
+							{
+								setFifthSize(custom1.fifthSize);
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: custom2;
+							text: "";
+							property var fifthSize;
+							visible: false;
+
+							onClicked:
+							{
+								setFifthSize(custom2.fifthSize);
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: custom3;
+							text: "";
+							property var fifthSize;
+							visible: false;
+
+							onClicked:
+							{
+								setFifthSize(custom3.fifthSize);
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: custom4;
+							text: "";
+							property var fifthSize;
+							visible: false;
+
+							onClicked:
+							{
+								setFifthSize(custom4.fifthSize);
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: addCustom;
+							text: "Add Custom";
+
+							onClicked:
+							{
+							}
+						}
+
+						MU.FlatButton
+						{
+							id: deleteCustom;
+							text: "Delete Custom";
+
+							onClicked:
+							{
+							}
+						}
+					}
 				}
 			}
 		}
