@@ -791,6 +791,11 @@ MuseScore
 			Logger.initialise(logggerId, parseInt(settings["LogLevel"]));
 			Logger.log(title + " - v" + version);
 
+			referenceNoteNameId.currentIndex = settings["ReferenceNoteNameIndex"];
+			referenceNoteAccidentalId.currentIndex = settings["ReferenceNoteAccidentalIndex"];
+			referenceNote = referenceNoteNameId.currentText + referenceNoteAccidentalId.currentText.replace("-", "");
+			Logger.log("Reference note set to: " + referenceNote);
+
 			loadCustomTunings();
 		}
 		catch (error)
