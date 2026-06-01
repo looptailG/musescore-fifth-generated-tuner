@@ -49,8 +49,6 @@ MuseScore
 	property var fifthDeviation;
 
 	// Reference note, which has a tuning offset of zero.
-	property var referenceNoteName;
-	property var referenceNoteAccidental;
 	property var referenceNote;
 
 	// Total amount of notes encountered in the portion of the score to tune.
@@ -335,7 +333,15 @@ MuseScore
 
 						onActivated: function(index, value)
 						{
-							currentIndex = index;
+							try
+							{
+								referenceNoteNameId.currentIndex = index;
+								setReferenceNote();
+							}
+							catch (error)
+							{
+								displayErrorMessage(error);
+							}
 						}
 					}
 
@@ -348,7 +354,15 @@ MuseScore
 
 						onActivated: function(index, value)
 						{
-							currentIndex = index;
+							try
+							{
+								referenceNoteAccidentalId.currentIndex = index;
+								setReferenceNote();
+							}
+							catch (error)
+							{
+								displayErrorMessage(error);
+							}
 						}
 					}
 				}
@@ -914,6 +928,21 @@ MuseScore
 	{
 		Logger.log("Setting fifth size to: " + fifthSize);
 		fifthSizeInput.text = fifthSize;
+		Logger.writeLogs();
+	}
+
+	/**
+	 * Read the values selected in the reference note combo boxes, and save them
+	 * to the configuration file.
+	 */
+	function setReferenceNote()
+	{
+		settings["ReferenceNoteNameIndex"] = referenceNoteNameId.currentIndex;
+		settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalId.currentIndex;
+		SettingsIO.writeTsvFile(settings, settingsId);
+
+		referenceNote = referenceNoteNameId.currentText + referenceNoteAccidentalId.currentText.replace("-", "");
+		Logger.log("Reference note changed to: " + referenceNote);
 		Logger.writeLogs();
 	}
 
