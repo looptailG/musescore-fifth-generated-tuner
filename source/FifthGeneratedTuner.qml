@@ -394,7 +394,7 @@ MuseScore
 						}
 						else
 						{
-							fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
+							fifthDeviation = fifthSize - TuningUtils.STANDARD_FIFTH;
 							Logger.log("Fifth size: " + fifthSize + "; Fifth deviation: " + fifthDeviation);
 							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
 							{
@@ -864,7 +864,7 @@ MuseScore
 				"Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " "
 				+ NoteUtils.getOctave(note)
 			);
-			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
+			var tuningOffset = TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
 			Logger.trace("Tuning offset: " + tuningOffset);
 			note.tuning = tuningOffset;
 			tunedNotes++;
