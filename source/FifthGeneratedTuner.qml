@@ -311,7 +311,7 @@ MuseScore
 					MU.TextInputField
 					{
 						id: fifthSizeInput;
-						width: 300;
+						width: tuneButton.width;
 					}
 				}
 			}
@@ -374,6 +374,7 @@ MuseScore
 			{
 				text: "Tune";
 				accentButton: true;
+				id: tuneButton;
 
 				onClicked:
 				{
