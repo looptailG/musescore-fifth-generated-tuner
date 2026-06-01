@@ -23,6 +23,7 @@ import FileIO
 import Muse.Ui
 import Muse.UiComponents as MU
 import MuseScore 3.0
+import "IterationUtils.js" as IterationUtils
 import "Logger.js" as Logger
 import "SettingsIO.js" as SettingsIO
 import "TuningUtils.js" as TuningUtils
@@ -813,6 +814,32 @@ MuseScore
 		if (typeof curScore === "undefined")
 		{
 			quit();
+		}
+	}
+
+	/**
+	 * Tune the notes in the selection, or the entire score if nothing is
+	 * selected, according to the selected fifth size.
+	 */
+	function tuneNotes()
+	{
+		try
+		{
+			Logger.log("Tuning notes.");
+			totalNotes = 0;
+			tunedNotes = 0;
+			IterationUtils.iterate(
+				curScore,
+				{
+					"onNote": onNote
+				},
+				Logger
+			);
+			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+		}
+		catch (error)
+		{
+			displayErrorMessage(error);
 		}
 	}
 
