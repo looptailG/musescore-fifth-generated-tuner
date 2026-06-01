@@ -117,11 +117,7 @@ MuseScore
 			}
 			catch (error)
 			{
-				Logger.err(error.toString());
-			}
-			finally
-			{
-				Logger.writeLogs();
+				displayErrorMessage(error);
 			}
 		}
 	}
@@ -214,18 +210,28 @@ MuseScore
 			}
 			catch (error)
 			{
-				Logger.err(error.toString());
+				displayErrorMessage(error);
 			}
-			finally
-			{
-				Logger.writeLogs();
-			}
+		}
+	}
+
+	Timer
+	{
+		id: errorDialogTimer;
+		interval: 0;
+		repeat: false;
+
+		onTriggered:
+		{
+			errorDialog.open();
 		}
 	}
 
 	Dialog
 	{
 		id: errorDialog;
+		title: "Error";
+		standardButtons: Dialog.Ok;
 
 		contentItem: MU.StyledTextLabel
 		{
@@ -817,5 +823,17 @@ MuseScore
 		Logger.log("Setting fifth size to: " + fifthSize);
 		fifthSizeInput.text = fifthSize;
 		Logger.writeLogs();
+	}
+
+	/**
+	 *
+	 */
+	function displayErrorMessage(e)
+	{
+		Logger.err(e.toString());
+		Logger.writeLogs();
+
+		errorText.text = e.toString();
+		errorDialogTimer.start();
 	}
 }
