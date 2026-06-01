@@ -23,8 +23,10 @@ import FileIO
 import Muse.Ui
 import Muse.UiComponents as MU
 import MuseScore 3.0
+import "AccidentalUtils.js" as AccidentalUtils
 import "IterationUtils.js" as IterationUtils
 import "Logger.js" as Logger
+import "NoteUtils.js" as NoteUtils
 import "SettingsIO.js" as SettingsIO
 import "TuningUtils.js" as TuningUtils
 
@@ -87,7 +89,7 @@ MuseScore
 
 	FileIO
 	{
-		id: logggerId;
+		id: loggerId;
 	}
 
 	Dialog
@@ -421,6 +423,10 @@ MuseScore
 					catch (error)
 					{
 						displayErrorMessage(error);
+					}
+					finally
+					{
+						Logger.writeLogs();
 					}
 				}
 			}
@@ -789,7 +795,7 @@ MuseScore
 		{
 			settings = SettingsIO.readTsvFile(settingsId);
 
-			Logger.initialise(logggerId, parseInt(settings["LogLevel"]));
+			Logger.initialise(loggerId, parseInt(settings["LogLevel"]));
 			Logger.log(title + " - v" + version);
 
 			referenceNoteNameId.currentIndex = settings["ReferenceNoteNameIndex"];
@@ -836,6 +842,32 @@ MuseScore
 				Logger
 			);
 			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+		}
+		catch (error)
+		{
+			displayErrorMessage(error);
+		}
+		finally
+		{
+			Logger.writeLogs();
+			quit();
+		}
+	}
+
+	function onNote(note)
+	{
+		totalNotes++;
+
+		try
+		{
+			Logger.trace(
+				"Tuning note: " + NoteUtils.getNoteLetter(note) + " " + AccidentalUtils.getAccidentalName(note) + " "
+				+ NoteUtils.getOctave(note)
+			);
+			var tuningOffset = -TuningUtils.circleOfFifthsDistance(note, referenceNote) * fifthDeviation;
+			Logger.trace("Tuning offset: " + tuningOffset);
+			note.tuning = tuningOffset;
+			tunedNotes++;
 		}
 		catch (error)
 		{
