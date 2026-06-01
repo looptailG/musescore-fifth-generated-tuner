@@ -790,6 +790,23 @@ MuseScore
 	 */
 	function deleteCustomTunings(tuningsToDelete)
 	{
+		Logger.log("Deleting custom tunings: " + tuningsToDelete.join(", "));
+
+		for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+		{
+			customTuningCheckBox.checked = false;
+		}
+
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		for (var tuningName of tuningsToDelete)
+		{
+			Logger.trace("Deleting tuning: " + tuningName);
+			delete fileContent[tuningName];
+		}
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
+
+		Logger.log("Custom tunings deleted successfully.");
+		Logger.writeLogs();
 	}
 
 	/**
