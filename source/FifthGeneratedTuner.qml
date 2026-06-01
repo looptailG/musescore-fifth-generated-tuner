@@ -308,10 +308,8 @@ MuseScore
 				{
 					spacing: defaultPadding;
 
-					TextField
+					MU.TextInputField
 					{
-						placeholderText: TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " - "
-							+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1);
 						id: fifthSizeInput;
 						width: 300;
 					}
@@ -381,12 +379,12 @@ MuseScore
 				{
 					try
 					{
-						var fifthSize = parseFloat(fifthSizeInput.text);
+						var fifthSize = parseFloat(fifthSizeInput.currentText);
 						if (isNaN(fifthSize))
 						{
-							if (fifthSizeInput.text)
+							if (fifthSizeInput.currentText)
 							{
-								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.text;
+								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.currentText;
 							}
 							else
 							{
@@ -992,7 +990,7 @@ MuseScore
 	function setFifthSize(fifthSize)
 	{
 		Logger.log("Setting fifth size to: " + fifthSize);
-		fifthSizeInput.text = fifthSize;
+		fifthSizeInput.currentText = fifthSize;
 		Logger.writeLogs();
 	}
 
