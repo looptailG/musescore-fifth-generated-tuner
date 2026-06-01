@@ -44,6 +44,20 @@ MuseScore
 	width: childrenRect.width + 2 * defaultPadding;
 	height: childrenRect.height + 2 * defaultPadding;
 
+	// Difference in cents between a 12EDO fifth and the fifth selected by the
+	// user.
+	property var fifthDeviation;
+
+	// Reference note, which has a tuning offset of zero.
+	property var referenceNoteName;
+	property var referenceNoteAccidental;
+	property var referenceNote;
+
+	// Total amount of notes encountered in the portion of the score to tune.
+	property var totalNotes;
+	// Amount of notes which were tuned successfully.
+	property var tunedNotes;
+
 	property var customTuningsButtons: [
 		custom0,
 		custom1,
@@ -75,6 +89,38 @@ MuseScore
 	FileIO
 	{
 		id: logggerId;
+	}
+
+	Dialog
+	{
+		id: fifthSizeDialog;
+		title: "Warning: Fifth Size";
+		standardButtons: Dialog.Yes | Dialog.No;
+
+		contentItem: MU.StyledTextLabel
+		{
+			id: fifthSizeDialogText;
+			wrapMode: Text.WordWrap;
+			text: "";
+		}
+
+		onAccepted:
+		{
+			try
+			{
+				tuneNotes();
+			}
+			catch (error)
+			{
+				displayErrorMessage(error);
+			}
+		}
+
+		onRejected:
+		{
+			Logger.log("Tuning canceled by the user.");
+			Logger.writeLogs();
+		}
 	}
 
 	Dialog
@@ -235,7 +281,7 @@ MuseScore
 
 		contentItem: MU.StyledTextLabel
 		{
-			id: errorText;
+			id: errorDialogText;
 			wrapMode: Text.WordWrap;
 			text: "";
 		}
@@ -315,6 +361,52 @@ MuseScore
 
 				onClicked:
 				{
+					try
+					{
+						var fifthSize = parseFloat(fifthSizeInput.text);
+						if (isNaN(fifthSize))
+						{
+							if (fifthSizeInput.text)
+							{
+								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.text;
+							}
+							else
+							{
+								throw "Empty fifth size field.";
+							}
+						}
+						else
+						{
+							fifthDeviation = TuningUtils.STANDARD_FIFTH - fifthSize;
+							Logger.log("Fifth size: " + fifthSize + "; Fifth deviation: " + fifthDeviation);
+							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
+							{
+								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
+								fifthSizeDialogText.text = "The input fifth is smaller than "
+									+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " c, which is the smallest "
+									+ "fifth size for which standard notation makes sense.\nThe plugin can work anyway"
+									+ ", but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
+							}
+							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
+							{
+								Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
+								fifthSizeDialogText.text = "The input fifth is larger than "
+									+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c, which is the largest "
+									+ "fifth size for which standard notation makes sense.\nThe plugin can work anyway"
+									+ ", but it could produce some counterintuitive results.\nTune the score anyway?";
+								fifthSizeDialog.open();
+							}
+							else
+							{
+								tuneNotes();
+							}
+						}
+					}
+					catch (error)
+					{
+						displayErrorMessage(error);
+					}
 				}
 			}
 		}
@@ -826,14 +918,14 @@ MuseScore
 	}
 
 	/**
-	 *
+	 * Log the input error message, and display it to the user using a Dialog.
 	 */
 	function displayErrorMessage(e)
 	{
 		Logger.err(e.toString());
 		Logger.writeLogs();
 
-		errorText.text = e.toString();
+		errorDialogText.text = e.toString();
 		errorDialogTimer.start();
 	}
 }
