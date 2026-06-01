@@ -724,7 +724,7 @@ MuseScore
 			Logger.trace("Name: " + tuningName + "; Fifth Size: " + fifthSize);
 			if (counter >= customTuningsButtons.length)
 			{
-				Logger.warning("Too many custom tunings;");
+				Logger.warning("Too many custom tunings.");
 				continue;
 			}
 
@@ -764,6 +764,24 @@ MuseScore
 	 */
 	function newCustomTuning(tuningName, fifthSize)
 	{
+		tuningName = tuningName.trim();
+		fifthSize = ("" + fifthSize).trim();
+		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + fifthSize);
+		if ((fifthSize == "") || isNaN(fifthSize))
+		{
+			throw "Invalid custom fifth size: " + fifthSize;
+		}
+
+		var fileContent = SettingsIO.readTsvFile(customTuningsId);
+		if (fileContent.hasOwnProperty(tuningName))
+		{
+			throw "Custom tuning name already present: " + tuningName;
+		}
+		fileContent[tuningName] = fifthSize;
+		SettingsIO.writeTsvFile(fileContent, customTuningsId);
+
+		Logger.log("New custom tuning added successfully.");
+		Logger.writeLogs();
 	}
 
 	/**
