@@ -392,12 +392,12 @@ MuseScore
 				{
 					try
 					{
-						var fifthSize = parseFloat(fifthSizeInput.currentText);
+						var fifthSize = parseFloat(fifthSizeInput.inputField.text);
 						if (isNaN(fifthSize))
 						{
-							if (fifthSizeInput.currentText)
+							if (fifthSizeInput.inputField.text)
 							{
-								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.currentText;
+								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.inputField.text;
 							}
 							else
 							{
@@ -1004,7 +1004,7 @@ MuseScore
 	function setFifthSize(fifthSize)
 	{
 		Logger.log("Setting fifth size to: " + fifthSize);
-		fifthSizeInput.currentText = fifthSize;
+		fifthSizeInput.inputField.text = fifthSize;
 		Logger.writeLogs();
 	}
 
