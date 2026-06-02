@@ -91,35 +91,61 @@ MuseScore
 		id: loggerId;
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: fifthSizeDialog;
 		title: "Warning: Fifth Size";
-		standardButtons: Dialog.Yes | Dialog.No;
+		contentWidth: fifthSizeWarningColumn.width + 2 * defaultPadding;
+		contentHeight: fifthSizeWarningColumn.height + 2 * defaultPadding;
+		//standardButtons: Dialog.Yes | Dialog.No;
 
-		contentItem: StyledTextLabel
+		ColumnLayout
 		{
-			id: fifthSizeDialogText;
-			wrapMode: Text.WordWrap;
-			text: "";
-		}
+			id: fifthSizeWarningColumn;
+			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
-		onAccepted:
-		{
-			try
+			StyledTextLabel
 			{
-				tuneNotes();
+				id: fifthSizeDialogText;
+				wrapMode: Text.WordWrap;
+				text: "";
 			}
-			catch (error)
-			{
-				displayErrorMessage(error);
-			}
-		}
 
-		onRejected:
-		{
-			Logger.log("Tuning canceled by the user.");
-			Logger.writeLogs();
+			RowLayout
+			{
+				spacing: defaultPadding;
+
+				FlatButton
+				{
+					text: "Yes";
+
+					onClicked:
+					{
+						try
+						{
+							tuneNotes();
+							fifthSizeDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
+					}
+				}
+
+				FlatButton
+				{
+					text: "No";
+
+					onClicked:
+					{
+						Logger.log("Tuning canceled by the user.");
+						Logger.writeLogs();
+						fifthSizeDialog.close();
+					}
+				}
+			}
 		}
 	}
 
