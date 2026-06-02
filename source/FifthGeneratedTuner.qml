@@ -203,15 +203,18 @@ MuseScore
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: deleteCustomTuningDialog;
 		title: "Delete Custom Tunings";
-		standardButtons: Dialog.Ok | Dialog.Cancel;
+		contentWidth: deleteCustomTuningColumn.width + 2 * defaultPadding;
+		contentHeight: deleteCustomTuningColumn.height + 2 * defaultPadding;
 
-		contentItem: ColumnLayout
+		ColumnLayout
 		{
+			id: deleteCustomTuningColumn;
 			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
 			CheckBox
 			{
@@ -272,26 +275,47 @@ MuseScore
 					deleteCustomCheckBox4.checked = !deleteCustomCheckBox4.checked;
 				}
 			}
-		}
 
-		onAccepted:
-		{
-			try
+			RowLayout
 			{
-				var customTuningsToDelete = [];
-				for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+				spacing: defaultPadding;
+
+				FlatButton
 				{
-					if (customTuningCheckBox.checked)
+					text: "Ok";
+
+					onClicked:
 					{
-						customTuningsToDelete.push(customTuningCheckBox.text);
+						try
+						{
+							var customTuningsToDelete = [];
+							for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+							{
+								if (customTuningCheckBox.checked)
+								{
+									customTuningsToDelete.push(customTuningCheckBox.text);
+								}
+							}
+							deleteCustomTunings(customTuningsToDelete);
+							loadCustomTunings();
+							deleteCustomTuningDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
 					}
 				}
-				deleteCustomTunings(customTuningsToDelete);
-				loadCustomTunings();
-			}
-			catch (error)
-			{
-				displayErrorMessage(error);
+
+				FlatButton
+				{
+					text: "Cancel";
+
+					onClicked:
+					{
+						deleteCustomTuningDialog.close();
+					}
+				}
 			}
 		}
 	}
@@ -331,7 +355,7 @@ MuseScore
 			FlatButton
 			{
 				text: "Ok";
-				
+
 				onClicked:
 				{
 					errorDialog.close();
