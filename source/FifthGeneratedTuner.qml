@@ -107,6 +107,7 @@ MuseScore
 			StyledTextLabel
 			{
 				id: fifthSizeDialogText;
+				Layout.maximumWidth: 500;
 				wrapMode: Text.WordWrap;
 				horizontalAlignment: Text.AlignLeft;
 				text: "";
