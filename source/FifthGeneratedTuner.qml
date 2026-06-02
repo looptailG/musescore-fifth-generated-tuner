@@ -376,6 +376,7 @@ MuseScore
 			StyledTextLabel
 			{
 				id: errorDialogText;
+				Layout.maximumWidth: 500;
 				wrapMode: Text.WordWrap;
 				text: "";
 			}
