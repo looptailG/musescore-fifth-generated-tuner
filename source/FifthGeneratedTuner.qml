@@ -91,92 +91,158 @@ MuseScore
 		id: loggerId;
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: fifthSizeDialog;
 		title: "Warning: Fifth Size";
-		standardButtons: Dialog.Yes | Dialog.No;
+		contentWidth: fifthSizeWarningColumn.width + 2 * defaultPadding;
+		contentHeight: fifthSizeWarningColumn.height + 2 * defaultPadding;
 
-		contentItem: StyledTextLabel
+		ColumnLayout
 		{
-			id: fifthSizeDialogText;
-			wrapMode: Text.WordWrap;
-			text: "";
-		}
+			id: fifthSizeWarningColumn;
+			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
-		onAccepted:
-		{
-			try
+			StyledTextLabel
 			{
-				tuneNotes();
+				id: fifthSizeDialogText;
+				wrapMode: Text.WordWrap;
+				horizontalAlignment: Text.AlignLeft;
+				text: "";
 			}
-			catch (error)
-			{
-				displayErrorMessage(error);
-			}
-		}
 
-		onRejected:
-		{
-			Logger.log("Tuning canceled by the user.");
-			Logger.writeLogs();
+			RowLayout
+			{
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
+
+				FlatButton
+				{
+					text: "Yes";
+
+					onClicked:
+					{
+						try
+						{
+							tuneNotes();
+							fifthSizeDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
+					}
+				}
+
+				FlatButton
+				{
+					text: "No";
+
+					onClicked:
+					{
+						Logger.log("Tuning canceled by the user.");
+						Logger.writeLogs();
+						fifthSizeDialog.close();
+					}
+				}
+			}
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: newCustomTuningDialog;
 		title: "New Custom Tuning";
-		standardButtons: Dialog.Ok | Dialog.Cancel;
+		contentWidth: newCustomTuningColumn.width + 2 * defaultPadding;
+		contentHeight: newCustomTuningColumn.height + 2 * defaultPadding;
 
-		contentItem: ColumnLayout
+		ColumnLayout
 		{
+			id: newCustomTuningColumn;
 			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
-			StyledGroupBox
+			RowLayout
 			{
-				title: "Tuning Name";
+				spacing: defaultPadding;
 
-				TextField
+				StyledGroupBox
 				{
-					id: customTuningNameField;
+					title: "Tuning Name";
+					width: customTuningNameField.width + 2 * defaultPadding;
+
+					TextInputField
+					{
+						id: customTuningNameField;
+						width: tuneButton.width;
+					}
+				}
+
+				StyledGroupBox
+				{
+					title: "Fifth Size";
+					width: customTuningFifthSizeField.width + 2 * defaultPadding;
+
+					TextInputField
+					{
+						id: customTuningFifthSizeField;
+						width: tuneButton.width;
+					}
 				}
 			}
 
-			StyledGroupBox
+			RowLayout
 			{
-				title: "Fifth Size";
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
 
-				TextField
+				FlatButton
 				{
-					id: customTuningFifthSizeField;
-				}
-			}
-		}
+					text: "Ok";
 
-		onAccepted:
-		{
-			try
-			{
-				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
-				loadCustomTunings();
-			}
-			catch (error)
-			{
-				displayErrorMessage(error);
+					onClicked:
+					{
+						try
+						{
+							newCustomTuning(
+								customTuningNameField.inputField.text, customTuningFifthSizeField.inputField.text
+							);
+							loadCustomTunings();
+							newCustomTuningDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
+					}
+				}
+
+				FlatButton
+				{
+					text: "Cancel";
+
+					onClicked:
+					{
+						newCustomTuningDialog.close();
+					}
+				}
 			}
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: deleteCustomTuningDialog;
 		title: "Delete Custom Tunings";
-		standardButtons: Dialog.Ok | Dialog.Cancel;
+		contentWidth: deleteCustomTuningColumn.width + 2 * defaultPadding;
+		contentHeight: deleteCustomTuningColumn.height + 2 * defaultPadding;
 
-		contentItem: ColumnLayout
+		ColumnLayout
 		{
+			id: deleteCustomTuningColumn;
 			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
 			CheckBox
 			{
@@ -237,26 +303,48 @@ MuseScore
 					deleteCustomCheckBox4.checked = !deleteCustomCheckBox4.checked;
 				}
 			}
-		}
 
-		onAccepted:
-		{
-			try
+			RowLayout
 			{
-				var customTuningsToDelete = [];
-				for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
+
+				FlatButton
 				{
-					if (customTuningCheckBox.checked)
+					text: "Ok";
+
+					onClicked:
 					{
-						customTuningsToDelete.push(customTuningCheckBox.text);
+						try
+						{
+							var customTuningsToDelete = [];
+							for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+							{
+								if (customTuningCheckBox.checked)
+								{
+									customTuningsToDelete.push(customTuningCheckBox.text);
+								}
+							}
+							deleteCustomTunings(customTuningsToDelete);
+							loadCustomTunings();
+							deleteCustomTuningDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
 					}
 				}
-				deleteCustomTunings(customTuningsToDelete);
-				loadCustomTunings();
-			}
-			catch (error)
-			{
-				displayErrorMessage(error);
+
+				FlatButton
+				{
+					text: "Cancel";
+
+					onClicked:
+					{
+						deleteCustomTuningDialog.close();
+					}
+				}
 			}
 		}
 	}
@@ -273,17 +361,43 @@ MuseScore
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: errorDialog;
 		title: "Error";
-		standardButtons: Dialog.Ok;
+		contentWidth: errorColumn.width + 2 * defaultPadding;
+		contentHeight: errorColumn.height + 2 * defaultPadding;
 
-		contentItem: StyledTextLabel
+		ColumnLayout
 		{
-			id: errorDialogText;
-			wrapMode: Text.WordWrap;
-			text: "";
+			id: errorColumn;
+			spacing: defaultPadding;
+			anchors.centerIn: parent;
+
+			StyledTextLabel
+			{
+				id: errorDialogText;
+				Layout.maximumWidth: 500;
+				wrapMode: Text.WordWrap;
+				horizontalAlignment: Text.AlignLeft;
+				text: "";
+			}
+
+			RowLayout
+			{
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
+				
+				FlatButton
+				{
+					text: "Ok";
+
+					onClicked:
+					{
+						errorDialog.close();
+					}
+				}
+			}
 		}
 	}
 
@@ -377,12 +491,12 @@ MuseScore
 				{
 					try
 					{
-						var fifthSize = parseFloat(fifthSizeInput.currentText);
+						var fifthSize = parseFloat(fifthSizeInput.inputField.text);
 						if (isNaN(fifthSize))
 						{
-							if (fifthSizeInput.currentText)
+							if (fifthSizeInput.inputField.text)
 							{
-								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.currentText;
+								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.inputField.text;
 							}
 							else
 							{
@@ -989,7 +1103,7 @@ MuseScore
 	function setFifthSize(fifthSize)
 	{
 		Logger.log("Setting fifth size to: " + fifthSize);
-		fifthSizeInput.currentText = fifthSize;
+		fifthSizeInput.inputField.text = fifthSize;
 		Logger.writeLogs();
 	}
 
