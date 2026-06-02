@@ -273,17 +273,32 @@ MuseScore
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: errorDialog;
 		title: "Error";
-		standardButtons: Dialog.Ok;
 
-		contentItem: StyledTextLabel
+		ColumnLayout
 		{
-			id: errorDialogText;
-			wrapMode: Text.WordWrap;
-			text: "";
+			StyledTextLabel
+			{
+				id: errorDialogText;
+				wrapMode: Text.WordWrap;
+				text: "";
+			}
+
+			ButtonBox
+			{
+				FlatButton
+				{
+					text: "Ok";
+
+					onClicked:
+					{
+						errorDialog.close();
+					}
+				}
+			}
 		}
 	}
 
