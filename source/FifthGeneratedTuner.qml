@@ -97,7 +97,6 @@ MuseScore
 		title: "Warning: Fifth Size";
 		contentWidth: fifthSizeWarningColumn.width + 2 * defaultPadding;
 		contentHeight: fifthSizeWarningColumn.height + 2 * defaultPadding;
-		//standardButtons: Dialog.Yes | Dialog.No;
 
 		ColumnLayout
 		{
@@ -115,6 +114,7 @@ MuseScore
 			RowLayout
 			{
 				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
 
 				FlatButton
 				{
@@ -194,6 +194,7 @@ MuseScore
 			RowLayout
 			{
 				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
 
 				FlatButton
 				{
@@ -305,6 +306,7 @@ MuseScore
 			RowLayout
 			{
 				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
 
 				FlatButton
 				{
@@ -378,13 +380,19 @@ MuseScore
 				text: "";
 			}
 
-			FlatButton
+			RowLayout
 			{
-				text: "Ok";
-
-				onClicked:
+				spacing: defaultPadding;
+				Layout.alignment: Qt.AlignRight;
+				
+				FlatButton
 				{
-					errorDialog.close();
+					text: "Ok";
+
+					onClicked:
+					{
+						errorDialog.close();
+					}
 				}
 			}
 		}
