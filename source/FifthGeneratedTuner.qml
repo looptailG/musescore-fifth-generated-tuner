@@ -21,7 +21,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import FileIO
 import Muse.Ui
-import Muse.UiComponents as MU
+import Muse.UiComponents
 import MuseScore
 import "AccidentalUtils.js" as AccidentalUtils
 import "IterationUtils.js" as IterationUtils
@@ -99,7 +99,7 @@ MuseScore
 		title: "Warning: Fifth Size";
 		standardButtons: Dialog.Yes | Dialog.No;
 
-		contentItem: MU.StyledTextLabel
+		contentItem: StyledTextLabel
 		{
 			id: fifthSizeDialogText;
 			wrapMode: Text.WordWrap;
@@ -135,7 +135,7 @@ MuseScore
 		{
 			spacing: defaultPadding;
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "Tuning Name";
 
@@ -145,7 +145,7 @@ MuseScore
 				}
 			}
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "Fifth Size";
 
@@ -180,7 +180,7 @@ MuseScore
 		{
 			spacing: defaultPadding;
 
-			MU.CheckBox
+			CheckBox
 			{
 				id: deleteCustomCheckBox0;
 				text: "";
@@ -192,7 +192,7 @@ MuseScore
 				}
 			}
 
-			MU.CheckBox
+			CheckBox
 			{
 				id: deleteCustomCheckBox1;
 				text: "";
@@ -204,7 +204,7 @@ MuseScore
 				}
 			}
 
-			MU.CheckBox
+			CheckBox
 			{
 				id: deleteCustomCheckBox2;
 				text: "";
@@ -216,7 +216,7 @@ MuseScore
 				}
 			}
 
-			MU.CheckBox
+			CheckBox
 			{
 				id: deleteCustomCheckBox3;
 				text: "";
@@ -228,7 +228,7 @@ MuseScore
 				}
 			}
 
-			MU.CheckBox
+			CheckBox
 			{
 				id: deleteCustomCheckBox4;
 				text: "";
@@ -281,7 +281,7 @@ MuseScore
 		title: "Error";
 		standardButtons: Dialog.Ok;
 
-		contentItem: MU.StyledTextLabel
+		contentItem: StyledTextLabel
 		{
 			id: errorDialogText;
 			wrapMode: Text.WordWrap;
@@ -299,7 +299,7 @@ MuseScore
 			spacing: defaultPadding;
 			Layout.alignment: Qt.AlignHCenter;
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "Fifth Size (in cents)";
 				width: fifthSizeInput.width + 2 * defaultPadding;
@@ -309,7 +309,7 @@ MuseScore
 				{
 					spacing: defaultPadding;
 
-					MU.TextInputField
+					TextInputField
 					{
 						id: fifthSizeInput;
 						width: tuneButton.width;
@@ -317,7 +317,7 @@ MuseScore
 				}
 			}
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "Reference Note";
 				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
@@ -327,7 +327,7 @@ MuseScore
 				{
 					spacing: defaultPadding;
 
-					MU.StyledDropdown
+					StyledDropdown
 					{
 						id: referenceNoteNameId;
 						width: 80;
@@ -347,7 +347,7 @@ MuseScore
 						}
 					}
 
-					MU.StyledDropdown
+					StyledDropdown
 					{
 						id: referenceNoteAccidentalId;
 						width: 80;
@@ -369,7 +369,7 @@ MuseScore
 				}
 			}
 
-			MU.FlatButton
+			FlatButton
 			{
 				text: "Tune";
 				accentButton: true;
@@ -436,7 +436,7 @@ MuseScore
 			spacing: defaultPadding;
 			Layout.alignment: Qt.AlignHCenter;
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "EDOs";
 				Layout.alignment: Qt.AlignTop;
@@ -446,7 +446,7 @@ MuseScore
 					spacing: defaultPadding;
 					Layout.alignment: Qt.AlignTop;
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "5";
 
@@ -456,7 +456,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "7";
 
@@ -466,7 +466,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "12";
 
@@ -476,7 +476,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "17";
 
@@ -486,7 +486,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "19";
 
@@ -496,7 +496,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "26";
 
@@ -506,7 +506,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "29";
 
@@ -516,7 +516,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "31";
 
@@ -526,7 +526,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "41";
 
@@ -536,7 +536,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "43";
 
@@ -546,7 +546,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "50";
 
@@ -558,7 +558,7 @@ MuseScore
 				}
 			}
 
-			MU.StyledGroupBox
+			StyledGroupBox
 			{
 				title: "Meantones";
 				Layout.alignment: Qt.AlignTop;
@@ -568,7 +568,7 @@ MuseScore
 					spacing: defaultPadding;
 					Layout.alignment: Qt.AlignTop;
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "1/3 Comma";
 
@@ -578,7 +578,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "2/7 Comma";
 
@@ -588,7 +588,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "7/26 Comma";
 
@@ -598,7 +598,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "1/4 Comma";
 
@@ -608,7 +608,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "2/9 Comma";
 
@@ -618,7 +618,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "1/5 Comma";
 
@@ -628,7 +628,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "1/6 Comma";
 
@@ -638,7 +638,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "Golden";
 
@@ -648,7 +648,7 @@ MuseScore
 						}
 					}
 
-					MU.FlatButton
+					FlatButton
 					{
 						text: "Tungsten";
 
@@ -665,7 +665,7 @@ MuseScore
 				spacing: defaultPadding;
 				Layout.alignment: Qt.AlignTop;
 
-				MU.StyledGroupBox
+				StyledGroupBox
 				{
 					title: "Other Tunings";
 					Layout.alignment: Qt.AlignTop;
@@ -675,7 +675,7 @@ MuseScore
 						spacing: defaultPadding;
 						Layout.alignment: Qt.AlignTop;
 
-						MU.FlatButton
+						FlatButton
 						{
 							text: "Pythagorean";
 
@@ -687,7 +687,7 @@ MuseScore
 					}
 				}
 
-				MU.StyledGroupBox
+				StyledGroupBox
 				{
 					title: "Custom Tunings";
 					Layout.alignment: Qt.AlignTop;
@@ -697,7 +697,7 @@ MuseScore
 						spacing: defaultPadding;
 						Layout.alignment: Qt.AlignTop;
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: custom0;
 							text: "";
@@ -710,7 +710,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: custom1;
 							text: "";
@@ -723,7 +723,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: custom2;
 							text: "";
@@ -736,7 +736,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: custom3;
 							text: "";
@@ -749,7 +749,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: custom4;
 							text: "";
@@ -762,7 +762,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: addCustom;
 							text: "Add Custom";
@@ -773,7 +773,7 @@ MuseScore
 							}
 						}
 
-						MU.FlatButton
+						FlatButton
 						{
 							id: deleteCustom;
 							text: "Delete Custom";
