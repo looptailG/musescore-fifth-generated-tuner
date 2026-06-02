@@ -108,6 +108,7 @@ MuseScore
 			{
 				id: fifthSizeDialogText;
 				wrapMode: Text.WordWrap;
+				horizontalAlignment: Text.AlignLeft;
 				text: "";
 			}
 
@@ -378,6 +379,7 @@ MuseScore
 				id: errorDialogText;
 				Layout.maximumWidth: 500;
 				wrapMode: Text.WordWrap;
+				horizontalAlignment: Text.AlignLeft;
 				text: "";
 			}
 
