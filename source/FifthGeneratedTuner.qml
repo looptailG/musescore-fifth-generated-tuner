@@ -328,16 +328,13 @@ MuseScore
 				text: "";
 			}
 
-			ButtonBox
+			FlatButton
 			{
-				FlatButton
+				text: "Ok";
+				
+				onClicked:
 				{
-					text: "Ok";
-
-					onClicked:
-					{
-						errorDialog.close();
-					}
+					errorDialog.close();
 				}
 			}
 		}
