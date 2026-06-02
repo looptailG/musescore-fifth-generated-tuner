@@ -123,47 +123,82 @@ MuseScore
 		}
 	}
 
-	Dialog
+	StyledDialogView
 	{
 		id: newCustomTuningDialog;
 		title: "New Custom Tuning";
-		standardButtons: Dialog.Ok | Dialog.Cancel;
+		contentWidth: newCustomTuningColumn.width + 2 * defaultPadding;
+		contentHeight: newCustomTuningColumn.height + 2 * defaultPadding;
 
-		contentItem: ColumnLayout
+		ColumnLayout
 		{
+			id: newCustomTuningColumn;
 			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
-			StyledGroupBox
+			RowLayout
 			{
-				title: "Tuning Name";
+				spacing: defaultPadding;
 
-				TextField
+				StyledGroupBox
 				{
-					id: customTuningNameField;
+					title: "Tuning Name";
+					width: customTuningNameField.width + 2 * defaultPadding;
+
+					TextInputField
+					{
+						id: customTuningNameField;
+						width: tuneButton.width;
+					}
+				}
+
+				StyledGroupBox
+				{
+					title: "Fifth Size";
+					width: customTuningFifthSizeField.width + 2 * defaultPadding;
+
+					TextInputField
+					{
+						id: customTuningFifthSizeField;
+						width: tuneButton.width;
+					}
 				}
 			}
 
-			StyledGroupBox
+			RowLayout
 			{
-				title: "Fifth Size";
+				spacing: defaultPadding;
 
-				TextField
+				FlatButton
 				{
-					id: customTuningFifthSizeField;
-				}
-			}
-		}
+					text: "Ok";
 
-		onAccepted:
-		{
-			try
-			{
-				newCustomTuning(customTuningNameField.text, customTuningFifthSizeField.text);
-				loadCustomTunings();
-			}
-			catch (error)
-			{
-				displayErrorMessage(error);
+					onClicked:
+					{
+						try
+						{
+							newCustomTuning(
+								customTuningNameField.inputField.text, customTuningFifthSizeField.inputField.text
+							);
+							loadCustomTunings();
+							newCustomTuningDialog.close();
+						}
+						catch (error)
+						{
+							displayErrorMessage(error);
+						}
+					}
+				}
+
+				FlatButton
+				{
+					text: "Cancel";
+
+					onClicked:
+					{
+						newCustomTuningDialog.close();
+					}
+				}
 			}
 		}
 	}
@@ -277,10 +312,14 @@ MuseScore
 	{
 		id: errorDialog;
 		title: "Error";
+		contentWidth: errorColumn.width + 2 * defaultPadding;
+		contentHeight: errorColumn.height + 2 * defaultPadding;
 
 		ColumnLayout
 		{
+			id: errorColumn;
 			spacing: defaultPadding;
+			anchors.centerIn: parent;
 
 			StyledTextLabel
 			{
