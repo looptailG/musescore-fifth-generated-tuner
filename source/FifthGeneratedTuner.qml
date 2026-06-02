@@ -280,6 +280,8 @@ MuseScore
 
 		ColumnLayout
 		{
+			spacing: defaultPadding;
+
 			StyledTextLabel
 			{
 				id: errorDialogText;
