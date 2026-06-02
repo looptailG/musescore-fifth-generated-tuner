@@ -37,14 +37,12 @@ MuseScore
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
 	version: "1.4.0";
-
 	pluginType: "dialog";
 
 	property variant settings: {};
 
-	readonly property int defaultPadding: 10;
-
 	id: root;
+	readonly property int defaultPadding: 10;
 	width: childrenRect.width + 2 * defaultPadding;
 	height: childrenRect.height + 2 * defaultPadding;
 
@@ -55,10 +53,10 @@ MuseScore
 	// Reference note, which has a tuning offset of zero.
 	property var referenceNote;
 
-	// Total amount of notes encountered in the portion of the score to tune.
-	property var totalNotes;
 	// Amount of notes which were tuned successfully.
 	property var tunedNotes;
+	// Total amount of notes encountered in the portion of the score to tune.
+	property var totalNotes;
 
 	property var customTuningsButtons: [
 		custom0,
@@ -832,8 +830,8 @@ MuseScore
 		try
 		{
 			Logger.log("Tuning notes.");
-			totalNotes = 0;
 			tunedNotes = 0;
+			totalNotes = 0;
 			IterationUtils.iterate(
 				curScore,
 				{
