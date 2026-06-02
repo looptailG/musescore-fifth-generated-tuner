@@ -332,7 +332,6 @@ MuseScore
 						id: referenceNoteNameId;
 						width: 80;
 						model: ["A", "B", "C", "D", "E", "F", "G"];
-						currentIndex: 0;
 
 						onActivated: function(index, value)
 						{
@@ -353,7 +352,6 @@ MuseScore
 						id: referenceNoteAccidentalId;
 						width: 80;
 						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
-						currentIndex: 3;
 
 						onActivated: function(index, value)
 						{
