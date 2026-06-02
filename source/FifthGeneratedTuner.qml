@@ -297,6 +297,7 @@ MuseScore
 		RowLayout
 		{
 			spacing: defaultPadding;
+			Layout.alignment: Qt.AlignHCenter;
 
 			MU.StyledGroupBox
 			{
@@ -435,6 +436,7 @@ MuseScore
 		RowLayout
 		{
 			spacing: defaultPadding;
+			Layout.alignment: Qt.AlignHCenter;
 
 			MU.StyledGroupBox
 			{
