@@ -22,7 +22,7 @@ import QtQuick.Controls
 import FileIO
 import Muse.Ui
 import Muse.UiComponents as MU
-import MuseScore 3.0
+import MuseScore
 import "AccidentalUtils.js" as AccidentalUtils
 import "IterationUtils.js" as IterationUtils
 import "Logger.js" as Logger
