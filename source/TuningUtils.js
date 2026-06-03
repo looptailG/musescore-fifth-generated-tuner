@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "1.3.1";
+const VERSION = "1.3.2";
 
 // Size in cents of a justly tuned perfect fifth.
 const JUST_FIFTH = intervalInCents(3 / 2);
@@ -31,6 +31,8 @@ const LARGEST_DIATONIC_FIFTH = 1200.0 / 5 * 3;
 
 // Size in cents of the syntonic comma.
 const SYNTONIC_COMMA = intervalInCents(81 / 80);
+// Size in cents of the schisma.
+const SCHISMA = intervalInCents(32805 / 32768);
 
 // Note distance in the circle of fifths, from the note C.
 const CIRCLE_OF_FIFTHS_DISTANCE = {

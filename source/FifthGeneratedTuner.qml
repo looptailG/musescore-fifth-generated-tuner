@@ -388,7 +388,7 @@ MuseScore
 			{
 				spacing: defaultPadding;
 				Layout.alignment: Qt.AlignRight;
-				
+
 				FlatButton
 				{
 					text: "Ok";
@@ -780,6 +780,48 @@ MuseScore
 
 				StyledGroupBox
 				{
+					title: "Schismic Temperaments";
+					Layout.alignment: Qt.AlignTop;
+
+					ColumnLayout
+					{
+						spacing: defaultPadding;
+						Layout.alignment: Qt.AlignTop;
+
+						FlatButton
+						{
+							text: "1/8 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA / 8);
+							}
+						}
+
+						FlatButton
+						{
+							text: "2/17 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA * 2 / 17);
+							}
+						}
+
+						FlatButton
+						{
+							text: "1/9 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA / 9);
+							}
+						}
+					}
+				}
+
+				StyledGroupBox
+				{
 					title: "Other Tunings";
 					Layout.alignment: Qt.AlignTop;
 
@@ -799,102 +841,102 @@ MuseScore
 						}
 					}
 				}
+			}
 
-				StyledGroupBox
+			StyledGroupBox
+			{
+				title: "Custom Tunings";
+				Layout.alignment: Qt.AlignTop;
+
+				ColumnLayout
 				{
-					title: "Custom Tunings";
+					spacing: defaultPadding;
 					Layout.alignment: Qt.AlignTop;
 
-					ColumnLayout
+					FlatButton
 					{
-						spacing: defaultPadding;
-						Layout.alignment: Qt.AlignTop;
+						id: custom0;
+						text: "";
+						property var fifthSize;
+						visible: false;
 
-						FlatButton
+						onClicked:
 						{
-							id: custom0;
-							text: "";
-							property var fifthSize;
-							visible: false;
-
-							onClicked:
-							{
-								setFifthSize(custom0.fifthSize);
-							}
+							setFifthSize(custom0.fifthSize);
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: custom1;
+						text: "";
+						property var fifthSize;
+						visible: false;
+
+						onClicked:
 						{
-							id: custom1;
-							text: "";
-							property var fifthSize;
-							visible: false;
-
-							onClicked:
-							{
-								setFifthSize(custom1.fifthSize);
-							}
+							setFifthSize(custom1.fifthSize);
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: custom2;
+						text: "";
+						property var fifthSize;
+						visible: false;
+
+						onClicked:
 						{
-							id: custom2;
-							text: "";
-							property var fifthSize;
-							visible: false;
-
-							onClicked:
-							{
-								setFifthSize(custom2.fifthSize);
-							}
+							setFifthSize(custom2.fifthSize);
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: custom3;
+						text: "";
+						property var fifthSize;
+						visible: false;
+
+						onClicked:
 						{
-							id: custom3;
-							text: "";
-							property var fifthSize;
-							visible: false;
-
-							onClicked:
-							{
-								setFifthSize(custom3.fifthSize);
-							}
+							setFifthSize(custom3.fifthSize);
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: custom4;
+						text: "";
+						property var fifthSize;
+						visible: false;
+
+						onClicked:
 						{
-							id: custom4;
-							text: "";
-							property var fifthSize;
-							visible: false;
-
-							onClicked:
-							{
-								setFifthSize(custom4.fifthSize);
-							}
+							setFifthSize(custom4.fifthSize);
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: addCustom;
+						text: "Add Custom";
+
+						onClicked:
 						{
-							id: addCustom;
-							text: "Add Custom";
-
-							onClicked:
-							{
-								newCustomTuningDialog.open();
-							}
+							newCustomTuningDialog.open();
 						}
+					}
 
-						FlatButton
+					FlatButton
+					{
+						id: deleteCustom;
+						text: "Delete Custom";
+
+						onClicked:
 						{
-							id: deleteCustom;
-							text: "Delete Custom";
-
-							onClicked:
-							{
-								deleteCustomTuningDialog.open();
-							}
+							deleteCustomTuningDialog.open();
 						}
 					}
 				}
