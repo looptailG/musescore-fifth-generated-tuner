@@ -782,6 +782,42 @@ MuseScore
 				{
 					title: "Schismic Temperaments";
 					Layout.alignment: Qt.AlignTop;
+
+					ColumnLayout
+					{
+						spacing: defaultPadding;
+						Layout.alignment: Qt.AlignTop;
+
+						FlatButton
+						{
+							text: "1/8 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA / 8);
+							}
+						}
+
+						FlatButton
+						{
+							text: "2/17 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA * 2 / 17);
+							}
+						}
+
+						FlatButton
+						{
+							text: "1/9 Schisma";
+
+							onClicked:
+							{
+								setFifthSize(TuningUtils.JUST_FIFTH - TuningUtils.SCHISMA / 9);
+							}
+						}
+					}
 				}
 
 				StyledGroupBox
