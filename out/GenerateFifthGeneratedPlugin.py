@@ -15,9 +15,6 @@ FILES_TO_COPY = [
     LICENSE_FILE,
     THUMBNAIL,
 ]
-FILES_TO_CREATE = [
-    f"{PLUGIN_FOLDER}/CustomTunings.tsv"
-]
 
 
 def main():
@@ -28,8 +25,6 @@ def main():
             shutil.copyfile(file_path, f"{PLUGIN_FOLDER}/{file_name}")
         if not os.path.exists(f"{PLUGIN_FOLDER}/{LOGS_FOLDER}"):
             os.makedirs(f"{PLUGIN_FOLDER}/{LOGS_FOLDER}")
-        for file_path in FILES_TO_CREATE:
-            open(file_path, "w")
 
         version_number = get_version_number()
         output_folder_name = f"{PLUGIN_FOLDER}_{version_number}"

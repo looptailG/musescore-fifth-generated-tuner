@@ -1067,7 +1067,7 @@ MuseScore
 			throw "Custom tuning name already present: " + tuningName;
 		}
 		fileContent[tuningName] = fifthSize;
-		SettingsIO.writeTsvFile(fileContent, customTuningsId);
+		SettingsIO.writeTsvFile(fileContent, customTuningsId, "TUNING_NAME", "FIFTH_SIZE");
 
 		Logger.log("New custom tuning added successfully.");
 		Logger.writeLogs();
@@ -1092,7 +1092,7 @@ MuseScore
 			Logger.trace("Deleting tuning: " + tuningName);
 			delete fileContent[tuningName];
 		}
-		SettingsIO.writeTsvFile(fileContent, customTuningsId);
+		SettingsIO.writeTsvFile(fileContent, customTuningsId, "TUNING_NAME", "FIFTH_SIZE");
 
 		Logger.log("Custom tunings deleted successfully.");
 		Logger.writeLogs();
