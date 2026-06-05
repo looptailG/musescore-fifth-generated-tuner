@@ -482,6 +482,11 @@ MuseScore
 				}
 			}
 
+			Item
+			{
+				Layout.fillWidth: true;
+			}
+
 			FlatButton
 			{
 				text: "Tune";
