@@ -531,14 +531,11 @@ MuseScore
 								tuneNotes();
 							}
 						}
+						Logger.writeLogs();
 					}
 					catch (error)
 					{
 						displayErrorMessage(error);
-					}
-					finally
-					{
-						Logger.writeLogs();
 					}
 				}
 			}
@@ -936,6 +933,10 @@ MuseScore
 
 						onClicked:
 						{
+							for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
+							{
+								customTuningCheckBox.checked = false;
+							}
 							deleteCustomTuningDialog.open();
 						}
 					}
@@ -997,15 +998,12 @@ MuseScore
 				Logger
 			);
 			Logger.log("Notes tuned: " + tunedNotes + " / " + totalNotes);
+			Logger.writeLogs();
+			quit();
 		}
 		catch (error)
 		{
 			displayErrorMessage(error);
-		}
-		finally
-		{
-			Logger.writeLogs();
-			quit();
 		}
 	}
 
@@ -1098,7 +1096,11 @@ MuseScore
 		tuningName = tuningName.trim();
 		fifthSize = ("" + fifthSize).trim();
 		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + fifthSize);
-		if ((fifthSize == "") || isNaN(fifthSize))
+		if (!fifthSize)
+		{
+			throw "Empty fifth size.";
+		}
+		else if (isNaN(fifthSize))
 		{
 			throw "Invalid custom fifth size: " + fifthSize;
 		}
@@ -1122,12 +1124,6 @@ MuseScore
 	function deleteCustomTunings(tuningsToDelete)
 	{
 		Logger.log("Deleting custom tunings: " + tuningsToDelete.join(", "));
-
-		for (var customTuningCheckBox of deleteCustomTuningsCheckBoxes)
-		{
-			customTuningCheckBox.checked = false;
-		}
-
 		var fileContent = SettingsIO.readTsvFile(customTuningsId);
 		for (var tuningName of tuningsToDelete)
 		{
@@ -1135,7 +1131,6 @@ MuseScore
 			delete fileContent[tuningName];
 		}
 		SettingsIO.writeTsvFile(fileContent, customTuningsId, "TUNING_NAME", "FIFTH_SIZE");
-
 		Logger.log("Custom tunings deleted successfully.");
 		Logger.writeLogs();
 	}
