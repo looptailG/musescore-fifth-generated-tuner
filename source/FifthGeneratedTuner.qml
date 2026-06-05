@@ -502,7 +502,8 @@ MuseScore
 						{
 							if (fifthSizeInput.inputField.text)
 							{
-								throw "Cannot convert to number the input fifth size: " + fifthSizeInput.inputField.text;
+								throw "Cannot convert to number the input fifth size: "
+									+ fifthSizeInput.inputField.text;
 							}
 							else
 							{
