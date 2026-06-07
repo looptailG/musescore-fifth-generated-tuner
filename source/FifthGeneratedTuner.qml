@@ -200,7 +200,7 @@ MuseScore
 
 				FlatButton
 				{
-					text: "Ok";
+					text: "Add";
 
 					onClicked:
 					{
@@ -312,7 +312,7 @@ MuseScore
 
 				FlatButton
 				{
-					text: "Ok";
+					text: "Delete";
 
 					onClicked:
 					{
