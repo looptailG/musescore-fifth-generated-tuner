@@ -19,6 +19,9 @@ FILES_TO_COPY = [
 
 def main():
     try:
+        if os.path.exists(PLUGIN_FOLDER):
+            shutil.rmtree(PLUGIN_FOLDER)
+
         shutil.copytree(f"{PROJECT_FOLDER}/{SOURCE_FOLDER}", PLUGIN_FOLDER, dirs_exist_ok=True)
         for file_path in FILES_TO_COPY:
             file_name = file_path[file_path.rindex("/") + 1:]
