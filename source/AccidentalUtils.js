@@ -16,9 +16,10 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "1.2.0";
+const VERSION = "1.2.1";
 
-const UNICODE_ACCIDENTALS = {
+// Map the accidental names to the SMuFL code points.
+const SMUFL_ACCIDENTALS = {
 	"FLAT": "\uE260",
 	"NATURAL": "\uE261",
 	"SHARP": "\uE262",
@@ -32,7 +33,21 @@ const UNICODE_ACCIDENTALS = {
 	"SHARP_SLASH4": "\uE283"
 };
 
+// Map the accidental names to the Unicode code points.
+const UNICODE_ACCIDENTALS = {
+	"FLAT": "\u266D",
+	"NATURAL": "\u266E",
+	"SHARP": "\u266F",
+	"SHARP2": "\uD834\uDD2A",
+	"FLAT2": "\uD834\uDD2B"
+};
+
+// Map SMuFL and Unicode code points to the corresponding ASCII letters only
+// representations.
 const UNICODE_TO_ASCII = {
+	"\u266D": "b",
+	"\u266E": "h",
+	"\u266F": "#",
 	"\uE260": "b",
 	"\uE261": "h",
 	"\uE262": "#",
@@ -43,7 +58,9 @@ const UNICODE_TO_ASCII = {
 	"\uE280": "d",
 	"\uE281": "db",
 	"\uE282": "t",
-	"\uE283": "t#"
+	"\uE283": "t#",
+	"\uD834\uDD2A": "x",
+	"\uD834\uDD2B": "bb"
 };
 
 const ACCIDENTAL_DATA = {
@@ -742,7 +759,7 @@ function getAccidentalName(note)
 	{
 		throw "Out of bound accidental type: " + accidentalType;
 	}
-	
+
 	switch (accidentalType)
 	{
 		case Accidental.NONE:
@@ -1152,7 +1169,7 @@ function getAccidentalName(note)
 
 		case Accidental.SAGITTAL_SHARP:
 			return "SAGITTAL_SHARP";
-		
+
 		default:
 			throw "Unrecognised accidental type: " + note.accidentalType;
 	}

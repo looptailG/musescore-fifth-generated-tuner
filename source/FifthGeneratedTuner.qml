@@ -464,7 +464,13 @@ MuseScore
 					{
 						id: referenceNoteAccidentalId;
 						width: 80;
-						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+						model: [
+							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT2"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP2"]
+						];
 
 						onActivated: function(index, value)
 						{
@@ -962,7 +968,7 @@ MuseScore
 
 			referenceNoteNameId.currentIndex = settings["ReferenceNoteNameIndex"];
 			referenceNoteAccidentalId.currentIndex = settings["ReferenceNoteAccidentalIndex"];
-			referenceNote = referenceNoteNameId.currentText + referenceNoteAccidentalId.currentText.replace("-", "");
+			referenceNote = getAsciiReferenceNote();
 			Logger.log("Reference note set to: " + referenceNote);
 
 			loadCustomTunings();
@@ -1161,9 +1167,22 @@ MuseScore
 		settings["ReferenceNoteAccidentalIndex"] = referenceNoteAccidentalId.currentIndex;
 		SettingsIO.writeTsvFile(settings, settingsId);
 
-		referenceNote = referenceNoteNameId.currentText + referenceNoteAccidentalId.currentText.replace("-", "");
+		referenceNote = getAsciiReferenceNote();
 		Logger.log("Reference note changed to: " + referenceNote);
 		Logger.writeLogs();
+	}
+
+	/**
+	 * Read the values selected in the reference note combo boxes, and return an
+	 * ASCII letter only representation of the selected note.
+	 */
+	function getAsciiReferenceNote()
+	{
+		var asciiReferenceNote = referenceNoteNameId.currentText;
+		asciiReferenceNote += AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidentalId.currentText];
+		return asciiReferenceNote.replace(
+			AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], ""
+		);
 	}
 
 	/**
