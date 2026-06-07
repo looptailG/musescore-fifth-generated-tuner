@@ -1157,8 +1157,8 @@ MuseScore
 	 */
 	function setFifthSize(fifthSize)
 	{
-		Logger.log("Setting fifth size to: " + fifthSize);
 		fifthSizeInput.inputField.text = fifthSize;
+		Logger.log("Fifth size set to: " + fifthSize);
 		Logger.writeLogs();
 	}
 
