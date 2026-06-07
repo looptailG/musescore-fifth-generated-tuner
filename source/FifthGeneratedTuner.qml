@@ -464,7 +464,13 @@ MuseScore
 					{
 						id: referenceNoteAccidentalId;
 						width: 80;
-						model: ["bbb", "bb", "b", "-", "#", "x", "#x"];
+						model: [
+							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT2"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP"],
+							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP2"]
+						];
 
 						onActivated: function(index, value)
 						{
