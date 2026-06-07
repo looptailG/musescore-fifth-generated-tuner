@@ -1106,6 +1106,11 @@ MuseScore
 	function newCustomTuning(tuningName, fifthSize)
 	{
 		tuningName = tuningName.trim();
+		if (!tuningName)
+		{
+			throw "Empty custom tuning name.";
+		}
+
 		fifthSize = ("" + fifthSize).trim();
 		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + fifthSize);
 		if (!fifthSize)
