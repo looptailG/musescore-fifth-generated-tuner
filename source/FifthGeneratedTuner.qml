@@ -110,7 +110,14 @@ MuseScore
 				Layout.maximumWidth: 500;
 				wrapMode: Text.WordWrap;
 				horizontalAlignment: Text.AlignLeft;
-				text: "";
+				text: "The input fifth size is outside the diatonic range ("
+					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " c - "
+					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c). "
+					+ "Standard music notation ceases to work properly for "
+					+ "fifths outside of this range.\n"
+					+ "The plugin can tune the score, but this could produce "
+					+ "counterintuitive results.\n"
+					+ "Do you want to tune the score anyway?";
 			}
 
 			RowLayout
@@ -520,22 +527,11 @@ MuseScore
 						{
 							fifthDeviation = fifthSize - TuningUtils.STANDARD_FIFTH;
 							Logger.log("Fifth size: " + fifthSize + "; Fifth deviation: " + fifthDeviation);
-							if (fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
-							{
-								Logger.warning("Fifth smaller than the smallest diatonic fifth: " + fifthSize);
-								fifthSizeDialogText.text = "The input fifth is smaller than "
-									+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " c, which is the smallest "
-									+ "fifth size for which standard notation makes sense.\nThe plugin can work anyway"
-									+ ", but it could produce some counterintuitive results.\nTune the score anyway?";
-								fifthSizeDialog.open();
-							}
-							else if (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
-							{
-								Logger.warning("Fifth larger than the largest diatonic fifth: " + fifthSize);
-								fifthSizeDialogText.text = "The input fifth is larger than "
-									+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c, which is the largest "
-									+ "fifth size for which standard notation makes sense.\nThe plugin can work anyway"
-									+ ", but it could produce some counterintuitive results.\nTune the score anyway?";
+							if (
+								(fifthSize < TuningUtils.SMALLEST_DIATONIC_FIFTH)
+								|| (fifthSize > TuningUtils.LARGEST_DIATONIC_FIFTH)
+							) {
+								Logger.warning("Fifth outside the diatonic range.");
 								fifthSizeDialog.open();
 							}
 							else
