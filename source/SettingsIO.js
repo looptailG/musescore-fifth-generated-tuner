@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const VERSION = "1.1.0";
+const VERSION = "1.1.1";
 
 /**
  * Read the input TSV file, and return its content as a dictionary, where the
@@ -53,7 +53,7 @@ function writeTsvFile(settings, fileIO, keyColumnName = "KEY", valueColumnName =
 	let fileContent;
 	if (keyColumnName && valueColumnName)
 	{
-		fileContent = keyColumnName + "\t" + valueColumnName + "\n";
+		fileContent = formatForTsv(keyColumnName) + "\t" + formatForTsv(valueColumnName) + "\n";
 	}
 	else
 	{
