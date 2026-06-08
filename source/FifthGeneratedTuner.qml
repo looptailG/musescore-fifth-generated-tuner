@@ -112,11 +112,9 @@ MuseScore
 				horizontalAlignment: Text.AlignLeft;
 				text: "The input fifth size is outside the diatonic range ("
 					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " c - "
-					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c). "
-					+ "Standard music notation ceases to work properly for "
-					+ "fifths outside of this range.\n"
-					+ "The plugin can tune the score, but this could produce "
-					+ "counterintuitive results.\n"
+					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c). Standard music notation ceases to work "
+					+ "properly for fifths outside of this range.\n"
+					+ "The plugin can tune the score, but this could produce counterintuitive results.\n"
 					+ "Do you want to tune the score anyway?";
 			}
 
