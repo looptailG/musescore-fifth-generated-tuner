@@ -120,7 +120,7 @@ MuseScore
 
 				FlatButton
 				{
-					text: "Yes";
+					text: "Tune";
 
 					onClicked:
 					{
@@ -138,7 +138,7 @@ MuseScore
 
 				FlatButton
 				{
-					text: "No";
+					text: "Cancel";
 
 					onClicked:
 					{
@@ -1110,9 +1110,7 @@ MuseScore
 		{
 			throw "Empty custom tuning name.";
 		}
-
 		fifthSize = ("" + fifthSize).trim();
-		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + fifthSize);
 		if (!fifthSize)
 		{
 			throw "Empty fifth size.";
@@ -1121,6 +1119,7 @@ MuseScore
 		{
 			throw "Invalid custom fifth size: " + fifthSize;
 		}
+		Logger.log("New custom tuning name: " + tuningName + "; Fifth size: " + fifthSize);
 
 		var fileContent = SettingsIO.readTsvFile(customTuningsId);
 		if (fileContent.hasOwnProperty(tuningName))
