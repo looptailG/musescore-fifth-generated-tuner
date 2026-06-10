@@ -111,8 +111,8 @@ MuseScore
 				wrapMode: Text.WordWrap;
 				horizontalAlignment: Text.AlignLeft;
 				text: "The input fifth size is outside the diatonic range ("
-					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " c - "
-					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " c). Standard music notation ceases to work "
+					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " ¢ - "
+					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " ¢). Standard music notation ceases to work "
 					+ "properly for fifths outside of this range.\n"
 					+ "The plugin can tune the score, but this could produce counterintuitive results.\n"
 					+ "Do you want to tune the score anyway?";
@@ -419,7 +419,7 @@ MuseScore
 
 			StyledGroupBox
 			{
-				title: "Fifth Size (in cents)";
+				title: "Fifth Size (¢)";
 				width: fifthSizeInput.width + 2 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
