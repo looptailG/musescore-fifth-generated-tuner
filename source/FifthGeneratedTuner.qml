@@ -114,7 +114,7 @@ MuseScore
 					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " ¢ - "
 					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " ¢). Standard music notation ceases to work "
 					+ "properly for fifths outside of this range.\n"
-					+ "The plugin can tune the score, but this could produce counterintuitive results.\n"
+					+ "This plugin can tune the score, but this could produce counterintuitive results.\n"
 					+ "Do you want to tune the score anyway?";
 			}
 
@@ -126,6 +126,7 @@ MuseScore
 				FlatButton
 				{
 					text: "Tune";
+					accentButton: true;
 
 					onClicked:
 					{
@@ -206,6 +207,7 @@ MuseScore
 				FlatButton
 				{
 					text: "Add";
+					accentButton: true;
 
 					onClicked:
 					{
@@ -318,6 +320,7 @@ MuseScore
 				FlatButton
 				{
 					text: "Delete";
+					accentButton: true;
 
 					onClicked:
 					{
