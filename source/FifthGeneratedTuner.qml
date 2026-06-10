@@ -114,7 +114,7 @@ MuseScore
 					+ TuningUtils.SMALLEST_DIATONIC_FIFTH.toFixed(1) + " ¢ - "
 					+ TuningUtils.LARGEST_DIATONIC_FIFTH.toFixed(1) + " ¢). Standard music notation ceases to work "
 					+ "properly for fifths outside of this range.\n"
-					+ "This plugin can tune the score, but this could produce counterintuitive results.\n"
+					+ "This plugin can tune the score, but it could produce counterintuitive results.\n"
 					+ "Do you want to tune the score anyway?";
 			}
 
