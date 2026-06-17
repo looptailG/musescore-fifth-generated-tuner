@@ -1203,7 +1203,7 @@ MuseScore
 		var asciiReferenceNote = referenceNoteNameId.currentText;
 		asciiReferenceNote += AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidentalId.currentText];
 		return asciiReferenceNote.replace(
-			AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], ""
+			AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.SMUFL_ACCIDENTALS["NATURAL"]], ""
 		);
 	}
 
