@@ -448,17 +448,29 @@ MuseScore
 				{
 					spacing: defaultPadding;
 
-					StyledDropdown
+					// The combo boxes for the reference note don't use the
+					// MuseScore specific GUI elements, because I need to be
+					// able to set the font to the musical font, in order to use
+					// the proper SMuFL code points for the accidentals.
+
+					ComboBox
 					{
 						id: referenceNoteNameId;
-						width: 80;
+						font: ui.theme.bodyFont;
+
 						model: ["A", "B", "C", "D", "E", "F", "G"];
+
+						delegate: ItemDelegate
+						{
+							text: modelData;
+							font: ui.theme.bodyFont;
+							height: 30;
+						}
 
 						onActivated: function(index, value)
 						{
 							try
 							{
-								referenceNoteNameId.currentIndex = index;
 								setReferenceNote();
 							}
 							catch (error)
@@ -468,23 +480,32 @@ MuseScore
 						}
 					}
 
-					StyledDropdown
+					ComboBox
 					{
 						id: referenceNoteAccidentalId;
-						width: 80;
+						font: ui.theme.musicalFont;
+
 						model: [
-							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT2"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP2"]
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT3"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT2"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["NATURAL"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP2"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP3"]
 						];
+
+						delegate: ItemDelegate
+						{
+							text: modelData;
+							font: ui.theme.musicalFont;
+							height: 30;
+						}
 
 						onActivated: function(index, value)
 						{
 							try
 							{
-								referenceNoteAccidentalId.currentIndex = index;
 								setReferenceNote();
 							}
 							catch (error)
