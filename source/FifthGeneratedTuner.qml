@@ -457,7 +457,7 @@ MuseScore
 					{
 						id: referenceNoteNameId;
 						font: ui.theme.bodyFont;
-						width: 80;
+						Layout.preferredWidth: 80;
 						padding: defaultPadding;
 						rightPadding: referenceNoteNameIndicatorId.width + defaultPadding * 2;
 
@@ -468,7 +468,6 @@ MuseScore
 							text: referenceNoteNameId.displayText;
 							color: ui.theme.fontPrimaryColor;
 							elide: Text.ElideRight;
-							width: referenceNoteNameId.availableWidth;
 							verticalAlignment: Text.AlignVCenter;
 						}
 
