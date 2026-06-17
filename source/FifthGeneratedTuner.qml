@@ -441,7 +441,7 @@ MuseScore
 			StyledGroupBox
 			{
 				title: "Reference Note";
-				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
+				width: referenceNoteNameRectangleId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				RowLayout
@@ -457,8 +457,25 @@ MuseScore
 					{
 						id: referenceNoteNameId;
 						font: ui.theme.bodyFont;
+						padding: defaultPadding;
 
 						model: ["A", "B", "C", "D", "E", "F", "G"];
+
+						contentItem: Text
+						{
+							text: referenceNoteNameId.displayText;
+							color: ui.theme.fontPrimaryColor;
+							verticalAlignment: Text.AlignLeft;
+						}
+
+						background: Rectangle
+						{
+							id: referenceNoteNameRectangleId;
+							color: ui.theme.buttonColor;
+							border.color: ui.theme.backgroundSecondaryColor;
+							radius: 4;
+							width: 80;
+						}
 
 						delegate: ItemDelegate
 						{
