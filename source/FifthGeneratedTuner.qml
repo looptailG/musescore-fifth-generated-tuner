@@ -450,7 +450,7 @@ MuseScore
 
 					// The combo boxes for the reference note don't use the
 					// MuseScore specific GUI elements, because I need to be
-					// able to set the font to the musical font, in order to use
+					// able to set the font to the musical font in order to use
 					// the proper SMuFL code points for the accidentals.
 
 					ComboBox
