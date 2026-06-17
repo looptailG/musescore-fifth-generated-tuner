@@ -457,7 +457,9 @@ MuseScore
 					{
 						id: referenceNoteNameId;
 						font: ui.theme.bodyFont;
+						width: 80;
 						padding: defaultPadding;
+						rightPadding: referenceNoteNameIndicatorId.width + defaultPadding * 2;
 
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 
@@ -465,7 +467,9 @@ MuseScore
 						{
 							text: referenceNoteNameId.displayText;
 							color: ui.theme.fontPrimaryColor;
-							verticalAlignment: Text.AlignLeft;
+							elide: Text.ElideRight;
+							width: referenceNoteNameId.availableWidth;
+							verticalAlignment: Text.AlignVCenter;
 						}
 
 						background: Rectangle
@@ -474,7 +478,15 @@ MuseScore
 							color: ui.theme.buttonColor;
 							border.color: ui.theme.backgroundSecondaryColor;
 							radius: 4;
-							width: 80;
+						}
+
+						indicator: Text
+						{
+							id: referenceNoteNameIndicatorId;
+							text: "▼";
+							color: ui.theme.fontPrimaryColor;
+							x: referenceNoteNameId.width - width - defaultPadding;
+							y: (referenceNoteNameId.height - height) / 2;
 						}
 
 						delegate: ItemDelegate
