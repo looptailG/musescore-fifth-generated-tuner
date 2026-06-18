@@ -7,7 +7,6 @@ ComboBox
 
 	property font comboBoxFont;
 
-	Layout.preferredWidth: 80;
 	padding: 10;
 	rightPadding: referenceNoteNameIndicatorId.width + root.padding * 2;
 
