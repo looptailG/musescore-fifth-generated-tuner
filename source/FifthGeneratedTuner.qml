@@ -476,7 +476,6 @@ MuseScore
 							id: referenceNoteNameRectangleId;
 							color: ui.theme.buttonColor;
 							border.color: ui.theme.backgroundSecondaryColor;
-							radius: 4;
 						}
 
 						indicator: Text
@@ -484,15 +483,26 @@ MuseScore
 							id: referenceNoteNameIndicatorId;
 							text: "▼";
 							color: ui.theme.fontPrimaryColor;
-							x: referenceNoteNameId.width - width - defaultPadding;
+							x: referenceNoteNameId.width - referenceNoteNameIndicatorId.width - defaultPadding;
 							y: (referenceNoteNameId.height - height) / 2;
 						}
 
 						delegate: ItemDelegate
 						{
-							text: modelData;
-							font: ui.theme.bodyFont;
-							height: 30;
+							width: referenceNoteNameId.width;
+
+							contentItem: Text
+							{
+								text: modelData;
+								color: ui.theme.fontPrimaryColor;
+								verticalAlignment: Text.AlignVCenter;
+								elide: Text.ElideRight;
+							}
+
+							background: Rectangle
+							{
+								color: ui.theme.buttonColor;
+							}
 						}
 
 						onActivated: function(index, value)
