@@ -453,57 +453,14 @@ MuseScore
 					// able to set the font to the musical font in order to use
 					// the proper SMuFL code points for the accidentals.
 
-					ComboBox
+					ReferenceNoteComboBox
 					{
 						id: referenceNoteNameId;
-						font: ui.theme.bodyFont;
+						comboBoxFont: ui.theme.bodyFont;
 						Layout.preferredWidth: 80;
-						padding: defaultPadding;
-						rightPadding: referenceNoteNameIndicatorId.width + defaultPadding * 2;
+						Layout.preferredHeight: fifthSizeInput.height;
 
 						model: ["A", "B", "C", "D", "E", "F", "G"];
-
-						contentItem: Text
-						{
-							text: referenceNoteNameId.displayText;
-							color: ui.theme.fontPrimaryColor;
-							elide: Text.ElideRight;
-							verticalAlignment: Text.AlignVCenter;
-						}
-
-						background: Rectangle
-						{
-							id: referenceNoteNameRectangleId;
-							color: ui.theme.buttonColor;
-							border.color: ui.theme.backgroundSecondaryColor;
-						}
-
-						indicator: Text
-						{
-							id: referenceNoteNameIndicatorId;
-							text: "▼";
-							color: ui.theme.fontPrimaryColor;
-							x: referenceNoteNameId.width - referenceNoteNameIndicatorId.width - defaultPadding;
-							y: (referenceNoteNameId.height - height) / 2;
-						}
-
-						delegate: ItemDelegate
-						{
-							width: referenceNoteNameId.width;
-
-							contentItem: Text
-							{
-								text: modelData;
-								color: ui.theme.fontPrimaryColor;
-								verticalAlignment: Text.AlignVCenter;
-								elide: Text.ElideRight;
-							}
-
-							background: Rectangle
-							{
-								color: ui.theme.buttonColor;
-							}
-						}
 
 						onActivated: function(index, value)
 						{
@@ -518,10 +475,12 @@ MuseScore
 						}
 					}
 
-					ComboBox
+					ReferenceNoteComboBox
 					{
 						id: referenceNoteAccidentalId;
-						font: ui.theme.musicalFont;
+						comboBoxFont: ui.theme.musicalFont;
+						Layout.preferredWidth: 80;
+						Layout.preferredHeight: fifthSizeInput.height;
 
 						model: [
 							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT3"],
@@ -532,13 +491,6 @@ MuseScore
 							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP2"],
 							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP3"]
 						];
-
-						delegate: ItemDelegate
-						{
-							text: modelData;
-							font: ui.theme.musicalFont;
-							height: 30;
-						}
 
 						onActivated: function(index, value)
 						{
