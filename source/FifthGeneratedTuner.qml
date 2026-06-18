@@ -458,7 +458,7 @@ MuseScore
 						id: referenceNoteNameId;
 						comboBoxFont: ui.theme.bodyFont;
 						Layout.preferredWidth: 80;
-						Layout.preferredHeight: 30;
+						Layout.preferredHeight: fifthSizeInput.height;
 
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 
@@ -480,7 +480,7 @@ MuseScore
 						id: referenceNoteAccidentalId;
 						comboBoxFont: ui.theme.musicalFont;
 						Layout.preferredWidth: 80;
-						Layout.preferredHeight: 30;
+						Layout.preferredHeight: fifthSizeInput.height;
 
 						model: [
 							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT3"],
