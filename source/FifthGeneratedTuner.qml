@@ -458,6 +458,7 @@ MuseScore
 						id: referenceNoteNameId;
 						comboBoxFont: ui.theme.bodyFont;
 						Layout.preferredWidth: 80;
+						Layout.preferredHeight: 30;
 
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 
@@ -474,10 +475,12 @@ MuseScore
 						}
 					}
 
-					ComboBox
+					ReferenceNoteComboBox
 					{
 						id: referenceNoteAccidentalId;
-						font: ui.theme.musicalFont;
+						comboBoxFont: ui.theme.musicalFont;
+						Layout.preferredWidth: 80;
+						Layout.preferredHeight: 30;
 
 						model: [
 							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT3"],
@@ -488,13 +491,6 @@ MuseScore
 							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP2"],
 							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP3"]
 						];
-
-						delegate: ItemDelegate
-						{
-							text: modelData;
-							font: ui.theme.musicalFont;
-							height: 30;
-						}
 
 						onActivated: function(index, value)
 						{

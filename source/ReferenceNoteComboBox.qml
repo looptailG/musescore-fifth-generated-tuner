@@ -8,7 +8,7 @@ ComboBox
 	property font comboBoxFont;
 
 	padding: 10;
-	rightPadding: referenceNoteNameIndicatorId.width + root.padding * 2;
+	rightPadding: indicatorId.width + root.padding * 2;
 
 	contentItem: Text
 	{
@@ -37,6 +37,7 @@ ComboBox
 	delegate: ItemDelegate
 	{
 		width: root.width;
+		height: 30;
 
 		contentItem: Text
 		{
