@@ -36,7 +36,7 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.4.0";
+	version: "1.4.1";
 	pluginType: "dialog";
 
 	property variant settings: {};
