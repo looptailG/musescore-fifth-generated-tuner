@@ -36,7 +36,7 @@ MuseScore
 	description: "Retune the selection, or the whole score if nothing is selected, using the specified fifth size.";
 	categoryCode: "playback";
 	thumbnailName: "FifthGeneratedTunerThumbnail.png";
-	version: "1.4.0";
+	version: "1.4.1";
 	pluginType: "dialog";
 
 	property variant settings: {};
@@ -423,7 +423,6 @@ MuseScore
 			StyledGroupBox
 			{
 				title: "Fifth Size (¢)";
-				width: fifthSizeInput.width + 2 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				ColumnLayout
@@ -441,24 +440,30 @@ MuseScore
 			StyledGroupBox
 			{
 				title: "Reference Note";
-				width: referenceNoteNameId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				RowLayout
 				{
 					spacing: defaultPadding;
 
-					StyledDropdown
+					// The combo boxes for the reference note don't use the
+					// MuseScore specific GUI elements, because I need to be
+					// able to set the font to the musical font in order to use
+					// the proper SMuFL code points for the accidentals.
+
+					ReferenceNoteComboBox
 					{
 						id: referenceNoteNameId;
-						width: 80;
+						comboBoxFont: ui.theme.bodyFont;
+						Layout.preferredWidth: 80;
+						Layout.preferredHeight: fifthSizeInput.height;
+
 						model: ["A", "B", "C", "D", "E", "F", "G"];
 
 						onActivated: function(index, value)
 						{
 							try
 							{
-								referenceNoteNameId.currentIndex = index;
 								setReferenceNote();
 							}
 							catch (error)
@@ -468,23 +473,27 @@ MuseScore
 						}
 					}
 
-					StyledDropdown
+					ReferenceNoteComboBox
 					{
 						id: referenceNoteAccidentalId;
-						width: 80;
+						comboBoxFont: ui.theme.musicalFont;
+						Layout.preferredWidth: 80;
+						Layout.preferredHeight: fifthSizeInput.height;
+
 						model: [
-							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT2"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["FLAT"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP"],
-							AccidentalUtils.UNICODE_ACCIDENTALS["SHARP2"]
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT3"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT2"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["FLAT"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["NATURAL"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP2"],
+							AccidentalUtils.SMUFL_ACCIDENTALS["SHARP3"]
 						];
 
 						onActivated: function(index, value)
 						{
 							try
 							{
-								referenceNoteAccidentalId.currentIndex = index;
 								setReferenceNote();
 							}
 							catch (error)
@@ -1182,7 +1191,7 @@ MuseScore
 		var asciiReferenceNote = referenceNoteNameId.currentText;
 		asciiReferenceNote += AccidentalUtils.UNICODE_TO_ASCII[referenceNoteAccidentalId.currentText];
 		return asciiReferenceNote.replace(
-			AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.UNICODE_ACCIDENTALS["NATURAL"]], ""
+			AccidentalUtils.UNICODE_TO_ASCII[AccidentalUtils.SMUFL_ACCIDENTALS["NATURAL"]], ""
 		);
 	}
 
