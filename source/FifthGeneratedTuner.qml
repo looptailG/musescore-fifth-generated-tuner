@@ -423,7 +423,6 @@ MuseScore
 			StyledGroupBox
 			{
 				title: "Fifth Size (¢)";
-				width: fifthSizeInput.width + 2 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				ColumnLayout
@@ -441,7 +440,6 @@ MuseScore
 			StyledGroupBox
 			{
 				title: "Reference Note";
-				width: referenceNoteNameRectangleId.width + referenceNoteAccidentalId.width + 3 * defaultPadding;
 				Layout.alignment: Qt.AlignVCenter
 
 				RowLayout
